@@ -1,19 +1,14 @@
 # BetterDisplay Deskflow KVM
 
-Use one keyboard shortcut to switch a monitor, keyboard, and mouse between a Mac and a Linux computer.
+Switch a monitor, keyboard, and mouse between macOS and Ubuntu with one shortcut.
+It also adds an optional Ubuntu-style keyboard layer to macOS.
 
-This setup was tested with:
+This build is configured for:
 
 - Samsung Odyssey G9 LC49G95T
 - Mac on HDMI
 - Ubuntu on DisplayPort 2
-- BetterDisplay on the Mac
-- Deskflow with the Mac as server and Ubuntu as client
-
-Shortcuts:
-
-- Control-Option-U: Ubuntu and DisplayPort 2
-- Control-Option-M: Mac and HDMI
+- Mac running as the Deskflow server
 
 ## Install
 
@@ -24,40 +19,78 @@ brew install --cask betterdisplay
 brew install deskflow
 ```
 
-Edit the constants at the top of `BetterDisplayHotkeys.swift` if your monitor or input codes differ.
-
-Run:
+Then install the latest BetterDisplayHotkeys release:
 
 ```bash
-chmod +x install.sh
-./install.sh
+curl -fsSL https://raw.githubusercontent.com/okonnu/betterdisplay-deskflow-kvm/main/install.sh | zsh
 ```
 
-When System Settings opens, add this file to Input Monitoring:
+The installer downloads the universal macOS app to `~/Applications`, starts it
+at login, reveals it in Finder, and opens Input Monitoring. Add
+`BetterDisplayHotkeys.app` to Input Monitoring and turn it on.
 
-```text
-~/Library/Application Support/BetterDisplayHotkeys/BetterDisplayHotkeys
+The app is locally signed but not Apple-notarized. If you download the zip in a
+browser, right-click the app and choose Open the first time.
+
+## KVM shortcuts
+
+- Control-Option-M switches the display to the Mac on HDMI.
+- Control-Option-U switches the display to Ubuntu on DisplayPort 2.
+
+These shortcuts remain active when the Ubuntu keyboard layer is off.
+
+## Ubuntu keyboard layer
+
+Use the `UK On` or `UK Off` item in the macOS menu bar. The layer is off by
+default and remembers your choice.
+
+The layer provides common Control shortcuts for copy, paste, cut, undo, redo,
+select all, find, save, print, open, new, tabs, and the address bar. It also maps:
+
+- Alt-Tab and Alt-Shift-Tab to application switching
+- Alt-F4 to close window
+- Alt-F2 to Spotlight
+- Windows-E to Finder
+- Windows-D to show desktop
+- Windows-L to lock
+- Windows-Tab to Mission Control
+- Windows-arrow keys to window tiling
+- Print Screen combinations to macOS screenshots
+- Control-Alt-Delete to Force Quit
+
+Control shortcuts remain native in Terminal, iTerm, Warp, Kitty, Alacritty,
+WezTerm, and VS Code.
+
+The keyboard layer needs Accessibility permission. Turn it on from the menu and
+choose `Enable Accessibility permission` when prompted.
+
+## Build a release
+
+Command Line Tools for Xcode are required.
+
+```bash
+./scripts/build-release.sh 1.1.0
 ```
 
-Copy `deskflow-server.example.conf` to `~/Library/Deskflow/deskflow-server.conf`. Replace `Ubuntu-PC` and `MacBook.local` with the names shown by Deskflow.
+The universal Apple Silicon and Intel app and its checksum are written to
+`dist`. Pushing a version tag runs the GitHub release workflow.
 
-Keep the keyboard and mouse connected to the Mac. Run the Mac as the Deskflow server and Ubuntu as the client.
+## Monitor input values
 
-## Samsung G9 input values
-
-The original LC49G95T uses these values:
+The original Samsung LC49G95T uses:
 
 - HDMI: 1
 - DisplayPort 1: 15
 - DisplayPort 2: 16
 
-Other monitors may use different values.
+Edit the constants at the top of `BetterDisplayHotkeys.swift` before building if
+your monitor or connections differ.
 
 ## Privacy
 
-The helper needs macOS Input Monitoring because it observes the same physical shortcut that Deskflow receives. The source only checks Control-Option-M and Control-Option-U. It does not save typed text or contain networking code.
-
-Review the source and compile it locally with `install.sh`.
+Input Monitoring lets the helper see keyboard events. Accessibility lets the
+optional keyboard layer translate selected shortcuts. The source does not save
+keystrokes or contain networking code.
 
 ## License
 
