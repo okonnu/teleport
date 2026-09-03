@@ -2,7 +2,7 @@ import AppKit
 import ApplicationServices
 import Carbon.HIToolbox
 
-private let appVersion = "1.1.0"
+private let appVersion = "1.2.0"
 private let betterDisplayCLICandidates = [
     "/opt/homebrew/bin/betterdisplaycli",
     "/usr/local/bin/betterdisplaycli"
@@ -57,7 +57,7 @@ private func run(_ executable: String, _ arguments: [String]) {
 
 private func switchInput(to value: Int) {
     guard let betterDisplayCLI else {
-        log("BetterDisplay CLI was not found")
+            log("BetterDisplay CLI was not found")
         return
     }
 
@@ -302,7 +302,7 @@ private final class MenuController: NSObject {
         menu.addItem(ubuntuItem)
 
         menu.addItem(.separator())
-        let quitItem = NSMenuItem(title: "Quit BetterDisplayHotkeys", action: #selector(quit), keyEquivalent: "q")
+        let quitItem = NSMenuItem(title: "Quit Teleport", action: #selector(quit), keyEquivalent: "q")
         quitItem.target = self
         menu.addItem(quitItem)
 
@@ -363,7 +363,7 @@ private func requestInputMonitoringPermission() {
 }
 
 if CommandLine.arguments.contains("--version") {
-    print("BetterDisplayHotkeys \(appVersion)")
+    print("Teleport \(appVersion)")
     exit(0)
 }
 

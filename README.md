@@ -1,4 +1,6 @@
-# BetterDisplay Deskflow KVM
+# Teleport
+
+![Teleport](assets/Teleport-logo.png)
 
 Switch a monitor, keyboard, and mouse between macOS and Ubuntu with one shortcut.
 It also adds an optional Ubuntu-style keyboard layer to macOS.
@@ -19,15 +21,15 @@ brew install --cask betterdisplay
 brew install deskflow
 ```
 
-Then install the latest BetterDisplayHotkeys release:
+Then install the latest Teleport release:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/okonnu/betterdisplay-deskflow-kvm/main/install.sh | zsh
+curl -fsSL https://raw.githubusercontent.com/okonnu/teleport/main/install.sh | zsh
 ```
 
 The installer downloads the universal macOS app to `~/Applications`, starts it
 at login, reveals it in Finder, and opens Input Monitoring. Add
-`BetterDisplayHotkeys.app` to Input Monitoring and turn it on.
+`Teleport.app` to Input Monitoring and turn it on.
 
 The app is locally signed but not Apple-notarized. If you download the zip in a
 browser, right-click the app and choose Open the first time.
@@ -69,11 +71,11 @@ choose `Enable Accessibility permission` when prompted.
 Command Line Tools for Xcode are required.
 
 ```bash
-./scripts/build-release.sh 1.1.0
+./scripts/build-release.sh 1.2.0
 ```
 
 The universal Apple Silicon and Intel app and its checksum are written to
-`dist`. Pushing a version tag runs the GitHub release workflow.
+`dist`. Upload those two files to a GitHub release.
 
 ## Monitor input values
 
@@ -83,7 +85,7 @@ The original Samsung LC49G95T uses:
 - DisplayPort 1: 15
 - DisplayPort 2: 16
 
-Edit the constants at the top of `BetterDisplayHotkeys.swift` before building if
+Edit the constants at the top of `Teleport.swift` before building if
 your monitor or connections differ.
 
 ## Privacy
