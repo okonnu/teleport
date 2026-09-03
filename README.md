@@ -106,7 +106,7 @@ If an edit is invalid, Teleport keeps the last valid configuration and reports
 Command Line Tools for Xcode are required.
 
 ```bash
-./scripts/build-release.sh 1.3.0
+./scripts/build-release.sh 1.3.1
 ./dist/Teleport.app/Contents/MacOS/Teleport --self-test
 ```
 

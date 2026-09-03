@@ -2,7 +2,7 @@ import AppKit
 import ApplicationServices
 import Carbon.HIToolbox
 
-private let appVersion = "1.3.0"
+private let appVersion = "1.3.1"
 private let displayName = "LC49G95T"
 private let macInput = 1
 private let linuxInput = 16
@@ -234,7 +234,7 @@ private let macActions: [String: MacAction] = [
     "copyScreen": .process("/usr/sbin/screencapture", ["-c"]),
     "copyArea": .process("/usr/sbin/screencapture", ["-i", "-c"]),
     "forceQuit": .shortcut("cmd+alt+escape"),
-    "openTerminal": .openApplication("Terminal")
+    "openTerminal": .process("/usr/bin/open", ["-n", "-a", "Terminal"])
 ]
 
 private func parseChord(_ value: String) throws -> ParsedChord {
