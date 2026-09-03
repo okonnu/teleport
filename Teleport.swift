@@ -2,7 +2,7 @@ import AppKit
 import ApplicationServices
 import Carbon.HIToolbox
 
-private let appVersion = "1.3.1"
+private let appVersion = "1.3.2"
 private let displayName = "LC49G95T"
 private let macInput = 1
 private let linuxInput = 16
@@ -339,6 +339,19 @@ private func relevantFlags(_ flags: CGEventFlags) -> CGEventFlags {
     flags.intersection([.maskControl, .maskAlternate, .maskCommand, .maskShift, .maskSecondaryFn])
 }
 
+private func sourceFlags(keyCode: CGKeyCode, eventFlags: CGEventFlags) -> CGEventFlags {
+    var flags = relevantFlags(eventFlags)
+
+    // Many external Windows keyboards expose Print Screen as F13 with the
+    // hardware-only Function flag set. Treat that flag as part of the key,
+    // not as an extra modifier, so the configured "print_screen" rule matches.
+    if keyCode == CGKeyCode(kVK_F13) {
+        flags.remove(.maskSecondaryFn)
+    }
+
+    return flags
+}
+
 private func isTerminalApplication() -> Bool {
     guard let frontmostBundleID else { return false }
     return currentConfiguration.terminalBundleIDs.contains(frontmostBundleID)
@@ -423,8 +436,8 @@ private let eventCallback: CGEventTapCallBack = { _, type, event, _ in
         return Unmanaged.passUnretained(event)
     }
 
-    let flags = relevantFlags(event.flags)
     let keyCode = CGKeyCode(event.getIntegerValueField(.keyboardEventKeycode))
+    let flags = sourceFlags(keyCode: keyCode, eventFlags: event.flags)
 
     if type == .flagsChanged {
         let isWindowsKey = keyCode == CGKeyCode(kVK_Command) || keyCode == CGKeyCode(kVK_RightCommand)
@@ -514,6 +527,14 @@ private func installEventTap() {
 
 private func runSelfTest() -> Int32 {
     do {
+        guard sourceFlags(
+            keyCode: CGKeyCode(kVK_F13),
+            eventFlags: [.maskSecondaryFn]
+        ).isEmpty else {
+            throw ConfigurationError.invalidChord("print_screen hardware flags")
+        }
+        print("PASS physical print_screen Function-flag normalization")
+
         let encoder = JSONEncoder()
         let encodedConfiguration = try encoder.encode(defaultConfiguration())
         let configuration = try JSONDecoder().decode(ShortcutConfiguration.self, from: encodedConfiguration)
