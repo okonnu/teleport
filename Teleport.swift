@@ -2,7 +2,7 @@ import AppKit
 import ApplicationServices
 import Carbon.HIToolbox
 
-private let appVersion = "1.2.0"
+private let appVersion = "1.2.1"
 private let betterDisplayCLICandidates = [
     "/opt/homebrew/bin/betterdisplaycli",
     "/usr/local/bin/betterdisplaycli"
@@ -17,6 +17,8 @@ private var eventTap: CFMachPort?
 private var eventTapSource: CFRunLoopSource?
 private var ubuntuShortcutsEnabled = UserDefaults.standard.bool(forKey: preferenceKey)
 private var activeRemappingAvailable = false
+private var windowsKeyIsDown = false
+private var windowsKeyWasUsed = false
 
 private var betterDisplayCLI: String? {
     betterDisplayCLICandidates.first { FileManager.default.isExecutableFile(atPath: $0) }
@@ -103,12 +105,32 @@ private func openFinder() {
     }
 }
 
+private func postShortcut(keyCode: CGKeyCode, flags: CGEventFlags) {
+    DispatchQueue.main.async {
+        guard
+            let keyDown = CGEvent(keyboardEventSource: nil, virtualKey: keyCode, keyDown: true),
+            let keyUp = CGEvent(keyboardEventSource: nil, virtualKey: keyCode, keyDown: false)
+        else {
+            return
+        }
+
+        keyDown.flags = flags
+        keyUp.flags = flags
+        keyDown.post(tap: .cghidEventTap)
+        keyUp.post(tap: .cghidEventTap)
+    }
+}
+
 private func handleScreenshot(flags: CGEventFlags, type: CGEventType) -> Bool {
     guard type == .keyDown else {
         return true
     }
 
     switch flags {
+    case []:
+        run("/usr/bin/open", ["-a", "Screenshot"])
+    case [.maskShift]:
+        run("/usr/sbin/screencapture", ["-i"])
     case [.maskAlternate]:
         run("/usr/sbin/screencapture", ["-i", "-W"])
     case [.maskControl]:
@@ -130,12 +152,42 @@ private let keyboardCallback: CGEventTapCallBack = { _, type, event, _ in
         return Unmanaged.passUnretained(event)
     }
 
-    guard type == .keyDown || type == .keyUp else {
+    if type == .leftMouseDown || type == .rightMouseDown || type == .otherMouseDown {
+        if windowsKeyIsDown {
+            windowsKeyWasUsed = true
+        }
         return Unmanaged.passUnretained(event)
     }
 
     let flags = relevantFlags(event.flags)
     let keyCode = CGKeyCode(event.getIntegerValueField(.keyboardEventKeycode))
+
+    if type == .flagsChanged {
+        let isWindowsKey = keyCode == CGKeyCode(kVK_Command) || keyCode == CGKeyCode(kVK_RightCommand)
+        guard isWindowsKey, ubuntuShortcutsEnabled && activeRemappingAvailable else {
+            return Unmanaged.passUnretained(event)
+        }
+
+        if flags.contains(.maskCommand) {
+            windowsKeyIsDown = true
+            windowsKeyWasUsed = false
+        } else if windowsKeyIsDown {
+            let shouldOpenSpotlight = !windowsKeyWasUsed
+            windowsKeyIsDown = false
+            windowsKeyWasUsed = false
+            if shouldOpenSpotlight {
+                postShortcut(keyCode: CGKeyCode(kVK_Space), flags: [.maskCommand])
+                log("Windows key released; opening Spotlight")
+            }
+        }
+
+        return Unmanaged.passUnretained(event)
+    }
+
+    guard type == .keyDown || type == .keyUp else {
+        return Unmanaged.passUnretained(event)
+    }
+
     let isKeyDown = type == .keyDown
     let isRepeat = event.getIntegerValueField(.keyboardEventAutorepeat) != 0
 
@@ -150,6 +202,10 @@ private let keyboardCallback: CGEventTapCallBack = { _, type, event, _ in
 
     guard ubuntuShortcutsEnabled && activeRemappingAvailable else {
         return Unmanaged.passUnretained(event)
+    }
+
+    if windowsKeyIsDown && isKeyDown {
+        windowsKeyWasUsed = true
     }
 
     // Control shortcuts. Terminal-style applications keep native Control keys.
@@ -223,12 +279,6 @@ private let keyboardCallback: CGEventTapCallBack = { _, type, event, _ in
         if handleScreenshot(flags: flags, type: type) {
             return nil
         }
-        if flags.isEmpty {
-            return replaceModifiers(on: event, with: [.maskCommand, .maskShift], keyCode: CGKeyCode(kVK_ANSI_5))
-        }
-        if flags == [.maskShift] {
-            return replaceModifiers(on: event, with: [.maskCommand, .maskShift], keyCode: CGKeyCode(kVK_ANSI_4))
-        }
     }
 
     // Ctrl-Alt-Delete opens Force Quit. Plain Delete already works natively.
@@ -251,6 +301,10 @@ private func installEventTap() {
     let options: CGEventTapOptions = activeRemappingAvailable ? .defaultTap : .listenOnly
     let eventMask = (CGEventMask(1) << CGEventType.keyDown.rawValue)
         | (CGEventMask(1) << CGEventType.keyUp.rawValue)
+        | (CGEventMask(1) << CGEventType.flagsChanged.rawValue)
+        | (CGEventMask(1) << CGEventType.leftMouseDown.rawValue)
+        | (CGEventMask(1) << CGEventType.rightMouseDown.rawValue)
+        | (CGEventMask(1) << CGEventType.otherMouseDown.rawValue)
 
     eventTap = CGEvent.tapCreate(
         tap: .cgSessionEventTap,

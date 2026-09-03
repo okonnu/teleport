@@ -71,7 +71,7 @@ choose `Enable Accessibility permission` when prompted.
 Command Line Tools for Xcode are required.
 
 ```bash
-./scripts/build-release.sh 1.2.0
+./scripts/build-release.sh 1.2.1
 ```
 
 The universal Apple Silicon and Intel app and its checksum are written to

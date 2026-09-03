@@ -3,7 +3,7 @@ set -euo pipefail
 
 script_dir="$(cd "$(dirname "$0")" && pwd)"
 repo_dir="$(cd "$script_dir/.." && pwd)"
-version="${1:-1.2.0}"
+version="${1:-1.2.1}"
 dist_dir="$repo_dir/dist"
 app_dir="$dist_dir/Teleport.app"
 contents_dir="$app_dir/Contents"
