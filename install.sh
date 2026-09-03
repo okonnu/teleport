@@ -12,6 +12,8 @@ log_path="$HOME/Library/Logs/Teleport.log"
 service="com.okonnu.teleport"
 old_service="com.codex.betterdisplay-hotkeys"
 old_agent="$HOME/Library/LaunchAgents/$old_service.plist"
+old_app="$install_dir/BetterDisplayHotkeys.app"
+old_app_backup="$install_dir/BetterDisplayHotkeys.retired.app"
 temp_dir="$(mktemp -d /tmp/teleport-install.XXXXXX)"
 
 cleanup() {
@@ -35,6 +37,10 @@ launchctl bootout "gui/$(id -u)/$old_service" 2>/dev/null || true
 
 if [[ -f "$old_agent" ]]; then
     mv "$old_agent" "$old_agent.disabled"
+fi
+if [[ -d "$old_app" ]]; then
+    rm -rf "$old_app_backup"
+    mv "$old_app" "$old_app_backup"
 fi
 
 rm -rf "$backup_path"
@@ -61,3 +67,4 @@ echo "Installed $app_path"
 echo "Add Teleport.app to Input Monitoring and enable it."
 echo "Use the UK Off menu-bar item to enable Ubuntu shortcuts."
 echo "The previous Teleport app, when present, is kept at $backup_path"
+echo "The retired BetterDisplayHotkeys app, when present, is kept at $old_app_backup"
