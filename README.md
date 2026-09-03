@@ -59,6 +59,7 @@ select all, find, save, print, open, new, tabs, and the address bar. It also map
 - Windows-arrow keys to window tiling
 - Print Screen combinations to macOS screenshots
 - Control-Alt-Delete to Force Quit
+- Control-Alt-T to Terminal
 
 Control shortcuts remain native in Terminal, iTerm, Warp, Kitty, Alacritty,
 WezTerm, and VS Code.
@@ -66,12 +67,47 @@ WezTerm, and VS Code.
 The keyboard layer needs Accessibility permission. Turn it on from the menu and
 choose `Enable Accessibility permission` when prompted.
 
+## Edit shortcuts without rebuilding
+
+Choose `Edit shortcuts JSON` from the Teleport menu. The configuration lives at:
+
+```text
+~/Library/Application Support/Teleport/shortcuts.json
+```
+
+Teleport reloads valid changes automatically. Normal rules map a shortcut to a
+named macOS action:
+
+```json
+{
+  "from": "ctrl+alt+t",
+  "action": "openTerminal"
+}
+```
+
+Available action constants include `copy`, `paste`, `cut`, `undo`, `redo`,
+`selectAll`, `find`, `save`, `print`, `new`, `open`, `newTab`, `closeWindow`,
+`focusLocation`, `deleteNextWord`, `nextApplication`, `previousApplication`,
+`spotlight`, `back`, `forward`, `openFinder`, `openTerminal`, `showDesktop`,
+`lockScreen`, `missionControl`, `tileLeft`, `tileRight`, `tileUp`, `tileDown`,
+`screenshotControls`, `captureArea`, `captureWindow`, `copyScreen`, `copyArea`,
+and `forceQuit`.
+
+Advanced rules may use `to` with a raw target chord instead of `action`.
+Modifier names are `ctrl`, `alt`, `shift`, `win`, `cmd`, and `fn`. The optional
+scopes are `all`, `nonTerminal`, and `terminalOnly`.
+
+If an edit is invalid, Teleport keeps the last valid configuration and reports
+`Configuration error` in its menu. Fix the JSON and save again, or choose
+`Reload shortcuts`.
+
 ## Build a release
 
 Command Line Tools for Xcode are required.
 
 ```bash
-./scripts/build-release.sh 1.2.1
+./scripts/build-release.sh 1.3.0
+./dist/Teleport.app/Contents/MacOS/Teleport --self-test
 ```
 
 The universal Apple Silicon and Intel app and its checksum are written to
