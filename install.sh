@@ -13,7 +13,6 @@ service="com.okonnu.teleport"
 old_service="com.codex.betterdisplay-hotkeys"
 old_agent="$HOME/Library/LaunchAgents/$old_service.plist"
 old_app="$install_dir/BetterDisplayHotkeys.app"
-old_app_backup="$install_dir/BetterDisplayHotkeys.retired.app"
 temp_dir="$(mktemp -d /tmp/teleport-install.XXXXXX)"
 
 cleanup() {
@@ -35,13 +34,13 @@ mkdir -p "$install_dir" "$HOME/Library/LaunchAgents" "$HOME/Library/Logs"
 launchctl bootout "gui/$(id -u)/$service" 2>/dev/null || true
 launchctl bootout "gui/$(id -u)/$old_service" 2>/dev/null || true
 
-if [[ -f "$old_agent" ]]; then
-    mv "$old_agent" "$old_agent.disabled"
-fi
-if [[ -d "$old_app" ]]; then
-    rm -rf "$old_app_backup"
-    mv "$old_app" "$old_app_backup"
-fi
+rm -f "$old_agent" "$old_agent.disabled"
+rm -rf \
+    "$old_app" \
+    "$install_dir/BetterDisplayHotkeys.previous.app" \
+    "$install_dir/BetterDisplayHotkeys.retired.app" \
+    "$HOME/Library/Application Support/BetterDisplayHotkeys"
+rm -f "$HOME/Library/Logs/BetterDisplayHotkeys.log"
 
 rm -rf "$backup_path"
 if [[ -d "$app_path" ]]; then
@@ -67,4 +66,3 @@ echo "Installed $app_path"
 echo "Add Teleport.app to Input Monitoring and enable it."
 echo "Use the UK Off menu-bar item to enable Ubuntu shortcuts."
 echo "The previous Teleport app, when present, is kept at $backup_path"
-echo "The retired BetterDisplayHotkeys app, when present, is kept at $old_app_backup"
