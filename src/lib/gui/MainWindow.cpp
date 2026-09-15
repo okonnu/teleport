@@ -17,6 +17,7 @@
 #include "dialogs/ClientConfigDialog.h"
 #include "dialogs/FingerprintDialog.h"
 #include "dialogs/HelpDialog.h"
+#include "dialogs/MonitorSwitchingDialog.h"
 #include "dialogs/ServerConfigDialog.h"
 #include "dialogs/SettingsDialog.h"
 
@@ -292,6 +293,7 @@ void MainWindow::connectSlots()
 
   connect(ui->btnSaveServerConfig, &QPushButton::clicked, this, &MainWindow::saveServerConfig);
   connect(ui->btnConfigureServer, &QPushButton::clicked, this, [this] { showConfigureServer(""); });
+  connect(ui->btnMonitorSwitching, &QPushButton::clicked, this, &MainWindow::openMonitorSwitching);
   connect(ui->btnConfigureClient, &QPushButton::clicked, this, [this] { showConfigureClient(); });
   connect(ui->lblComputerName, &QLabel::linkActivated, this, &MainWindow::openSettings);
 
@@ -1203,9 +1205,21 @@ bool MainWindow::generateCertificate()
 
 void MainWindow::serverClientsChanged(const QStringList &clients)
 {
+  m_connectedClients = clients;
   if (m_coreProcess.mode() != CoreMode::Server || !m_coreProcess.isStarted())
     return;
   m_statusBar->setServerClients(clients);
+}
+
+void MainWindow::openMonitorSwitching()
+{
+  MonitorSwitchingDialog dialog(this, m_serverConfig, m_connectedClients);
+  connect(&m_coreProcess, &CoreProcess::connectedClientsChanged, &dialog, &MonitorSwitchingDialog::setConnectedClients);
+  connect(&dialog, &MonitorSwitchingDialog::configurationEnabled, this, [this] {
+    if (m_coreProcess.isStarted())
+      resetCore();
+  });
+  dialog.exec();
 }
 
 void MainWindow::daemonIpcClientConnectionFailed()

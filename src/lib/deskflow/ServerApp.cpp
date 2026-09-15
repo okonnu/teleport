@@ -463,7 +463,9 @@ Server *ServerApp::openServer(ServerConfig &config, PrimaryClient *primaryClient
 {
   auto *server = new Server(config, primaryClient, m_serverScreen, getEvents());
   try {
-    getEvents()->addHandler(EventTypes::ServerScreenSwitched, server, [this](const auto &) { handleScreenSwitched(); });
+    getEvents()->addHandler(EventTypes::ServerScreenSwitched, server, [this](const auto &event) {
+      handleScreenSwitched(event);
+    });
 
   } catch (std::bad_alloc &ba) {
     delete server;
@@ -473,9 +475,11 @@ Server *ServerApp::openServer(ServerConfig &config, PrimaryClient *primaryClient
   return server;
 }
 
-void ServerApp::handleScreenSwitched() const
+void ServerApp::handleScreenSwitched(const Event &event)
 {
-  // do nothing
+  const auto *info = static_cast<Server::SwitchToScreenInfo *>(event.getData());
+  if (info && m_displayInputCoordinator)
+    m_displayInputCoordinator->handleScreenSwitched(QString::fromStdString(info->m_screen));
 }
 
 std::unique_ptr<ISocketFactory> ServerApp::getSocketFactory() const
@@ -570,6 +574,7 @@ int ServerApp::runInner(StartupFunc startup)
 {
   // general initialization
   m_deskflowAddress = new NetworkAddress;
+  m_displayInputCoordinator = std::make_unique<DisplayInputCoordinator>();
   m_config = std::make_shared<Config>(getEvents());
 
   // run

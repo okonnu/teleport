@@ -98,6 +98,7 @@ private:
   void openAboutDialog();
   void openGetNewVersionUrl() const;
   void openSettings();
+  void openMonitorSwitching();
   void startCore();
   void stopCore();
   bool saveServerConfig();
@@ -178,6 +179,7 @@ private:
   QSize m_expandedSize = QSize();
   QStringList m_checkedClients;
   QStringList m_checkedServers;
+  QStringList m_connectedClients;
   QSystemTrayIcon *m_trayIcon = nullptr;
   QLocalServer *m_guiDupeChecker = nullptr;
   deskflow::gui::ipc::DaemonIpcClient *m_daemonIpcClient = nullptr;

@@ -58,6 +58,8 @@ add_library(${target} STATIC
   dialogs/FingerprintDialog.h
   dialogs/HelpDialog.cpp
   dialogs/HelpDialog.h
+  dialogs/MonitorSwitchingDialog.cpp
+  dialogs/MonitorSwitchingDialog.h
   dialogs/HotkeyDialog.cpp
   dialogs/HotkeyDialog.h
   dialogs/HotkeyDialog.ui

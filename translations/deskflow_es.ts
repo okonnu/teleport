@@ -585,6 +585,251 @@ Además, verifique que puede %1 el archivo de configuración del servidor: %2</t
         <source>&lt;p&gt;Keyboard layout support requires matching layouts on all computers. The following layouts from the other computer are not installed on this computer:&lt;/p&gt;&lt;p&gt;&lt;b&gt;%1&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Please install them to enable support for these layouts.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Monitor Switching</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>MonitorSwitchingDialog</name>
+    <message>
+        <source>Monitor Switching</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Refresh</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Shared monitor:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Computer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Role</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Input label</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Last test</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Disable monitor switching</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select a monitor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 (not currently detected)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Server</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Client</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Not tested</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Could not save monitor switching configuration: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select the computers that share this monitor. Teleport safely tests the monitor inputs, asks which computer appeared, and saves the detected mappings automatically.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Detected input</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Detect inputs and enable</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Not detected</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Detected</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The server input could not be restored: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Monitor restore failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Teleport could not restore the server input. Use the physical monitor controls to return to the server. Monitor switching remains disabled.
+
+%1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Restoring the server input.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The server input restore did not pass DDC readback verification.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Confirm server input</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>DDC could not verify the restore. Is this setup window visible again?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The server input restore was not visually confirmed.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The server input restore could not be verified: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Teleport could not verify the server input after restoring it. Use the physical monitor controls if needed. Monitor switching remains disabled.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No selected computer appeared</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Identify monitor input</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The monitor has returned to the server. Which selected computer appeared during the test?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Teleport could not read the current server input, so it cannot safely restore the monitor during automatic detection. Check that DDC is enabled on the monitor and connect it directly if a dock or adapter blocks DDC.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Detected as the current server input with DDC readback.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The client disconnected during input detection.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 disconnected during input detection.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>DDC readback was unavailable.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Testing a possible monitor input. Watch for one of the selected computers.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Keeping the possible input visible.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Input detection was canceled.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Detected by DDC readback and visual identification.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Detected by visual identification because readback was unavailable.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No working monitor input was identified.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Teleport could not identify a working monitor input for: %1. Confirm that each computer is awake and sending video to the selected monitor, then run detection again.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>All selected monitor inputs were detected and verified.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>At least one monitor input could not be detected.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Detect inputs again</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Monitor switching setup</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Computer not connected</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Connect %1 to the Deskflow server before testing its monitor input.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Could not save the configuration: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Monitor switching enabled</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Monitor switching not enabled</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source> at %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Monitor switching is enabled and verified.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Monitor switching is disabled until every selected input passes testing.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source> Monitor discovery failed: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>NewScreenWidget</name>

@@ -24,6 +24,9 @@ endif()
 
 if(WIN32)
   set(PLATFORM_SOURCES
+    DisplayInputControllerFactory.cpp
+    DisplayInputControllerFactory.h
+    IDisplayInputController.h
     IMSWindowsClipboardFacade.h
     MSWindowsClipboard.cpp
     MSWindowsClipboard.h
@@ -62,6 +65,9 @@ if(WIN32)
   )
 elseif(APPLE)
   set(PLATFORM_SOURCES
+    DisplayInputControllerFactory.cpp
+    DisplayInputControllerFactory.h
+    IDisplayInputController.h
     IOSXKeyResource.cpp
     IOSXKeyResource.h
     OSXAutoTypes.h
@@ -85,6 +91,8 @@ elseif(APPLE)
     OSXCocoaApp.m
     OSXEventQueueBuffer.cpp
     OSXEventQueueBuffer.h
+    OSXDisplayInputController.h
+    OSXDisplayInputController.mm
     OSXKeyLayoutResource.cpp
     OSXKeyLayoutResource.h
     OSXKeyState.cpp
@@ -105,6 +113,9 @@ elseif(APPLE)
   )
 elseif(UNIX)
   set(PLATFORM_SOURCES
+    DisplayInputControllerFactory.cpp
+    DisplayInputControllerFactory.h
+    IDisplayInputController.h
     XDGPortalRegistry.h
     XDGPowerManager.cpp
     XDGPowerManager.h
@@ -187,7 +198,8 @@ if(UNIX)
 
   if(APPLE)
     find_library(COCOA_LIBRARY Cocoa)
-    target_link_libraries(platform PUBLIC ${COCOA_LIBRARY})
+    find_library(CORE_DISPLAY_LIBRARY CoreDisplay)
+    target_link_libraries(platform PUBLIC ${COCOA_LIBRARY} ${CORE_DISPLAY_LIBRARY})
   else()
     if(${LIBXKBCOMMON_VERSION} VERSION_GREATER_EQUAL "1.10")
       target_compile_definitions(platform PRIVATE HAVE_XKB_KEYMAP_MOD_GET_MASK=1)

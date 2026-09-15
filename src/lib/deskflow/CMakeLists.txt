@@ -41,6 +41,8 @@ add_library(${lib_name} STATIC ${PLATFORM_CODE}
   DeskflowException.cpp
   DeskflowException.h
   DisplayInvalidException.h
+  DisplayInputCoordinator.cpp
+  DisplayInputCoordinator.h
   IApp.h
   IClient.h
   IClipboard.cpp

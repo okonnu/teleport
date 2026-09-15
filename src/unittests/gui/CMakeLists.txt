@@ -10,3 +10,11 @@ create_test(
   SOURCE LoggerTests.cpp
   WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/src/lib/gui"
 )
+
+create_test(
+  NAME MonitorSwitchingDialogTests
+  DEPENDS gui
+  LIBS platform
+  SOURCE MonitorSwitchingDialogTests.cpp
+  WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/src/lib/gui"
+)

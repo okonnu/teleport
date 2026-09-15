@@ -8,6 +8,8 @@
 
 #pragma once
 
+#include "deskflow/DisplayInputCoordinator.h"
+
 #include "arch/Arch.h"
 #include "arch/IArchMultithread.h"
 #include "deskflow/App.h"
@@ -102,7 +104,7 @@ public:
   }
 
 private:
-  void handleScreenSwitched() const;
+  void handleScreenSwitched(const Event &event);
   std::unique_ptr<ISocketFactory> getSocketFactory() const;
   NetworkAddress getAddress(const NetworkAddress &address) const;
 
@@ -116,4 +118,5 @@ private:
   NetworkAddress *m_deskflowAddress = nullptr;
   std::string m_name;
   std::shared_ptr<deskflow::server::Config> m_config;
+  std::unique_ptr<DisplayInputCoordinator> m_displayInputCoordinator;
 };

@@ -53,6 +53,14 @@ create_test(
   WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/src/lib/deskflow"
 )
 
+create_test(
+  NAME DisplayInputCoordinatorTests
+  DEPENDS app
+  LIBS arch base io platform
+  SOURCE DisplayInputCoordinatorTests.cpp
+  WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/src/lib/deskflow"
+)
+
 if(BUILD_X11_SUPPORT)
   create_test(
     NAME XkbLayoutParserTests
@@ -62,4 +70,3 @@ if(BUILD_X11_SUPPORT)
     WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/src/lib/deskflow"
   )
 endif()
-

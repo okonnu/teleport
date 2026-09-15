@@ -22,6 +22,8 @@ add_library(common STATIC
   KeySequence.h
   KeySequence.cpp
   LogLevel.h
+  MonitorSwitchingConfig.cpp
+  MonitorSwitchingConfig.h
   NetworkProtocol.h
   PlatformInfo.h
   Settings.h
