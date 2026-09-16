@@ -16,6 +16,8 @@ class MonitorProfileDatabaseTests : public QObject
 
 private Q_SLOTS:
   void bundledDatabase();
+  void modelNameMatchesAllProfiles();
+  void mergePreservesModelVariants();
   void rejectsInvalidDatabase();
   void installsUploadedDatabase();
 };
@@ -29,20 +31,61 @@ void MonitorProfileDatabaseTests::bundledDatabase()
   QVERIFY2(database.isValid(), qPrintable(error));
   QVERIFY(database.profiles().size() >= 113);
 
-  const auto profile = database.find({QStringLiteral("SAM"), 0x7052, QStringLiteral("LC49G95T")});
-  QVERIFY(profile);
-  QCOMPARE(profile->id, QStringLiteral("SAM-7052"));
-  QCOMPARE(profile->inputs.size(), 3);
-  QCOMPARE(profile->inputs.at(0).writeValue, 17);
-  QCOMPARE(profile->inputs.at(0).readValues, QList<int>({1}));
+  const auto profiles = database.findAllByModelName(QStringLiteral("LC49G95T"));
+  QCOMPARE(profiles.size(), 1);
+  QCOMPARE(profiles.first().id, QStringLiteral("SAM-7052"));
+  QCOMPARE(profiles.first().inputs.size(), 3);
+  QCOMPARE(profiles.first().inputs.at(0).writeValue, 17);
+  QCOMPARE(profiles.first().inputs.at(0).readValues, QList<int>({1}));
+}
+
+void MonitorProfileDatabaseTests::modelNameMatchesAllProfiles()
+{
+  const auto path = QFINDTESTDATA("../../apps/res/monitor-profiles.json");
+  QString error;
+  const auto database = MonitorProfileDatabase::loadFile(path, &error);
+  QVERIFY2(database.isValid(), qPrintable(error));
+
+  const auto samsung = database.findAllByModelName(QStringLiteral(" lc49-g95t "));
+  QCOMPARE(samsung.size(), 1);
+  QCOMPARE(samsung.first().id, QStringLiteral("SAM-7052"));
+
+  const auto s2721 = database.findAllByModelName(QStringLiteral("dell s2721dgfa"));
+  QCOMPARE(s2721.size(), 2);
+  QCOMPARE(s2721.at(0).id, QStringLiteral("DEL41D9"));
+  QCOMPARE(s2721.at(1).id, QStringLiteral("DEL41DA"));
+
+  QCOMPARE(database.findAllByModelName(QStringLiteral("Dell U3219Q")).size(), 4);
+  QCOMPARE(database.findAllByModelName(QStringLiteral("Dell Ultrasharp u3011")).size(), 2);
+  QVERIFY(database.findAllByModelName(QStringLiteral("Unknown monitor")).isEmpty());
+}
+
+void MonitorProfileDatabaseTests::mergePreservesModelVariants()
+{
+  QString error;
+  auto database = MonitorProfileDatabase::fromJson(
+      R"({"schemaVersion":1,"databaseVersion":"base","profiles":[{"id":"TST-0001","manufacturerId":"TST","productId":1,"modelNames":["Same Model"],"revision":1,"source":"test","inputs":[{"id":"hdmi","label":"HDMI","writeValue":17,"readValues":[17]}]}]})",
+      &error
+  );
+  QVERIFY2(database.isValid(), qPrintable(error));
+  const auto overrides = MonitorProfileDatabase::fromJson(
+      R"({"schemaVersion":1,"databaseVersion":"override","profiles":[{"id":"TST-0002","manufacturerId":"TST","productId":2,"modelNames":["Same Model"],"revision":1,"source":"test","inputs":[{"id":"dp","label":"DisplayPort","writeValue":15,"readValues":[15]}]}]})",
+      &error
+  );
+  QVERIFY2(overrides.isValid(), qPrintable(error));
+
+  database.merge(overrides);
+  const auto matches = database.findAllByModelName(QStringLiteral("same-model"));
+  QCOMPARE(matches.size(), 2);
+  QCOMPARE(matches.at(0).id, QStringLiteral("TST-0001"));
+  QCOMPARE(matches.at(1).id, QStringLiteral("TST-0002"));
 }
 
 void MonitorProfileDatabaseTests::rejectsInvalidDatabase()
 {
   QString error;
-  const auto database = MonitorProfileDatabase::fromJson(
-      R"({"schemaVersion":2,"databaseVersion":"bad","profiles":[]})", &error
-  );
+  const auto database =
+      MonitorProfileDatabase::fromJson(R"({"schemaVersion":2,"databaseVersion":"bad","profiles":[]})", &error);
   QVERIFY(!database.isValid());
   QVERIFY(!error.isEmpty());
 }

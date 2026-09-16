@@ -16,6 +16,17 @@ void ServerTests::SwitchToScreenInfo_alloc_screen()
   delete actual;
 }
 
+void ServerTests::SwitchToScreenInfo_usesEventDataObject()
+{
+  Event event(EventTypes::ServerScreenSwitched, this, new Server::SwitchToScreenInfo("test"));
+
+  QCOMPARE(event.getData(), nullptr);
+  const auto *info = static_cast<Server::SwitchToScreenInfo *>(event.getDataObject());
+  QVERIFY(info != nullptr);
+  QCOMPARE(info->m_screen, "test");
+  Event::deleteData(event);
+}
+
 void ServerTests::KeyboardBroadcastInfo_alloc_stateAndSceens()
 {
   auto info = new Server::KeyboardBroadcastInfo(Server::KeyboardBroadcastInfo::State::kOn, "test");

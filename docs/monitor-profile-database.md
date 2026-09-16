@@ -8,7 +8,9 @@ An imported database is validated before it is saved to:
 ~/Library/Application Support/Teleport/monitor-profiles.json
 ```
 
-Imported profiles are merged over bundled profiles. A matching profile uses the EDID manufacturer and product ID first, then the manufacturer and normalized model name.
+Imported profiles are merged over bundled profiles by profile ID or by manufacturer and product ID. Profiles that share a model name remain separate.
+
+The setup page matches profiles using the normalized model name only. Capitalization, spaces, and punctuation are ignored, but partial and fuzzy matches are not used. Every matching profile is shown in the shared monitor list. When no profile matches, the list shows a Generic profile that uses DDC capability discovery and guided testing.
 
 ## Format
 
@@ -44,6 +46,7 @@ Imported profiles are merged over bundled profiles. A matching profile uses the 
 ```
 
 `writeValue` is the value sent to VCP `0x60`. `readValues` contains the values the monitor may return after that input is selected. They can differ.
+The setup page shows both values when they are known, for example `HDMI [w 17, r 1]`.
 
 Profile IDs, input IDs, and write values must be unique within their scope. DDC values must be integers from 0 through 65535. Increase `revision` whenever a profile's inputs or values change. A revision change disables an active configuration until the user reviews and enables it again.
 

@@ -14,6 +14,7 @@
 
 #include <functional>
 #include <memory>
+#include <optional>
 
 class QComboBox;
 class QLabel;

@@ -45,9 +45,10 @@ constexpr int kMonitorNameRole = Qt::UserRole + 1;
 constexpr int kMonitorManufacturerRole = Qt::UserRole + 2;
 constexpr int kMonitorProductRole = Qt::UserRole + 3;
 constexpr int kMonitorModelRole = Qt::UserRole + 4;
-constexpr int kInputIdRole = Qt::UserRole + 5;
-constexpr int kInputReadValuesRole = Qt::UserRole + 6;
-constexpr int kInputLabelRole = Qt::UserRole + 7;
+constexpr int kMonitorProfileIdRole = Qt::UserRole + 5;
+constexpr int kInputIdRole = Qt::UserRole + 6;
+constexpr int kInputReadValuesRole = Qt::UserRole + 7;
+constexpr int kInputLabelRole = Qt::UserRole + 8;
 
 QString resultText(const DisplayInputResult &result)
 {
@@ -158,32 +159,59 @@ void MonitorSwitchingDialog::refreshMonitors()
 {
   const auto previousId = m_loading ? m_config.monitorId : m_monitorCombo->currentData(kMonitorIdRole).toString();
   const auto previousName = m_loading ? m_config.monitorName : m_monitorCombo->currentData(kMonitorNameRole).toString();
+  const auto previousProfileId =
+      m_loading ? m_config.profileId : m_monitorCombo->currentData(kMonitorProfileIdRole).toString();
   const auto discovery = m_controller->discoverMonitors();
   m_discoveryError = discovery.succeeded() ? QString() : resultText({discovery.status, discovery.message, {}});
 
   const bool wasLoading = m_loading;
   m_loading = true;
   m_monitorCombo->clear();
-  m_monitorCombo->addItem(tr("Select a monitor"));
-  for (const auto &monitor : discovery.monitors) {
-    m_monitorCombo->addItem(monitor.name);
+  m_monitorCombo->addItem(tr("Select a monitor profile"));
+  const auto addMonitorItem = [&](const DisplayMonitor &monitor, const QString &profileId, const QString &text) {
+    m_monitorCombo->addItem(text);
     const auto index = m_monitorCombo->count() - 1;
     m_monitorCombo->setItemData(index, monitor.id, kMonitorIdRole);
     m_monitorCombo->setItemData(index, monitor.name, kMonitorNameRole);
     m_monitorCombo->setItemData(index, monitor.manufacturerId, kMonitorManufacturerRole);
     m_monitorCombo->setItemData(index, monitor.productId, kMonitorProductRole);
     m_monitorCombo->setItemData(index, monitor.modelName, kMonitorModelRole);
+    m_monitorCombo->setItemData(index, profileId, kMonitorProfileIdRole);
+  };
+
+  for (const auto &monitor : discovery.monitors) {
+    const auto profiles = m_profileDatabase.findAllByModelName(monitor.modelName);
+    if (profiles.isEmpty()) {
+      addMonitorItem(monitor, {}, tr("%1 [Generic]").arg(monitor.name));
+      continue;
+    }
+    for (const auto &profile : profiles)
+      addMonitorItem(monitor, profile.id, tr("%1 [%2]").arg(monitor.name, profile.id));
   }
 
-  int selectedIndex = m_monitorCombo->findData(previousId, kMonitorIdRole);
-  if (selectedIndex < 0 && !previousId.isEmpty()) {
-    m_monitorCombo->addItem(tr("%1 (not currently detected)").arg(previousName));
+  int selectedIndex = -1;
+  for (int index = 1; index < m_monitorCombo->count(); ++index) {
+    if (m_monitorCombo->itemData(index, kMonitorIdRole).toString() == previousId &&
+        m_monitorCombo->itemData(index, kMonitorProfileIdRole).toString() == previousProfileId) {
+      selectedIndex = index;
+      break;
+    }
+  }
+
+  const bool previousMonitorDetected =
+      std::ranges::any_of(discovery.monitors, [&](const auto &monitor) { return monitor.id == previousId; });
+  if (selectedIndex < 0 && !previousId.isEmpty() && !previousMonitorDetected) {
+    const auto text = previousProfileId.isEmpty()
+                          ? tr("%1 [Generic] (not currently detected)").arg(previousName)
+                          : tr("%1 [%2] (not currently detected)").arg(previousName, previousProfileId);
+    m_monitorCombo->addItem(text);
     selectedIndex = m_monitorCombo->count() - 1;
     m_monitorCombo->setItemData(selectedIndex, previousId, kMonitorIdRole);
     m_monitorCombo->setItemData(selectedIndex, previousName, kMonitorNameRole);
     m_monitorCombo->setItemData(selectedIndex, m_config.monitorManufacturerId, kMonitorManufacturerRole);
     m_monitorCombo->setItemData(selectedIndex, m_config.monitorProductId, kMonitorProductRole);
     m_monitorCombo->setItemData(selectedIndex, m_config.monitorModelName, kMonitorModelRole);
+    m_monitorCombo->setItemData(selectedIndex, previousProfileId, kMonitorProfileIdRole);
   }
   m_monitorCombo->setCurrentIndex(std::max(0, selectedIndex));
   m_loading = wasLoading;
@@ -198,20 +226,21 @@ void MonitorSwitchingDialog::refreshInputSources()
   m_matchedProfile.reset();
   const auto monitorId = m_monitorCombo->currentData(kMonitorIdRole).toString();
   if (!monitorId.isEmpty()) {
-    const MonitorProfileIdentity identity{
-        m_monitorCombo->currentData(kMonitorManufacturerRole).toString(),
-        m_monitorCombo->currentData(kMonitorProductRole).toInt(),
-        m_monitorCombo->currentData(kMonitorModelRole).toString(),
-    };
-    m_matchedProfile = m_profileDatabase.find(identity);
-    if (m_matchedProfile) {
+    const auto profileId = m_monitorCombo->currentData(kMonitorProfileIdRole).toString();
+    if (!profileId.isEmpty()) {
+      const auto profiles = m_profileDatabase.profiles();
+      const auto profile = std::ranges::find(profiles, profileId, &MonitorProfile::id);
+      if (profile != profiles.end())
+        m_matchedProfile = *profile;
+    }
+    if (!profileId.isEmpty() && !m_matchedProfile) {
+      m_inputSourceMessage = tr("The selected monitor profile is no longer available.");
+    } else if (m_matchedProfile) {
       for (const auto &input : m_matchedProfile->inputs) {
         QList<uint16_t> readValues;
         for (const auto value : input.readValues)
           readValues.append(static_cast<uint16_t>(value));
-        m_inputSources.append(
-            {static_cast<uint16_t>(input.writeValue), input.label, input.id, std::move(readValues)}
-        );
+        m_inputSources.append({static_cast<uint16_t>(input.writeValue), input.label, input.id, std::move(readValues)});
       }
       m_inputSourceMessage = tr("Matched monitor profile %1 from database %2.")
                                  .arg(m_matchedProfile->id, m_profileDatabase.databaseVersion());
@@ -259,7 +288,7 @@ void MonitorSwitchingDialog::refreshInputSources()
     if (selectedIndex < 0)
       selectedIndex = inputCombo->findData(previousValue);
     if (selectedIndex < 0 && previousValue >= 0 && !m_matchedProfile) {
-      const auto label = previousLabel.isEmpty() ? tr("Saved monitor input [DDC %1]").arg(previousValue)
+      const auto label = previousLabel.isEmpty() ? tr("Saved monitor input [w %1]").arg(previousValue)
                                                  : tr("%1 (not reported by monitor)").arg(previousLabel);
       inputCombo->addItem(label, previousValue);
       selectedIndex = inputCombo->count() - 1;
@@ -288,7 +317,7 @@ void MonitorSwitchingDialog::importProfileDatabase()
     return;
   }
   m_profileDatabase = MonitorProfileDatabase::loadActive(&m_profileDatabaseError);
-  refreshInputSources();
+  refreshMonitors();
   saveDisabledConfiguration();
   QMessageBox::information(
       this, tr("Monitor profile database"),
@@ -613,8 +642,8 @@ void MonitorSwitchingDialog::runTestsAndEnable()
     const auto activatedAt = QDateTime::currentDateTimeUtc().toString(Qt::ISODate);
     for (auto &route : config.routes) {
       route.lastTestStatus = QStringLiteral("database profile");
-      route.lastTestMessage = tr("Enabled from bundled or imported monitor profile %1 without DDC testing.")
-                                  .arg(m_matchedProfile->id);
+      route.lastTestMessage =
+          tr("Enabled from bundled or imported monitor profile %1 without DDC testing.").arg(m_matchedProfile->id);
       route.lastTestedAt = activatedAt;
     }
     config.activeConfigHash = config.configurationHash();
@@ -632,8 +661,7 @@ void MonitorSwitchingDialog::runTestsAndEnable()
     updateStatus();
     QMessageBox::information(
         this, tr("Monitor switching enabled"),
-        tr("Monitor switching was enabled using profile %1. No DDC test commands were sent.")
-            .arg(m_matchedProfile->id)
+        tr("Monitor switching was enabled using profile %1. No DDC test commands were sent.").arg(m_matchedProfile->id)
     );
     Q_EMIT configurationEnabled();
     return;

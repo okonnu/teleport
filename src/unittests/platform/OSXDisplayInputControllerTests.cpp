@@ -72,7 +72,7 @@ void OSXDisplayInputControllerTests::inputValues()
   QCOMPARE(values, QList<uint16_t>({0x11, 0x12, 0x0f, 0x10}));
   QCOMPARE(OSXDisplayInputController::inputSourceName(0x10), QStringLiteral("DisplayPort 2"));
   const DisplayInputSource source{0x10, QStringLiteral("DisplayPort 2")};
-  QCOMPARE(source.displayName(), QStringLiteral("DisplayPort 2 [DDC 16]"));
+  QCOMPARE(source.displayName(), QStringLiteral("DisplayPort 2 [w 16]"));
 }
 
 void OSXDisplayInputControllerTests::parseReply()

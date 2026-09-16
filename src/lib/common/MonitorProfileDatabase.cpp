@@ -65,8 +65,7 @@ bool parseInput(const QJsonObject &object, MonitorProfileInput &input, QString *
 
 bool parseProfile(const QJsonObject &object, MonitorProfile &profile, QString *error)
 {
-  if (!object.value(QStringLiteral("id")).isString() ||
-      !object.value(QStringLiteral("manufacturerId")).isString() ||
+  if (!object.value(QStringLiteral("id")).isString() || !object.value(QStringLiteral("manufacturerId")).isString() ||
       !object.value(QStringLiteral("inputs")).isArray()) {
     if (error)
       *error = QStringLiteral("A monitor profile is missing required fields.");
@@ -299,34 +298,22 @@ QList<MonitorProfile> MonitorProfileDatabase::profiles() const
   return m_profiles;
 }
 
-std::optional<MonitorProfile> MonitorProfileDatabase::find(const MonitorProfileIdentity &identity) const
+QList<MonitorProfile> MonitorProfileDatabase::findAllByModelName(const QString &modelName) const
 {
-  const auto manufacturer = identity.manufacturerId.trimmed().toUpper();
-  if (manufacturer.isEmpty())
-    return std::nullopt;
+  const auto normalizedModelName = normalizedName(modelName);
+  if (normalizedModelName.isEmpty())
+    return {};
 
-  if (identity.productId >= 0) {
-    const auto exact = std::ranges::find_if(m_profiles, [&](const auto &profile) {
-      return profile.manufacturerId == manufacturer && profile.productId == identity.productId;
-    });
-    if (exact != m_profiles.end())
-      return *exact;
-  }
-
-  const auto modelName = normalizedName(identity.modelName);
-  if (modelName.isEmpty())
-    return std::nullopt;
-  std::optional<MonitorProfile> modelMatch;
+  QList<MonitorProfile> matches;
   for (const auto &profile : m_profiles) {
-    if (profile.manufacturerId != manufacturer ||
-        !std::ranges::any_of(profile.modelNames, [&](const auto &name) { return normalizedName(name) == modelName; })) {
-      continue;
+    if (std::ranges::any_of(profile.modelNames, [&](const auto &name) {
+          return normalizedName(name) == normalizedModelName;
+        })) {
+      matches.append(profile);
     }
-    if (modelMatch)
-      return std::nullopt;
-    modelMatch = profile;
   }
-  return modelMatch;
+  std::ranges::sort(matches, {}, &MonitorProfile::id);
+  return matches;
 }
 
 bool MonitorProfileDatabase::isValid() const
@@ -349,13 +336,7 @@ void MonitorProfileDatabase::merge(const MonitorProfileDatabase &overrides)
         return true;
       if (candidate.manufacturerId != profile.manufacturerId)
         return false;
-      if (profile.productId >= 0 && candidate.productId == profile.productId)
-        return true;
-      return std::ranges::any_of(profile.modelNames, [&](const auto &name) {
-        return std::ranges::any_of(candidate.modelNames, [&](const auto &candidateName) {
-          return normalizedName(name) == normalizedName(candidateName);
-        });
-      });
+      return profile.productId >= 0 && candidate.productId >= 0 && candidate.productId == profile.productId;
     });
     if (existing == m_profiles.end())
       m_profiles.append(profile);

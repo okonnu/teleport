@@ -477,7 +477,7 @@ Server *ServerApp::openServer(ServerConfig &config, PrimaryClient *primaryClient
 
 void ServerApp::handleScreenSwitched(const Event &event)
 {
-  const auto *info = static_cast<Server::SwitchToScreenInfo *>(event.getData());
+  const auto *info = static_cast<Server::SwitchToScreenInfo *>(event.getDataObject());
   if (info && m_displayInputCoordinator)
     m_displayInputCoordinator->handleScreenSwitched(QString::fromStdString(info->m_screen));
 }

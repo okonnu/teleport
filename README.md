@@ -16,7 +16,7 @@ Monitor switching will use DDC only. Teleport will not depend on monitor vendor 
 
 The Deskflow server view has a separate `Monitor Switching` page. It does not add monitor-specific fields to the normal Deskflow server configuration.
 
-The page discovers external monitors, reads computer names from the current Deskflow layout, identifies the server, and lets the user select participating computers. Teleport matches the monitor's EDID manufacturer, product ID, and model name against a bundled, versioned profile database. Entries use friendly names with the write value in brackets, such as `DisplayPort 2 [DDC 16]`.
+The page discovers external monitors, reads computer names from the current Deskflow layout, identifies the server, and lets the user select participating computers. Teleport matches the detected model name against a bundled, versioned profile database. Every exact normalized match is selectable in the shared monitor list. Unknown models use a Generic profile with guided DDC testing. Input entries show the command and expected readback values, such as `DisplayPort 2 [w 16, r 4]`.
 
 When a profile matches, the user assigns an input to each computer and can enable switching immediately without sending test commands. Unknown monitors fall back to reported DDC capabilities or standard MCCS input values and retain the guided test and recovery workflow.
 

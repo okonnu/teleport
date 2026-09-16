@@ -637,14 +637,6 @@ Además, verifique que puede %1 el archivo de configuración del servidor: %2</t
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Select a monitor</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>%1 (not currently detected)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Matched monitor profile %1 from database %2.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -654,10 +646,6 @@ Además, verifique que puede %1 el archivo de configuración del servidor: %2</t
     </message>
     <message>
         <source>Select a monitor input</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Saved monitor input [DDC %1]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -810,6 +798,34 @@ Además, verifique que puede %1 el archivo de configuración del servidor: %2</t
     </message>
     <message>
         <source>Select the monitor input used by each computer. Teleport uses a matching monitor profile when available and falls back to guided DDC testing for unknown monitors.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select a monitor profile</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 [Generic]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 [%2]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 [Generic] (not currently detected)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 [%2] (not currently detected)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The selected monitor profile is no longer available.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Saved monitor input [w %1]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

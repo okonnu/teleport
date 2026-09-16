@@ -11,5 +11,6 @@ class ServerTests : public QObject
   Q_OBJECT
 private Q_SLOTS:
   void SwitchToScreenInfo_alloc_screen();
+  void SwitchToScreenInfo_usesEventDataObject();
   void KeyboardBroadcastInfo_alloc_stateAndSceens();
 };

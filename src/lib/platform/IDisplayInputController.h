@@ -8,6 +8,7 @@
 
 #include <QList>
 #include <QString>
+#include <QStringList>
 
 #include <cstdint>
 #include <optional>
@@ -67,7 +68,13 @@ struct DisplayInputSource
 
   QString displayName() const
   {
-    return QStringLiteral("%1 [DDC %2]").arg(name).arg(value);
+    if (readValues.isEmpty())
+      return QStringLiteral("%1 [w %2]").arg(name).arg(value);
+
+    QStringList values;
+    for (const auto readValue : readValues)
+      values.append(QString::number(readValue));
+    return QStringLiteral("%1 [w %2, r %3]").arg(name).arg(value).arg(values.join(QStringLiteral("/")));
   }
 
   bool operator==(const DisplayInputSource &) const = default;

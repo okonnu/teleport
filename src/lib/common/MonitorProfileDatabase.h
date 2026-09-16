@@ -10,8 +10,6 @@
 #include <QString>
 #include <QStringList>
 
-#include <optional>
-
 struct MonitorProfileInput
 {
   QString id;
@@ -35,13 +33,6 @@ struct MonitorProfile
   bool operator==(const MonitorProfile &) const = default;
 };
 
-struct MonitorProfileIdentity
-{
-  QString manufacturerId;
-  int productId = -1;
-  QString modelName;
-};
-
 class MonitorProfileDatabase
 {
 public:
@@ -57,10 +48,12 @@ public:
 
   QString databaseVersion() const;
   QList<MonitorProfile> profiles() const;
-  std::optional<MonitorProfile> find(const MonitorProfileIdentity &identity) const;
+  QList<MonitorProfile> findAllByModelName(const QString &modelName) const;
   bool isValid() const;
 
 private:
+  friend class MonitorProfileDatabaseTests;
+
   static QString normalizedName(const QString &name);
   void merge(const MonitorProfileDatabase &overrides);
 

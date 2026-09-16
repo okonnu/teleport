@@ -11,6 +11,7 @@
 
 #include <QApplication>
 #include <QComboBox>
+#include <QFile>
 #include <QMessageBox>
 #include <QTableWidget>
 #include <QTemporaryDir>
@@ -66,8 +67,12 @@ class MonitorSwitchingDialogTests : public QObject
 
 private Q_SLOTS:
   void initTestCase();
+  void init();
   void inputSourcesPopulateDropdowns();
   void matchedProfileEnablesWithoutDdcTests();
+  void duplicateModelProfilesRequireSelection();
+  void changedProfileDisablesSavedConfiguration_data();
+  void changedProfileDisablesSavedConfiguration();
   void verifiedAssignments();
   void currentServerInputMustBeReadable();
   void readUnavailableUsesVisualConfirmation();
@@ -95,6 +100,11 @@ void MonitorSwitchingDialogTests::initTestCase()
   qputenv("XDG_CONFIG_HOME", m_directory.path().toUtf8());
   qputenv("TELEPORT_MONITOR_CONFIG_PATH", m_directory.filePath(QStringLiteral("monitor.json")).toUtf8());
   Settings::setValue(Settings::Core::ComputerName, QStringLiteral("server"));
+}
+
+void MonitorSwitchingDialogTests::init()
+{
+  QFile::remove(qEnvironmentVariable("TELEPORT_MONITOR_CONFIG_PATH"));
 }
 
 DisplayInputResult MonitorSwitchingDialogTests::success(uint16_t value)
@@ -163,11 +173,13 @@ void MonitorSwitchingDialogTests::inputSourcesPopulateDropdowns()
   auto config = serverConfig();
   MonitorSwitchingDialog dialog(nullptr, config, {QStringLiteral("client")}, std::move(controller));
 
+  QCOMPARE(dialog.m_monitorCombo->count(), 2);
+  QCOMPARE(dialog.m_monitorCombo->itemText(1), QStringLiteral("Test monitor [Generic]"));
   dialog.m_monitorCombo->setCurrentIndex(1);
   bool foundDisplayPort = false;
   for (auto *combo : dialog.findChildren<QComboBox *>()) {
     const int index = combo->findData(16);
-    if (index >= 0 && combo->itemText(index) == QStringLiteral("DisplayPort 2 [DDC 16]"))
+    if (index >= 0 && combo->itemText(index) == QStringLiteral("DisplayPort 2 [w 16]"))
       foundDisplayPort = true;
   }
   QVERIFY(foundDisplayPort);
@@ -176,8 +188,9 @@ void MonitorSwitchingDialogTests::inputSourcesPopulateDropdowns()
 void MonitorSwitchingDialogTests::matchedProfileEnablesWithoutDdcTests()
 {
   auto controller = std::make_unique<FakeDisplayInputController>();
-  controller->monitors = {{QStringLiteral("monitor"), QStringLiteral("LC49G95T"), QStringLiteral("SAM"), 0x7052,
-                           QStringLiteral("LC49G95T")}};
+  controller->monitors = {
+      {QStringLiteral("monitor"), QStringLiteral("LC49G95T"), QString(), -1, QStringLiteral("LC49G95T")}
+  };
   auto *controllerPointer = controller.get();
   auto config = serverConfig();
   MonitorSwitchingDialog dialog(nullptr, config, {QStringLiteral("client")}, std::move(controller));
@@ -188,11 +201,22 @@ void MonitorSwitchingDialogTests::matchedProfileEnablesWithoutDdcTests()
       &error
   );
   QVERIFY2(dialog.m_profileDatabase.isValid(), qPrintable(error));
+  dialog.refreshMonitors();
+  QCOMPARE(dialog.m_monitorCombo->count(), 2);
+  QCOMPARE(dialog.m_monitorCombo->itemText(1), QStringLiteral("LC49G95T [SAM-7052]"));
   dialog.m_monitorCombo->setCurrentIndex(1);
   const auto discoveryCallsBeforeLookup = controllerPointer->discoverInputSourcesCalls;
   dialog.refreshInputSources();
   QVERIFY(dialog.m_matchedProfile);
   QCOMPARE(controllerPointer->discoverInputSourcesCalls, discoveryCallsBeforeLookup);
+
+  bool foundProfileDisplayPort = false;
+  for (auto *combo : dialog.findChildren<QComboBox *>()) {
+    const int index = combo->findData(16);
+    if (index >= 0 && combo->itemText(index) == QStringLiteral("DisplayPort 2 [w 16, r 4]"))
+      foundProfileDisplayPort = true;
+  }
+  QVERIFY(foundProfileDisplayPort);
 
   for (int row = 0; row < dialog.m_routeTable->rowCount(); ++row) {
     dialog.m_routeTable->item(row, 0)->setCheckState(Qt::Checked);
@@ -209,6 +233,76 @@ void MonitorSwitchingDialogTests::matchedProfileEnablesWithoutDdcTests()
   QCOMPARE(controllerPointer->discoverInputSourcesCalls, discoveryCallsBeforeEnable);
   QCOMPARE(controllerPointer->readCalls, 0);
   QVERIFY(controllerPointer->writtenValues.isEmpty());
+}
+
+void MonitorSwitchingDialogTests::duplicateModelProfilesRequireSelection()
+{
+  auto controller = std::make_unique<FakeDisplayInputController>();
+  controller->monitors = {
+      {QStringLiteral("monitor"), QStringLiteral("Duplicate monitor"), QString(), -1,
+       QStringLiteral("Duplicate monitor")}
+  };
+  auto *controllerPointer = controller.get();
+  auto config = serverConfig();
+  MonitorSwitchingDialog dialog(nullptr, config, {QStringLiteral("client")}, std::move(controller));
+
+  QString error;
+  dialog.m_profileDatabase = MonitorProfileDatabase::fromJson(
+      R"({"schemaVersion":1,"databaseVersion":"test","profiles":[{"id":"TST-0002","manufacturerId":"TST","productId":2,"modelNames":["Duplicate monitor"],"revision":1,"source":"test","inputs":[{"id":"dp","label":"DisplayPort","writeValue":15,"readValues":[15]}]},{"id":"TST-0001","manufacturerId":"TST","productId":1,"modelNames":["Duplicate monitor"],"revision":1,"source":"test","inputs":[{"id":"hdmi","label":"HDMI","writeValue":17,"readValues":[17]}]}]})",
+      &error
+  );
+  QVERIFY2(dialog.m_profileDatabase.isValid(), qPrintable(error));
+
+  dialog.refreshMonitors();
+  QCOMPARE(dialog.m_monitorCombo->count(), 3);
+  QCOMPARE(dialog.m_monitorCombo->currentIndex(), 0);
+  QCOMPARE(dialog.m_monitorCombo->itemText(1), QStringLiteral("Duplicate monitor [TST-0001]"));
+  QCOMPARE(dialog.m_monitorCombo->itemText(2), QStringLiteral("Duplicate monitor [TST-0002]"));
+  QCOMPARE(dialog.m_monitorCombo->findText(QStringLiteral("Duplicate monitor [Generic]")), -1);
+
+  dialog.m_monitorCombo->setCurrentIndex(2);
+  QVERIFY(dialog.m_matchedProfile);
+  QCOMPARE(dialog.m_matchedProfile->id, QStringLiteral("TST-0002"));
+  QCOMPARE(controllerPointer->discoverInputSourcesCalls, 0);
+
+  dialog.refreshMonitors();
+  QCOMPARE(dialog.m_monitorCombo->currentText(), QStringLiteral("Duplicate monitor [TST-0002]"));
+}
+
+void MonitorSwitchingDialogTests::changedProfileDisablesSavedConfiguration_data()
+{
+  QTest::addColumn<QString>("profileId");
+  QTest::addColumn<int>("profileRevision");
+
+  QTest::newRow("missing") << QStringLiteral("SAM-MISSING") << 1;
+  QTest::newRow("revised") << QStringLiteral("SAM-7052") << 999;
+}
+
+void MonitorSwitchingDialogTests::changedProfileDisablesSavedConfiguration()
+{
+  QFETCH(QString, profileId);
+  QFETCH(int, profileRevision);
+
+  auto stored = monitorConfig();
+  stored.monitorName = QStringLiteral("LC49G95T");
+  stored.monitorModelName = QStringLiteral("LC49G95T");
+  stored.profileId = profileId;
+  stored.profileRevision = profileRevision;
+  stored.routes = {serverRoute(), clientRoute()};
+  stored.activeConfigHash = stored.configurationHash();
+  stored.enabled = true;
+  QString error;
+  QVERIFY2(stored.save(&error), qPrintable(error));
+
+  auto controller = std::make_unique<FakeDisplayInputController>();
+  controller->monitors = {
+      {QStringLiteral("monitor"), QStringLiteral("LC49G95T"), QString(), -1, QStringLiteral("LC49G95T")}
+  };
+  auto config = serverConfig();
+  MonitorSwitchingDialog dialog(nullptr, config, {QStringLiteral("client")}, std::move(controller));
+
+  QVERIFY(!dialog.m_config.enabled);
+  QVERIFY(dialog.m_config.activeConfigHash.isEmpty());
 }
 
 void MonitorSwitchingDialogTests::verifiedAssignments()
