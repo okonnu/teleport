@@ -30,7 +30,7 @@ void DisplayInputCoordinator::handleScreenSwitched(const QString &computerName)
     LOG_ERR("monitor switching configuration could not be loaded: %s", error.toUtf8().constData());
     return;
   }
-  if (!config.enabled || !config.isVerified())
+  if (!config.enabled || !config.isActiveConfigurationValid())
     return;
   if (config.monitorId.trimmed().isEmpty()) {
     LOG_ERR("monitor switching configuration has no monitor identifier");

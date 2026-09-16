@@ -19,19 +19,26 @@ struct MonitorInputRoute
   QString lastTestStatus;
   QString lastTestMessage;
   QString lastTestedAt;
+  QString inputId;
+  QList<int> expectedReadValues;
 
   bool operator==(const MonitorInputRoute &) const = default;
 };
 
 struct MonitorSwitchingConfig
 {
-  static constexpr int SchemaVersion = 1;
+  static constexpr int SchemaVersion = 2;
 
   int schemaVersion = SchemaVersion;
   bool enabled = false;
-  QString verifiedConfigHash;
+  QString activeConfigHash;
   QString monitorId;
   QString monitorName;
+  QString monitorManufacturerId;
+  int monitorProductId = -1;
+  QString monitorModelName;
+  QString profileId;
+  int profileRevision = 0;
   QList<MonitorInputRoute> routes;
 
   static QString filePath();
@@ -39,7 +46,7 @@ struct MonitorSwitchingConfig
 
   bool save(QString *error = nullptr) const;
   QString configurationHash() const;
-  bool isVerified() const;
+  bool isActiveConfigurationValid() const;
   void invalidate();
   std::optional<MonitorInputRoute> routeForComputer(const QString &computerName) const;
   QString validateSetupSelection(const QString &serverName, const QStringList &configuredComputers = {}) const;

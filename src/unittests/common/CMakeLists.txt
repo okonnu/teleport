@@ -30,6 +30,13 @@ create_test(
 )
 
 create_test(
+  NAME MonitorProfileDatabaseTests
+  DEPENDS common
+  SOURCE MonitorProfileDatabaseTests.cpp
+  WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/src/lib/common"
+)
+
+create_test(
   NAME MonitorSwitchingConfigTests
   DEPENDS common
   SOURCE MonitorSwitchingConfigTests.cpp

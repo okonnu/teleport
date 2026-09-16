@@ -601,6 +601,10 @@ Inoltre, verifica di poter %1 il file di configurazione del server: %2</translat
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Import profile database...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Shared monitor:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -617,15 +621,19 @@ Inoltre, verifica di poter %1 il file di configurazione del server: %2</translat
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Input label</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Last test</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Monitor input</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Disable monitor switching</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Test assignments and enable</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -634,6 +642,46 @@ Inoltre, verifica di poter %1 il file di configurazione del server: %2</translat
     </message>
     <message>
         <source>%1 (not currently detected)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Matched monitor profile %1 from database %2.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The monitor input list could not be read.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select a monitor input</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Saved monitor input [DDC %1]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 (not reported by monitor)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Import monitor profile database</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>JSON files (*.json);;All files (*)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Monitor profile database</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The database could not be imported: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Database %1 was imported. Review the monitor input assignments before enabling switching.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -657,27 +705,111 @@ Inoltre, verifica di poter %1 il file di configurazione del server: %2</translat
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Select the computers that share this monitor. Teleport safely tests the monitor inputs, asks which computer appeared, and saves the detected mappings automatically.</source>
+        <source>The client disconnected before testing began.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Detected input</source>
+        <source>Testing %1 for %2. Watch for the expected computer.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Detect inputs and enable</source>
+        <source>Keeping the assigned input visible.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Not detected</source>
+        <source>The assignment test was canceled.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Detected</source>
+        <source>The client disconnected during testing.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The monitor readback did not match the assigned input.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Confirm monitor assignment</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Did %1 appear while %2 was being tested?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The assigned computer was not visually confirmed.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Verified by DDC readback and visual confirmation.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Verified visually because DDC readback was unavailable.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Teleport could not read the current server input, so it cannot safely run the tests.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The selected server input does not match the monitor&apos;s current input.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select the monitor input currently showing the server, then run the tests again.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Verified as the current server input with DDC readback.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enabled from bundled or imported monitor profile %1 without DDC testing.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Monitor switching was enabled using profile %1. No DDC test commands were sent.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Monitor switching is enabled with tested input assignments.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Monitor switching is enabled using monitor profile %1.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Test assignments again</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enable monitor switching</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Automatic monitor switching is off. Assign an input to each computer, then enable it.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Automatic monitor switching is off. Assign and test a monitor input for each computer.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source> %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source> Profile database warning: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>The server input could not be restored: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select the monitor input used by each computer. Teleport uses a matching monitor profile when available and falls back to guided DDC testing for unknown monitors.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -719,75 +851,7 @@ Inoltre, verifica di poter %1 il file di configurazione del server: %2</translat
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>No selected computer appeared</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Identify monitor input</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>The monitor has returned to the server. Which selected computer appeared during the test?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Teleport could not read the current server input, so it cannot safely restore the monitor during automatic detection. Check that DDC is enabled on the monitor and connect it directly if a dock or adapter blocks DDC.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Detected as the current server input with DDC readback.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>The client disconnected during input detection.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>%1 disconnected during input detection.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>DDC readback was unavailable.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Testing a possible monitor input. Watch for one of the selected computers.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Keeping the possible input visible.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Input detection was canceled.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Detected by DDC readback and visual identification.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Detected by visual identification because readback was unavailable.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>No working monitor input was identified.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Teleport could not identify a working monitor input for: %1. Confirm that each computer is awake and sending video to the selected monitor, then run detection again.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>All selected monitor inputs were detected and verified.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>At least one monitor input could not be detected.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Detect inputs again</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -811,19 +875,19 @@ Inoltre, verifica di poter %1 il file di configurazione del server: %2</translat
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>All selected monitor input assignments were verified.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Monitor switching not enabled</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>At least one monitor input assignment failed testing.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source> at %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Monitor switching is enabled and verified.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Monitor switching is disabled until every selected input passes testing.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

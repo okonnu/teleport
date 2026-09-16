@@ -19,12 +19,22 @@
 #include <cmath>
 
 namespace {
+QJsonArray integerArray(const QList<int> &values)
+{
+  QJsonArray result;
+  for (const auto value : values)
+    result.append(value);
+  return result;
+}
+
 QJsonObject routeToJson(const MonitorInputRoute &route)
 {
   return {
       {QStringLiteral("computerName"), route.computerName},
+      {QStringLiteral("inputId"), route.inputId},
       {QStringLiteral("inputLabel"), route.inputLabel},
       {QStringLiteral("inputValue"), route.inputValue},
+      {QStringLiteral("expectedReadValues"), integerArray(route.expectedReadValues)},
       {QStringLiteral("lastTestStatus"), route.lastTestStatus},
       {QStringLiteral("lastTestMessage"), route.lastTestMessage},
       {QStringLiteral("lastTestedAt"), route.lastTestedAt},
@@ -35,8 +45,11 @@ MonitorInputRoute routeFromJson(const QJsonObject &object)
 {
   MonitorInputRoute route;
   route.computerName = object.value(QStringLiteral("computerName")).toString();
+  route.inputId = object.value(QStringLiteral("inputId")).toString();
   route.inputLabel = object.value(QStringLiteral("inputLabel")).toString();
   route.inputValue = object.value(QStringLiteral("inputValue")).toInt(-1);
+  for (const auto &value : object.value(QStringLiteral("expectedReadValues")).toArray())
+    route.expectedReadValues.append(value.toInt(-1));
   route.lastTestStatus = object.value(QStringLiteral("lastTestStatus")).toString();
   route.lastTestMessage = object.value(QStringLiteral("lastTestMessage")).toString();
   route.lastTestedAt = object.value(QStringLiteral("lastTestedAt")).toString();
@@ -78,30 +91,55 @@ MonitorSwitchingConfig MonitorSwitchingConfig::load(QString *error)
 
   const auto root = document.object();
   if (!root.value(QStringLiteral("schemaVersion")).isDouble() || !root.value(QStringLiteral("enabled")).isBool() ||
-      !root.value(QStringLiteral("verifiedConfigHash")).isString() ||
       !root.value(QStringLiteral("monitor")).isObject() || !root.value(QStringLiteral("routes")).isArray()) {
     if (error)
       *error = QStringLiteral("The monitor switching configuration has an invalid structure.");
     return config;
   }
-  config.schemaVersion = root.value(QStringLiteral("schemaVersion")).toInt(0);
-  if (config.schemaVersion != SchemaVersion) {
+  const auto storedSchemaVersion = root.value(QStringLiteral("schemaVersion")).toInt(0);
+  if (storedSchemaVersion != 1 && storedSchemaVersion != SchemaVersion) {
     if (error)
-      *error = QStringLiteral("Unsupported monitor switching configuration version: %1").arg(config.schemaVersion);
+      *error = QStringLiteral("Unsupported monitor switching configuration version: %1").arg(storedSchemaVersion);
     config.enabled = false;
     return config;
   }
+  if (storedSchemaVersion == SchemaVersion &&
+      (!root.value(QStringLiteral("activeConfigHash")).isString() ||
+       !root.value(QStringLiteral("profileId")).isString() ||
+       !root.value(QStringLiteral("profileRevision")).isDouble() ||
+       std::floor(root.value(QStringLiteral("profileRevision")).toDouble()) !=
+           root.value(QStringLiteral("profileRevision")).toDouble())) {
+    if (error)
+      *error = QStringLiteral("The monitor switching configuration has invalid profile metadata.");
+    return config;
+  }
 
-  config.enabled = root.value(QStringLiteral("enabled")).toBool(false);
-  config.verifiedConfigHash = root.value(QStringLiteral("verifiedConfigHash")).toString();
+  config.schemaVersion = SchemaVersion;
+  config.enabled = storedSchemaVersion == SchemaVersion && root.value(QStringLiteral("enabled")).toBool(false);
+  config.activeConfigHash = root.value(QStringLiteral("activeConfigHash")).toString();
   const auto monitor = root.value(QStringLiteral("monitor")).toObject();
   if (!monitor.value(QStringLiteral("id")).isString() || !monitor.value(QStringLiteral("name")).isString()) {
     if (error)
       *error = QStringLiteral("The configured monitor is invalid.");
     return MonitorSwitchingConfig{};
   }
+  if (storedSchemaVersion == SchemaVersion &&
+      (!monitor.value(QStringLiteral("manufacturerId")).isString() ||
+       !monitor.value(QStringLiteral("productId")).isDouble() ||
+       std::floor(monitor.value(QStringLiteral("productId")).toDouble()) !=
+           monitor.value(QStringLiteral("productId")).toDouble() ||
+       !monitor.value(QStringLiteral("modelName")).isString())) {
+    if (error)
+      *error = QStringLiteral("The configured monitor identity is invalid.");
+    return MonitorSwitchingConfig{};
+  }
   config.monitorId = monitor.value(QStringLiteral("id")).toString();
   config.monitorName = monitor.value(QStringLiteral("name")).toString();
+  config.monitorManufacturerId = monitor.value(QStringLiteral("manufacturerId")).toString();
+  config.monitorProductId = monitor.value(QStringLiteral("productId")).toInt(-1);
+  config.monitorModelName = monitor.value(QStringLiteral("modelName")).toString();
+  config.profileId = root.value(QStringLiteral("profileId")).toString();
+  config.profileRevision = root.value(QStringLiteral("profileRevision")).toInt(0);
 
   for (const auto &value : root.value(QStringLiteral("routes")).toArray()) {
     if (!value.isObject()) {
@@ -118,10 +156,29 @@ MonitorSwitchingConfig MonitorSwitchingConfig::load(QString *error)
         *error = QStringLiteral("A monitor input route is invalid.");
       return MonitorSwitchingConfig{};
     }
+    if (storedSchemaVersion == SchemaVersion &&
+        (!routeObject.value(QStringLiteral("inputId")).isString() ||
+         !routeObject.value(QStringLiteral("expectedReadValues")).isArray())) {
+      if (error)
+        *error = QStringLiteral("A monitor input route has invalid profile metadata.");
+      return MonitorSwitchingConfig{};
+    }
+    for (const auto &readValue : routeObject.value(QStringLiteral("expectedReadValues")).toArray()) {
+      if (!readValue.isDouble() || std::floor(readValue.toDouble()) != readValue.toDouble() ||
+          readValue.toDouble() < 0 || readValue.toDouble() > 65535) {
+        if (error)
+          *error = QStringLiteral("A monitor input route has an invalid expected read value.");
+        return MonitorSwitchingConfig{};
+      }
+    }
     config.routes.append(routeFromJson(routeObject));
   }
 
-  if (!config.isVerified())
+  if (storedSchemaVersion == 1) {
+    config.enabled = false;
+    config.activeConfigHash.clear();
+  }
+  if (!config.isActiveConfigurationValid())
     config.enabled = false;
   return config;
 }
@@ -142,11 +199,16 @@ bool MonitorSwitchingConfig::save(QString *error) const
   const QJsonObject root{
       {QStringLiteral("schemaVersion"), schemaVersion},
       {QStringLiteral("enabled"), enabled},
-      {QStringLiteral("verifiedConfigHash"), verifiedConfigHash},
+      {QStringLiteral("activeConfigHash"), activeConfigHash},
+      {QStringLiteral("profileId"), profileId},
+      {QStringLiteral("profileRevision"), profileRevision},
       {QStringLiteral("monitor"),
        QJsonObject{
            {QStringLiteral("id"), monitorId},
            {QStringLiteral("name"), monitorName},
+           {QStringLiteral("manufacturerId"), monitorManufacturerId},
+           {QStringLiteral("productId"), monitorProductId},
+           {QStringLiteral("modelName"), monitorModelName},
        }},
       {QStringLiteral("routes"), routeArray},
   };
@@ -176,8 +238,10 @@ QString MonitorSwitchingConfig::configurationHash() const
     routeArray.append(
         QJsonObject{
             {QStringLiteral("computerName"), route.computerName},
+            {QStringLiteral("inputId"), route.inputId},
             {QStringLiteral("inputLabel"), route.inputLabel},
             {QStringLiteral("inputValue"), route.inputValue},
+            {QStringLiteral("expectedReadValues"), integerArray(route.expectedReadValues)},
         }
     );
   }
@@ -186,6 +250,11 @@ QString MonitorSwitchingConfig::configurationHash() const
       {QStringLiteral("schemaVersion"), schemaVersion},
       {QStringLiteral("monitorId"), monitorId},
       {QStringLiteral("monitorName"), monitorName},
+      {QStringLiteral("monitorManufacturerId"), monitorManufacturerId},
+      {QStringLiteral("monitorProductId"), monitorProductId},
+      {QStringLiteral("monitorModelName"), monitorModelName},
+      {QStringLiteral("profileId"), profileId},
+      {QStringLiteral("profileRevision"), profileRevision},
       {QStringLiteral("routes"), routeArray},
   };
   return QString::fromLatin1(
@@ -194,15 +263,15 @@ QString MonitorSwitchingConfig::configurationHash() const
   );
 }
 
-bool MonitorSwitchingConfig::isVerified() const
+bool MonitorSwitchingConfig::isActiveConfigurationValid() const
 {
-  return !verifiedConfigHash.isEmpty() && verifiedConfigHash == configurationHash();
+  return !activeConfigHash.isEmpty() && activeConfigHash == configurationHash();
 }
 
 void MonitorSwitchingConfig::invalidate()
 {
   enabled = false;
-  verifiedConfigHash.clear();
+  activeConfigHash.clear();
 }
 
 std::optional<MonitorInputRoute> MonitorSwitchingConfig::routeForComputer(const QString &computerName) const
@@ -244,9 +313,13 @@ QString MonitorSwitchingConfig::validate(const QString &serverName, const QStrin
 {
   if (const auto selectionError = validateSetupSelection(serverName, configuredComputers); !selectionError.isEmpty())
     return selectionError;
+  QList<int> inputValues;
   for (const auto &route : routes) {
     if (route.inputValue < 0 || route.inputValue > 65535)
-      return QStringLiteral("Run input detection so every selected computer has a verified monitor input.");
+      return QStringLiteral("Select a monitor input for every participating computer.");
+    if (inputValues.contains(route.inputValue))
+      return QStringLiteral("Assign a different monitor input to each participating computer.");
+    inputValues.append(route.inputValue);
   }
   return {};
 }

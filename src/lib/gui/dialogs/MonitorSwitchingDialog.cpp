@@ -6,6 +6,7 @@
 
 #include "gui/dialogs/MonitorSwitchingDialog.h"
 
+#include "common/MonitorProfileDatabase.h"
 #include "gui/config/ServerConfig.h"
 #include "platform/DisplayInputControllerFactory.h"
 #include "platform/IDisplayInputController.h"
@@ -14,9 +15,9 @@
 #include <QComboBox>
 #include <QDateTime>
 #include <QDialogButtonBox>
+#include <QFileDialog>
 #include <QFormLayout>
 #include <QHeaderView>
-#include <QInputDialog>
 #include <QLabel>
 #include <QMessageBox>
 #include <QProgressDialog>
@@ -34,26 +35,38 @@ enum RouteColumn
   UseColumn,
   ComputerColumn,
   RoleColumn,
-  LabelColumn,
-  DetectedColumn,
+  InputColumn,
   StatusColumn,
   ColumnCount
 };
 
 constexpr int kMonitorIdRole = Qt::UserRole;
 constexpr int kMonitorNameRole = Qt::UserRole + 1;
-constexpr int kDetectedInputRole = Qt::UserRole + 2;
+constexpr int kMonitorManufacturerRole = Qt::UserRole + 2;
+constexpr int kMonitorProductRole = Qt::UserRole + 3;
+constexpr int kMonitorModelRole = Qt::UserRole + 4;
+constexpr int kInputIdRole = Qt::UserRole + 5;
+constexpr int kInputReadValuesRole = Qt::UserRole + 6;
+constexpr int kInputLabelRole = Qt::UserRole + 7;
 
 QString resultText(const DisplayInputResult &result)
 {
   return result.message.isEmpty() ? QStringLiteral("Unknown DDC error.") : result.message;
+}
+
+QVariantList readValuesVariant(const QList<uint16_t> &values)
+{
+  QVariantList result;
+  for (const auto value : values)
+    result.append(value);
+  return result;
 }
 } // namespace
 
 MonitorSwitchingDialog::MonitorSwitchingDialog(
     QWidget *parent, const ServerConfig &serverConfig, const QStringList &connectedClients,
     std::unique_ptr<IDisplayInputController> controller, WaitFunction waitFunction, ConfirmServerFunction confirmServer,
-    IdentifyInputFunction identifyInput
+    ConfirmInputFunction confirmInput
 )
     : QDialog(parent),
       m_serverConfig(serverConfig),
@@ -62,15 +75,15 @@ MonitorSwitchingDialog::MonitorSwitchingDialog(
       m_config(MonitorSwitchingConfig::load()),
       m_waitFunction(std::move(waitFunction)),
       m_confirmServer(std::move(confirmServer)),
-      m_identifyInput(std::move(identifyInput))
+      m_confirmInput(std::move(confirmInput))
 {
   setWindowTitle(tr("Monitor Switching"));
   setMinimumSize(820, 480);
 
   auto *layout = new QVBoxLayout(this);
   auto *description = new QLabel(
-      tr("Select the computers that share this monitor. Teleport safely tests the monitor inputs, asks which "
-         "computer appeared, and saves the detected mappings automatically."),
+      tr("Select the monitor input used by each computer. Teleport uses a matching monitor profile when available "
+         "and falls back to guided DDC testing for unknown monitors."),
       this
   );
   description->setWordWrap(true);
@@ -82,18 +95,19 @@ MonitorSwitchingDialog::MonitorSwitchingDialog(
   monitorRowLayout->setContentsMargins(0, 0, 0, 0);
   m_monitorCombo = new QComboBox(monitorRow);
   auto *refreshButton = new QPushButton(tr("Refresh"), monitorRow);
+  auto *importDatabaseButton = new QPushButton(tr("Import profile database..."), monitorRow);
   monitorRowLayout->addWidget(m_monitorCombo, 1);
   monitorRowLayout->addWidget(refreshButton);
+  monitorRowLayout->addWidget(importDatabaseButton);
   monitorLayout->addRow(tr("Shared monitor:"), monitorRow);
   layout->addLayout(monitorLayout);
 
   m_routeTable = new QTableWidget(this);
   m_routeTable->setColumnCount(ColumnCount);
-  m_routeTable->setHorizontalHeaderLabels(
-      {tr("Use"), tr("Computer"), tr("Role"), tr("Input label"), tr("Detected input"), tr("Last test")}
+  m_routeTable->setHorizontalHeaderLabels({tr("Use"), tr("Computer"), tr("Role"), tr("Monitor input"), tr("Last test")}
   );
   m_routeTable->horizontalHeader()->setSectionResizeMode(ComputerColumn, QHeaderView::Stretch);
-  m_routeTable->horizontalHeader()->setSectionResizeMode(LabelColumn, QHeaderView::Stretch);
+  m_routeTable->horizontalHeader()->setSectionResizeMode(InputColumn, QHeaderView::Stretch);
   m_routeTable->horizontalHeader()->setSectionResizeMode(StatusColumn, QHeaderView::Stretch);
   m_routeTable->verticalHeader()->hide();
   layout->addWidget(m_routeTable, 1);
@@ -104,20 +118,28 @@ MonitorSwitchingDialog::MonitorSwitchingDialog(
 
   auto *buttons = new QDialogButtonBox(QDialogButtonBox::Close, this);
   m_disableButton = buttons->addButton(tr("Disable monitor switching"), QDialogButtonBox::ActionRole);
-  m_testButton = buttons->addButton(tr("Detect inputs and enable"), QDialogButtonBox::ActionRole);
+  m_testButton = buttons->addButton(tr("Test assignments and enable"), QDialogButtonBox::ActionRole);
   layout->addWidget(buttons);
 
   connect(buttons, &QDialogButtonBox::rejected, this, &QDialog::reject);
   connect(refreshButton, &QPushButton::clicked, this, &MonitorSwitchingDialog::refreshMonitors);
-  connect(m_monitorCombo, &QComboBox::currentIndexChanged, this, &MonitorSwitchingDialog::configurationEdited);
+  connect(importDatabaseButton, &QPushButton::clicked, this, &MonitorSwitchingDialog::importProfileDatabase);
+  connect(m_monitorCombo, &QComboBox::currentIndexChanged, this, &MonitorSwitchingDialog::monitorSelectionChanged);
   connect(m_routeTable, &QTableWidget::itemChanged, this, &MonitorSwitchingDialog::configurationEdited);
   connect(m_testButton, &QPushButton::clicked, this, &MonitorSwitchingDialog::runTestsAndEnable);
   connect(m_disableButton, &QPushButton::clicked, this, &MonitorSwitchingDialog::disableMonitorSwitching);
 
+  m_profileDatabase = MonitorProfileDatabase::loadActive(&m_profileDatabaseError);
   m_loading = true;
   refreshMonitors();
   populateComputers();
   m_loading = false;
+  refreshInputSources();
+  if (m_config.enabled && !m_config.profileId.isEmpty() &&
+      (!m_matchedProfile || m_matchedProfile->id != m_config.profileId ||
+       m_matchedProfile->revision != m_config.profileRevision)) {
+    saveDisabledConfiguration();
+  }
   if (!m_config.routes.isEmpty() &&
       !m_config.validate(m_serverConfig.getServerName(), configuredComputerNames()).isEmpty()) {
     saveDisabledConfiguration();
@@ -145,8 +167,12 @@ void MonitorSwitchingDialog::refreshMonitors()
   m_monitorCombo->addItem(tr("Select a monitor"));
   for (const auto &monitor : discovery.monitors) {
     m_monitorCombo->addItem(monitor.name);
-    m_monitorCombo->setItemData(m_monitorCombo->count() - 1, monitor.id, kMonitorIdRole);
-    m_monitorCombo->setItemData(m_monitorCombo->count() - 1, monitor.name, kMonitorNameRole);
+    const auto index = m_monitorCombo->count() - 1;
+    m_monitorCombo->setItemData(index, monitor.id, kMonitorIdRole);
+    m_monitorCombo->setItemData(index, monitor.name, kMonitorNameRole);
+    m_monitorCombo->setItemData(index, monitor.manufacturerId, kMonitorManufacturerRole);
+    m_monitorCombo->setItemData(index, monitor.productId, kMonitorProductRole);
+    m_monitorCombo->setItemData(index, monitor.modelName, kMonitorModelRole);
   }
 
   int selectedIndex = m_monitorCombo->findData(previousId, kMonitorIdRole);
@@ -155,11 +181,128 @@ void MonitorSwitchingDialog::refreshMonitors()
     selectedIndex = m_monitorCombo->count() - 1;
     m_monitorCombo->setItemData(selectedIndex, previousId, kMonitorIdRole);
     m_monitorCombo->setItemData(selectedIndex, previousName, kMonitorNameRole);
+    m_monitorCombo->setItemData(selectedIndex, m_config.monitorManufacturerId, kMonitorManufacturerRole);
+    m_monitorCombo->setItemData(selectedIndex, m_config.monitorProductId, kMonitorProductRole);
+    m_monitorCombo->setItemData(selectedIndex, m_config.monitorModelName, kMonitorModelRole);
   }
   m_monitorCombo->setCurrentIndex(std::max(0, selectedIndex));
   m_loading = wasLoading;
   if (!m_loading)
-    configurationEdited();
+    monitorSelectionChanged();
+}
+
+void MonitorSwitchingDialog::refreshInputSources()
+{
+  m_inputSources.clear();
+  m_inputSourceMessage.clear();
+  m_matchedProfile.reset();
+  const auto monitorId = m_monitorCombo->currentData(kMonitorIdRole).toString();
+  if (!monitorId.isEmpty()) {
+    const MonitorProfileIdentity identity{
+        m_monitorCombo->currentData(kMonitorManufacturerRole).toString(),
+        m_monitorCombo->currentData(kMonitorProductRole).toInt(),
+        m_monitorCombo->currentData(kMonitorModelRole).toString(),
+    };
+    m_matchedProfile = m_profileDatabase.find(identity);
+    if (m_matchedProfile) {
+      for (const auto &input : m_matchedProfile->inputs) {
+        QList<uint16_t> readValues;
+        for (const auto value : input.readValues)
+          readValues.append(static_cast<uint16_t>(value));
+        m_inputSources.append(
+            {static_cast<uint16_t>(input.writeValue), input.label, input.id, std::move(readValues)}
+        );
+      }
+      m_inputSourceMessage = tr("Matched monitor profile %1 from database %2.")
+                                 .arg(m_matchedProfile->id, m_profileDatabase.databaseVersion());
+    } else {
+      const auto result = m_controller->discoverInputSources(monitorId);
+      if (result.succeeded()) {
+        m_inputSources = result.sources;
+        m_inputSourceMessage = result.message;
+      } else {
+        m_inputSourceMessage =
+            result.message.isEmpty() ? tr("The monitor input list could not be read.") : result.message;
+      }
+    }
+  }
+
+  const bool wasLoading = m_loading;
+  m_loading = true;
+  for (int row = 0; row < m_routeTable->rowCount(); ++row) {
+    auto *inputCombo = qobject_cast<QComboBox *>(m_routeTable->cellWidget(row, InputColumn));
+    if (!inputCombo)
+      continue;
+    const auto previousData = inputCombo->currentData();
+    int previousValue = previousData.isValid() ? previousData.toInt() : -1;
+    QString previousLabel = inputCombo->currentText();
+    QString previousInputId = inputCombo->currentData(kInputIdRole).toString();
+    const auto computerName = m_routeTable->item(row, ComputerColumn)->text();
+    if (previousValue < 0) {
+      if (const auto existing = m_config.routeForComputer(computerName)) {
+        previousValue = existing->inputValue;
+        previousLabel = existing->inputLabel;
+        previousInputId = existing->inputId;
+      }
+    }
+
+    inputCombo->clear();
+    inputCombo->addItem(tr("Select a monitor input"), -1);
+    for (const auto &source : std::as_const(m_inputSources)) {
+      inputCombo->addItem(source.displayName(), source.value);
+      const auto index = inputCombo->count() - 1;
+      inputCombo->setItemData(index, source.id, kInputIdRole);
+      inputCombo->setItemData(index, readValuesVariant(source.readValues), kInputReadValuesRole);
+      inputCombo->setItemData(index, source.name, kInputLabelRole);
+    }
+    int selectedIndex = previousInputId.isEmpty() ? -1 : inputCombo->findData(previousInputId, kInputIdRole);
+    if (selectedIndex < 0)
+      selectedIndex = inputCombo->findData(previousValue);
+    if (selectedIndex < 0 && previousValue >= 0 && !m_matchedProfile) {
+      const auto label = previousLabel.isEmpty() ? tr("Saved monitor input [DDC %1]").arg(previousValue)
+                                                 : tr("%1 (not reported by monitor)").arg(previousLabel);
+      inputCombo->addItem(label, previousValue);
+      selectedIndex = inputCombo->count() - 1;
+      inputCombo->setItemData(selectedIndex, previousInputId, kInputIdRole);
+      inputCombo->setItemData(selectedIndex, previousLabel, kInputLabelRole);
+    }
+    inputCombo->setCurrentIndex(std::max(0, selectedIndex));
+  }
+  m_loading = wasLoading;
+  updateStatus();
+}
+
+void MonitorSwitchingDialog::importProfileDatabase()
+{
+  const auto path = QFileDialog::getOpenFileName(
+      this, tr("Import monitor profile database"), {}, tr("JSON files (*.json);;All files (*)")
+  );
+  if (path.isEmpty())
+    return;
+
+  QString error;
+  if (!MonitorProfileDatabase::installUserDatabase(path, &error)) {
+    QMessageBox::critical(
+        this, tr("Monitor profile database"), tr("The database could not be imported: %1").arg(error)
+    );
+    return;
+  }
+  m_profileDatabase = MonitorProfileDatabase::loadActive(&m_profileDatabaseError);
+  refreshInputSources();
+  saveDisabledConfiguration();
+  QMessageBox::information(
+      this, tr("Monitor profile database"),
+      tr("Database %1 was imported. Review the monitor input assignments before enabling switching.")
+          .arg(m_profileDatabase.databaseVersion())
+  );
+}
+
+void MonitorSwitchingDialog::monitorSelectionChanged()
+{
+  if (m_loading)
+    return;
+  refreshInputSources();
+  saveDisabledConfiguration();
 }
 
 void MonitorSwitchingDialog::populateComputers()
@@ -186,27 +329,24 @@ void MonitorSwitchingDialog::populateComputers()
     roleItem->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
     m_routeTable->setItem(row, RoleColumn, roleItem);
 
-    auto *labelItem = new QTableWidgetItem;
-    m_routeTable->setItem(row, LabelColumn, labelItem);
-    auto *detectedItem = new QTableWidgetItem(tr("Not detected"));
-    detectedItem->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
-    detectedItem->setData(kDetectedInputRole, -1);
-    m_routeTable->setItem(row, DetectedColumn, detectedItem);
+    auto *inputCombo = new QComboBox(m_routeTable);
+    inputCombo->addItem(tr("Select a monitor input"), -1);
+    m_routeTable->setCellWidget(row, InputColumn, inputCombo);
     auto *statusItem = new QTableWidgetItem(tr("Not tested"));
     statusItem->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
     m_routeTable->setItem(row, StatusColumn, statusItem);
 
     if (const auto existing = m_config.routeForComputer(screen.name())) {
       useItem->setCheckState(Qt::Checked);
-      labelItem->setText(existing->inputLabel);
-      detectedItem->setText(existing->inputValue >= 0 ? tr("Detected") : tr("Not detected"));
-      detectedItem->setData(kDetectedInputRole, existing->inputValue);
+      if (existing->inputValue >= 0)
+        inputCombo->addItem(existing->inputLabel, existing->inputValue);
+      inputCombo->setCurrentIndex(existing->inputValue >= 0 ? 1 : 0);
       updateRouteStatus(*existing);
     }
+    connect(inputCombo, &QComboBox::currentIndexChanged, this, &MonitorSwitchingDialog::configurationEdited);
   }
   m_routeTable->resizeColumnToContents(UseColumn);
   m_routeTable->resizeColumnToContents(RoleColumn);
-  m_routeTable->resizeColumnToContents(DetectedColumn);
 }
 
 MonitorSwitchingConfig MonitorSwitchingDialog::configFromUi() const
@@ -214,14 +354,29 @@ MonitorSwitchingConfig MonitorSwitchingDialog::configFromUi() const
   MonitorSwitchingConfig config;
   config.monitorId = m_monitorCombo->currentData(kMonitorIdRole).toString();
   config.monitorName = m_monitorCombo->currentData(kMonitorNameRole).toString();
+  config.monitorManufacturerId = m_monitorCombo->currentData(kMonitorManufacturerRole).toString();
+  const auto productId = m_monitorCombo->currentData(kMonitorProductRole);
+  config.monitorProductId = productId.isValid() ? productId.toInt() : -1;
+  config.monitorModelName = m_monitorCombo->currentData(kMonitorModelRole).toString();
+  if (m_matchedProfile) {
+    config.profileId = m_matchedProfile->id;
+    config.profileRevision = m_matchedProfile->revision;
+  }
 
   for (int row = 0; row < m_routeTable->rowCount(); ++row) {
     if (m_routeTable->item(row, UseColumn)->checkState() != Qt::Checked)
       continue;
     MonitorInputRoute route;
     route.computerName = m_routeTable->item(row, ComputerColumn)->text();
-    route.inputLabel = m_routeTable->item(row, LabelColumn)->text().trimmed();
-    route.inputValue = m_routeTable->item(row, DetectedColumn)->data(kDetectedInputRole).toInt();
+    const auto *inputCombo = qobject_cast<QComboBox *>(m_routeTable->cellWidget(row, InputColumn));
+    route.inputId = inputCombo->currentData(kInputIdRole).toString();
+    route.inputLabel = inputCombo->currentData(kInputLabelRole).toString().trimmed();
+    if (route.inputLabel.isEmpty())
+      route.inputLabel = inputCombo->currentText().trimmed();
+    const auto inputValue = inputCombo->currentData();
+    route.inputValue = inputValue.isValid() ? inputValue.toInt() : -1;
+    for (const auto &value : inputCombo->currentData(kInputReadValuesRole).toList())
+      route.expectedReadValues.append(value.toInt());
     if (const auto previous = m_config.routeForComputer(route.computerName)) {
       route.lastTestStatus = previous->lastTestStatus;
       route.lastTestMessage = previous->lastTestMessage;
@@ -331,169 +486,156 @@ bool MonitorSwitchingDialog::restoreServerInput(
   return false;
 }
 
-QList<uint16_t> MonitorSwitchingDialog::standardInputValues()
+bool MonitorSwitchingDialog::testRoute(
+    MonitorSwitchingConfig &config, MonitorInputRoute &route, const MonitorInputRoute &serverRoute
+)
 {
-  QList<uint16_t> values{0x0f, 0x10, 0x11, 0x12, 0x1b, 0x1c};
-  for (uint16_t value = 1; value <= 0x1f; ++value) {
-    if (!values.contains(value))
-      values.append(value);
+  route.lastTestedAt = QDateTime::currentDateTimeUtc().toString(Qt::ISODate);
+  if (!m_connectedClients.contains(route.computerName)) {
+    route.lastTestStatus = QStringLiteral("failed");
+    route.lastTestMessage = tr("The client disconnected before testing began.");
+    m_testError = route.lastTestMessage;
+    return false;
   }
-  return values;
-}
+  const auto writeResult = m_controller->writeInput(config.monitorId, static_cast<uint16_t>(route.inputValue));
+  bool completedPreview = false;
+  DisplayInputResult readResult{DisplayInputStatus::ReadFailure, tr("DDC readback was unavailable."), {}};
+  if (writeResult.succeeded()) {
+    const bool stabilized = waitWithProgress(
+        tr("Testing %1 for %2. Watch for the expected computer.").arg(route.inputLabel, route.computerName), 2000
+    );
+    if (stabilized)
+      readResult = m_controller->readInput(config.monitorId);
+    completedPreview = stabilized && waitWithProgress(tr("Keeping the assigned input visible."), 3000);
+  }
 
-std::optional<QString> MonitorSwitchingDialog::identifyInputComputer(const QStringList &computerNames)
-{
-  if (m_identifyInput)
-    return m_identifyInput(computerNames);
-
-  QStringList choices{tr("No selected computer appeared")};
-  choices.append(computerNames);
-  bool accepted = false;
-  const auto selection = QInputDialog::getItem(
-      this, tr("Identify monitor input"),
-      tr("The monitor has returned to the server. Which selected computer appeared during the test?"), choices, 0,
-      false, &accepted
-  );
-  if (!accepted)
-    return std::nullopt;
-  if (selection == choices.first())
-    return QString();
-  return selection;
-}
-
-bool MonitorSwitchingDialog::discoverInputRoutes(MonitorSwitchingConfig &config, const QList<uint16_t> &candidateValues)
-{
-  m_inputDetectionError.clear();
-  const auto serverName = m_serverConfig.getServerName();
-  auto serverRouteIt = std::ranges::find(config.routes, serverName, &MonitorInputRoute::computerName);
-  Q_ASSERT(serverRouteIt != config.routes.end());
-
-  const auto currentInput = m_controller->readInput(config.monitorId);
-  if (!currentInput.succeeded() || !currentInput.value) {
-    m_inputDetectionError =
-        tr("Teleport could not read the current server input, so it cannot safely restore the monitor during "
-           "automatic detection. Check that DDC is enabled on the monitor and connect it directly if a dock or "
-           "adapter blocks DDC.");
-    serverRouteIt->lastTestStatus = QStringLiteral("failed");
-    serverRouteIt->lastTestMessage = resultText(currentInput);
-    serverRouteIt->lastTestedAt = QDateTime::currentDateTimeUtc().toString(Qt::ISODate);
+  if (!restoreServerInput(config.monitorId, serverRoute, route)) {
+    m_testError = route.lastTestMessage;
+    return false;
+  }
+  if (!writeResult.succeeded()) {
+    route.lastTestStatus = QStringLiteral("failed");
+    route.lastTestMessage = resultText(writeResult);
+    m_testError = route.lastTestMessage;
+    return false;
+  }
+  if (!completedPreview) {
+    route.lastTestStatus = QStringLiteral("failed");
+    route.lastTestMessage = tr("The assignment test was canceled.");
+    m_testError = route.lastTestMessage;
+    return false;
+  }
+  if (!m_connectedClients.contains(route.computerName)) {
+    route.lastTestStatus = QStringLiteral("failed");
+    route.lastTestMessage = tr("The client disconnected during testing.");
+    m_testError = route.lastTestMessage;
+    return false;
+  }
+  if (readResult.succeeded() && (!readResult.value || *readResult.value != route.inputValue)) {
+    route.lastTestStatus = QStringLiteral("failed");
+    route.lastTestMessage = tr("The monitor readback did not match the assigned input.");
+    m_testError = route.lastTestMessage;
+    return false;
+  }
+  if (!readResult.succeeded() && readResult.status != DisplayInputStatus::ReadUnsupported &&
+      readResult.status != DisplayInputStatus::ReadFailure) {
+    route.lastTestStatus = QStringLiteral("failed");
+    route.lastTestMessage = resultText(readResult);
+    m_testError = route.lastTestMessage;
     return false;
   }
 
-  serverRouteIt->inputValue = *currentInput.value;
-  serverRouteIt->lastTestStatus = QStringLiteral("detected");
-  serverRouteIt->lastTestMessage = tr("Detected as the current server input with DDC readback.");
-  serverRouteIt->lastTestedAt = QDateTime::currentDateTimeUtc().toString(Qt::ISODate);
-  const auto serverRoute = *serverRouteIt;
+  const bool confirmed =
+      m_confirmInput ? m_confirmInput(route)
+                     : QMessageBox::question(
+                           this, tr("Confirm monitor assignment"),
+                           tr("Did %1 appear while %2 was being tested?").arg(route.computerName, route.inputLabel),
+                           QMessageBox::Yes | QMessageBox::No, QMessageBox::No
+                       ) == QMessageBox::Yes;
+  if (!confirmed) {
+    route.lastTestStatus = QStringLiteral("failed");
+    route.lastTestMessage = tr("The assigned computer was not visually confirmed.");
+    m_testError = route.lastTestMessage;
+    return false;
+  }
 
-  QStringList unmatchedComputers;
+  route.lastTestStatus = readResult.succeeded() ? QStringLiteral("verified") : QStringLiteral("verified visually");
+  route.lastTestMessage = readResult.succeeded() ? tr("Verified by DDC readback and visual confirmation.")
+                                                 : tr("Verified visually because DDC readback was unavailable.");
+  return true;
+}
+
+bool MonitorSwitchingDialog::testAssignments(MonitorSwitchingConfig &config)
+{
+  m_testError.clear();
+  const auto serverName = m_serverConfig.getServerName();
+  auto serverRoute = std::ranges::find(config.routes, serverName, &MonitorInputRoute::computerName);
+  Q_ASSERT(serverRoute != config.routes.end());
+
+  serverRoute->lastTestedAt = QDateTime::currentDateTimeUtc().toString(Qt::ISODate);
+  const auto currentInput = m_controller->readInput(config.monitorId);
+  if (!currentInput.succeeded() || !currentInput.value) {
+    serverRoute->lastTestStatus = QStringLiteral("failed");
+    serverRoute->lastTestMessage = resultText(currentInput);
+    m_testError = tr("Teleport could not read the current server input, so it cannot safely run the tests.");
+    return false;
+  }
+  if (*currentInput.value != serverRoute->inputValue) {
+    serverRoute->lastTestStatus = QStringLiteral("failed");
+    serverRoute->lastTestMessage = tr("The selected server input does not match the monitor's current input.");
+    m_testError = tr("Select the monitor input currently showing the server, then run the tests again.");
+    return false;
+  }
+  serverRoute->lastTestStatus = QStringLiteral("verified");
+  serverRoute->lastTestMessage = tr("Verified as the current server input with DDC readback.");
+  const auto recoveryRoute = *serverRoute;
+
   for (auto &route : config.routes) {
     if (route.computerName == serverName)
       continue;
-    route.inputValue = -1;
-    route.lastTestStatus.clear();
-    route.lastTestMessage.clear();
-    route.lastTestedAt.clear();
-    unmatchedComputers.append(route.computerName);
+    if (!testRoute(config, route, recoveryRoute))
+      return false;
   }
-
-  for (const auto candidateValue : candidateValues) {
-    if (unmatchedComputers.isEmpty())
-      break;
-    if (candidateValue == static_cast<uint16_t>(serverRoute.inputValue))
-      continue;
-
-    for (const auto &computerName : std::as_const(unmatchedComputers)) {
-      if (!m_connectedClients.contains(computerName)) {
-        auto route = std::ranges::find(config.routes, computerName, &MonitorInputRoute::computerName);
-        route->lastTestStatus = QStringLiteral("failed");
-        route->lastTestMessage = tr("The client disconnected during input detection.");
-        route->lastTestedAt = QDateTime::currentDateTimeUtc().toString(Qt::ISODate);
-        m_inputDetectionError = tr("%1 disconnected during input detection.").arg(computerName);
-        return false;
-      }
-    }
-
-    auto statusRoute = std::ranges::find(config.routes, unmatchedComputers.first(), &MonitorInputRoute::computerName);
-    const auto writeResult = m_controller->writeInput(config.monitorId, candidateValue);
-    bool completedPreview = false;
-    DisplayInputResult readResult{DisplayInputStatus::ReadFailure, tr("DDC readback was unavailable."), {}};
-    if (writeResult.succeeded()) {
-      const bool stabilized =
-          waitWithProgress(tr("Testing a possible monitor input. Watch for one of the selected computers."), 2000);
-      if (stabilized)
-        readResult = m_controller->readInput(config.monitorId);
-      completedPreview = stabilized && waitWithProgress(tr("Keeping the possible input visible."), 3000);
-    }
-
-    if (!restoreServerInput(config.monitorId, serverRoute, *statusRoute)) {
-      m_inputDetectionError = statusRoute->lastTestMessage;
-      return false;
-    }
-    if (!writeResult.succeeded())
-      continue;
-    if (!completedPreview) {
-      statusRoute->lastTestStatus = QStringLiteral("failed");
-      statusRoute->lastTestMessage = tr("Input detection was canceled.");
-      statusRoute->lastTestedAt = QDateTime::currentDateTimeUtc().toString(Qt::ISODate);
-      m_inputDetectionError = statusRoute->lastTestMessage;
-      return false;
-    }
-    if (readResult.succeeded() && (!readResult.value || *readResult.value != candidateValue))
-      continue;
-    if (!readResult.succeeded() && readResult.status != DisplayInputStatus::ReadUnsupported &&
-        readResult.status != DisplayInputStatus::ReadFailure) {
-      m_inputDetectionError = resultText(readResult);
-      return false;
-    }
-
-    const auto identifiedComputer = identifyInputComputer(unmatchedComputers);
-    if (!identifiedComputer) {
-      statusRoute->lastTestStatus = QStringLiteral("failed");
-      statusRoute->lastTestMessage = tr("Input detection was canceled.");
-      statusRoute->lastTestedAt = QDateTime::currentDateTimeUtc().toString(Qt::ISODate);
-      m_inputDetectionError = statusRoute->lastTestMessage;
-      return false;
-    }
-    if (identifiedComputer->isEmpty())
-      continue;
-
-    auto detectedRoute = std::ranges::find(config.routes, *identifiedComputer, &MonitorInputRoute::computerName);
-    if (detectedRoute == config.routes.end() || !unmatchedComputers.contains(*identifiedComputer))
-      continue;
-    detectedRoute->inputValue = candidateValue;
-    detectedRoute->lastTestStatus =
-        readResult.succeeded() ? QStringLiteral("verified") : QStringLiteral("verified visually");
-    detectedRoute->lastTestMessage = readResult.succeeded()
-                                         ? tr("Detected by DDC readback and visual identification.")
-                                         : tr("Detected by visual identification because readback was unavailable.");
-    detectedRoute->lastTestedAt = QDateTime::currentDateTimeUtc().toString(Qt::ISODate);
-    unmatchedComputers.removeAll(*identifiedComputer);
-  }
-
-  if (unmatchedComputers.isEmpty())
-    return true;
-
-  for (const auto &computerName : std::as_const(unmatchedComputers)) {
-    auto route = std::ranges::find(config.routes, computerName, &MonitorInputRoute::computerName);
-    route->lastTestStatus = QStringLiteral("failed");
-    route->lastTestMessage = tr("No working monitor input was identified.");
-    route->lastTestedAt = QDateTime::currentDateTimeUtc().toString(Qt::ISODate);
-  }
-  m_inputDetectionError =
-      tr("Teleport could not identify a working monitor input for: %1. Confirm that each computer is awake and "
-         "sending video to the selected monitor, then run detection again.")
-          .arg(unmatchedComputers.join(QStringLiteral(", ")));
-  return false;
+  return true;
 }
 
 void MonitorSwitchingDialog::runTestsAndEnable()
 {
   auto config = configFromUi();
   const auto serverName = m_serverConfig.getServerName();
-  const auto validationError = config.validateSetupSelection(serverName, configuredComputerNames());
+  const auto validationError = config.validate(serverName, configuredComputerNames());
   if (!validationError.isEmpty()) {
     QMessageBox::warning(this, tr("Monitor switching setup"), validationError);
+    return;
+  }
+
+  if (m_matchedProfile) {
+    const auto activatedAt = QDateTime::currentDateTimeUtc().toString(Qt::ISODate);
+    for (auto &route : config.routes) {
+      route.lastTestStatus = QStringLiteral("database profile");
+      route.lastTestMessage = tr("Enabled from bundled or imported monitor profile %1 without DDC testing.")
+                                  .arg(m_matchedProfile->id);
+      route.lastTestedAt = activatedAt;
+    }
+    config.activeConfigHash = config.configurationHash();
+    config.enabled = true;
+    QString error;
+    if (!config.save(&error)) {
+      QMessageBox::critical(this, tr("Monitor switching setup"), tr("Could not save the configuration: %1").arg(error));
+      return;
+    }
+    m_config = config;
+    m_loading = true;
+    populateComputers();
+    m_loading = false;
+    refreshInputSources();
+    updateStatus();
+    QMessageBox::information(
+        this, tr("Monitor switching enabled"),
+        tr("Monitor switching was enabled using profile %1. No DDC test commands were sent.")
+            .arg(m_matchedProfile->id)
+    );
+    Q_EMIT configurationEnabled();
     return;
   }
 
@@ -513,12 +655,11 @@ void MonitorSwitchingDialog::runTestsAndEnable()
     QMessageBox::critical(this, tr("Monitor switching setup"), tr("Could not save the configuration: %1").arg(error));
     return;
   }
-  const bool passed = discoverInputRoutes(config, standardInputValues()) &&
-                      config.validate(serverName, configuredComputerNames()).isEmpty();
+  const bool passed = testAssignments(config);
 
   m_config = config;
   if (passed) {
-    m_config.verifiedConfigHash = m_config.configurationHash();
+    m_config.activeConfigHash = m_config.configurationHash();
     m_config.enabled = true;
   }
   if (!m_config.save(&error)) {
@@ -532,14 +673,13 @@ void MonitorSwitchingDialog::runTestsAndEnable()
   updateStatus();
   if (passed) {
     QMessageBox::information(
-        this, tr("Monitor switching enabled"), tr("All selected monitor inputs were detected and verified.")
+        this, tr("Monitor switching enabled"), tr("All selected monitor input assignments were verified.")
     );
     Q_EMIT configurationEnabled();
   } else {
     QMessageBox::warning(
         this, tr("Monitor switching not enabled"),
-        m_inputDetectionError.isEmpty() ? tr("At least one monitor input could not be detected.")
-                                        : m_inputDetectionError
+        m_testError.isEmpty() ? tr("At least one monitor input assignment failed testing.") : m_testError
     );
   }
 }
@@ -572,16 +712,26 @@ void MonitorSwitchingDialog::updateRouteStatus(const MonitorInputRoute &route)
 
 void MonitorSwitchingDialog::updateStatus()
 {
-  if (m_config.enabled && m_config.isVerified()) {
-    m_statusLabel->setText(tr("Monitor switching is enabled and verified."));
-    m_testButton->setText(tr("Detect inputs again"));
+  if (m_config.enabled && m_config.isActiveConfigurationValid()) {
+    m_statusLabel->setText(
+        m_config.profileId.isEmpty()
+            ? tr("Monitor switching is enabled with tested input assignments.")
+            : tr("Monitor switching is enabled using monitor profile %1.").arg(m_config.profileId)
+    );
+    m_testButton->setText(m_matchedProfile ? tr("Enable monitor switching") : tr("Test assignments again"));
     m_disableButton->setEnabled(true);
   } else {
-    auto status = tr("Monitor switching is disabled until every selected input passes testing.");
+    auto status = m_matchedProfile
+                      ? tr("Automatic monitor switching is off. Assign an input to each computer, then enable it.")
+                      : tr("Automatic monitor switching is off. Assign and test a monitor input for each computer.");
     if (!m_discoveryError.isEmpty())
       status.append(tr(" Monitor discovery failed: %1").arg(m_discoveryError));
+    if (!m_inputSourceMessage.isEmpty())
+      status.append(tr(" %1").arg(m_inputSourceMessage));
+    if (!m_profileDatabaseError.isEmpty())
+      status.append(tr(" Profile database warning: %1").arg(m_profileDatabaseError));
     m_statusLabel->setText(status);
-    m_testButton->setText(tr("Detect inputs and enable"));
+    m_testButton->setText(m_matchedProfile ? tr("Enable monitor switching") : tr("Test assignments and enable"));
     m_disableButton->setEnabled(false);
   }
 }

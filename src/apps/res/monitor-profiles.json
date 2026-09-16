@@ -1,0 +1,4384 @@
+{
+  "schemaVersion": 1,
+  "databaseVersion": "2026.09.16.1",
+  "sources": [
+    {
+      "name": "ddccontrol-db",
+      "commit": "da647356dcff711743c372dd2b3703c7fe4259f6",
+      "license": "GPL-2.0-only",
+      "url": "https://github.com/ddccontrol/ddccontrol-db"
+    },
+    {
+      "name": "monitor-switch",
+      "commit": "8d80e7f9ff3854555958aaab46bf1a543539845c",
+      "license": "MIT",
+      "url": "https://github.com/DimpiM/monitor-switch"
+    }
+  ],
+  "profiles": [
+    {
+      "id": "ACI28A7",
+      "manufacturerId": "ACI",
+      "productId": 10407,
+      "modelNames": [
+        "ASUS MG28U"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "dp",
+          "label": "DisplayPort",
+          "writeValue": 15,
+          "readValues": [
+            15
+          ]
+        },
+        {
+          "id": "hdmi1",
+          "label": "HDMI-1",
+          "writeValue": 17,
+          "readValues": [
+            17
+          ]
+        },
+        {
+          "id": "hdmi2",
+          "label": "HDMI-2",
+          "writeValue": 18,
+          "readValues": [
+            18
+          ]
+        },
+        {
+          "id": "hdmi3",
+          "label": "HDMI-3",
+          "writeValue": 19,
+          "readValues": [
+            19
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ACR01C7",
+      "manufacturerId": "ACR",
+      "productId": 455,
+      "modelNames": [
+        "Acer P226HQV"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "vga",
+          "label": "VGA",
+          "writeValue": 1,
+          "readValues": [
+            1
+          ]
+        },
+        {
+          "id": "dvi",
+          "label": "DVI",
+          "writeValue": 3,
+          "readValues": [
+            3
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ACR0364",
+      "manufacturerId": "ACR",
+      "productId": 868,
+      "modelNames": [
+        "Acer B196L"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "vga",
+          "label": "VGA",
+          "writeValue": 1,
+          "readValues": [
+            1
+          ]
+        },
+        {
+          "id": "dvi",
+          "label": "DVI",
+          "writeValue": 3,
+          "readValues": [
+            3
+          ]
+        },
+        {
+          "id": "dp",
+          "label": "DisplayPort",
+          "writeValue": 15,
+          "readValues": [
+            15
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ACR0692",
+      "manufacturerId": "ACR",
+      "productId": 1682,
+      "modelNames": [
+        "Acer ED273UR"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "analog",
+          "label": "Analog",
+          "writeValue": 1,
+          "readValues": [
+            1
+          ]
+        },
+        {
+          "id": "digital",
+          "label": "Digital",
+          "writeValue": 3,
+          "readValues": [
+            3
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ACR06B1",
+      "manufacturerId": "ACR",
+      "productId": 1713,
+      "modelNames": [
+        "Acer Nitro XV273K"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "dp1",
+          "label": "DP-1",
+          "writeValue": 15,
+          "readValues": [
+            15
+          ]
+        },
+        {
+          "id": "dp2",
+          "label": "DP-2",
+          "writeValue": 16,
+          "readValues": [
+            16
+          ]
+        },
+        {
+          "id": "hdmi1",
+          "label": "HDMI-1",
+          "writeValue": 17,
+          "readValues": [
+            17
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ACR06CF",
+      "manufacturerId": "ACR",
+      "productId": 1743,
+      "modelNames": [
+        "ACER VG270U P"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "dp",
+          "label": "DisplayPort",
+          "writeValue": 15,
+          "readValues": [
+            15
+          ]
+        },
+        {
+          "id": "hdmi1",
+          "label": "HDMI-1",
+          "writeValue": 17,
+          "readValues": [
+            17
+          ]
+        },
+        {
+          "id": "hdmi2",
+          "label": "HDMI-2",
+          "writeValue": 18,
+          "readValues": [
+            18
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ACR072B",
+      "manufacturerId": "ACR",
+      "productId": 1835,
+      "modelNames": [
+        "Acer KA242Y"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "vga",
+          "label": "VGA",
+          "writeValue": 1,
+          "readValues": [
+            1
+          ]
+        },
+        {
+          "id": "hdmi",
+          "label": "HDMI",
+          "writeValue": 17,
+          "readValues": [
+            17
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ACR074A",
+      "manufacturerId": "ACR",
+      "productId": 1866,
+      "modelNames": [
+        "Acer Predator XB273U"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "dp1",
+          "label": "DP-1",
+          "writeValue": 15,
+          "readValues": [
+            15
+          ]
+        },
+        {
+          "id": "hdmi1",
+          "label": "HDMI-1",
+          "writeValue": 17,
+          "readValues": [
+            17
+          ]
+        },
+        {
+          "id": "hdmi2",
+          "label": "HDMI-2",
+          "writeValue": 18,
+          "readValues": [
+            18
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ACR0A8B",
+      "manufacturerId": "ACR",
+      "productId": 2699,
+      "modelNames": [
+        "Acer Nitro XV275K P3"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "dp1",
+          "label": "DP-1",
+          "writeValue": 15,
+          "readValues": [
+            15
+          ]
+        },
+        {
+          "id": "dp2",
+          "label": "DP-2",
+          "writeValue": 16,
+          "readValues": [
+            16
+          ]
+        },
+        {
+          "id": "hdmi1",
+          "label": "HDMI-1",
+          "writeValue": 17,
+          "readValues": [
+            17
+          ]
+        },
+        {
+          "id": "hdmi2",
+          "label": "HDMI-2",
+          "writeValue": 18,
+          "readValues": [
+            18
+          ]
+        }
+      ]
+    },
+    {
+      "id": "AOC2260",
+      "manufacturerId": "AOC",
+      "productId": 8800,
+      "modelNames": [
+        "AOC 2260"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "vga",
+          "label": "VGA",
+          "writeValue": 1,
+          "readValues": [
+            1
+          ]
+        },
+        {
+          "id": "hdmi",
+          "label": "HDMI",
+          "writeValue": 3,
+          "readValues": [
+            3
+          ]
+        },
+        {
+          "id": "dp",
+          "label": "DisplayPort",
+          "writeValue": 4,
+          "readValues": [
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "id": "AOC2269",
+      "manufacturerId": "AOC",
+      "productId": 8809,
+      "modelNames": [
+        "AOC 2269"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "vga",
+          "label": "VGA",
+          "writeValue": 1,
+          "readValues": [
+            1
+          ]
+        },
+        {
+          "id": "hdmi1",
+          "label": "HDMI-1",
+          "writeValue": 3,
+          "readValues": [
+            3
+          ]
+        },
+        {
+          "id": "hdmi2",
+          "label": "HDMI-2",
+          "writeValue": 4,
+          "readValues": [
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "id": "AOC2343",
+      "manufacturerId": "AOC",
+      "productId": 9027,
+      "modelNames": [
+        "AOC 2343"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "vga",
+          "label": "VGA",
+          "writeValue": 1,
+          "readValues": [
+            1
+          ]
+        },
+        {
+          "id": "dvi",
+          "label": "DVI",
+          "writeValue": 3,
+          "readValues": [
+            3
+          ]
+        }
+      ]
+    },
+    {
+      "id": "AOC2401",
+      "manufacturerId": "AOC",
+      "productId": 9217,
+      "modelNames": [
+        "AOC 2401"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "vga",
+          "label": "VGA",
+          "writeValue": 1,
+          "readValues": [
+            1
+          ]
+        },
+        {
+          "id": "dp",
+          "label": "DisplayPort",
+          "writeValue": 15,
+          "readValues": [
+            15
+          ]
+        },
+        {
+          "id": "hdmi1",
+          "label": "HDMI-1",
+          "writeValue": 17,
+          "readValues": [
+            17
+          ]
+        },
+        {
+          "id": "hdmi2",
+          "label": "HDMI-2",
+          "writeValue": 18,
+          "readValues": [
+            18
+          ]
+        }
+      ]
+    },
+    {
+      "id": "AOC2402",
+      "manufacturerId": "AOC",
+      "productId": 9218,
+      "modelNames": [
+        "AOC 24G2 / 24G2U / 24B2XDAM"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "vga",
+          "label": "VGA",
+          "writeValue": 1,
+          "readValues": [
+            1
+          ]
+        },
+        {
+          "id": "dp",
+          "label": "DisplayPort",
+          "writeValue": 15,
+          "readValues": [
+            15
+          ]
+        },
+        {
+          "id": "hdmi1",
+          "label": "HDMI-1",
+          "writeValue": 17,
+          "readValues": [
+            17
+          ]
+        },
+        {
+          "id": "hdmi2",
+          "label": "HDMI-2",
+          "writeValue": 18,
+          "readValues": [
+            18
+          ]
+        }
+      ]
+    },
+    {
+      "id": "AOC3279",
+      "manufacturerId": "AOC",
+      "productId": 12921,
+      "modelNames": [
+        "AOC Q3279VWF"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "vga",
+          "label": "VGA",
+          "writeValue": 1,
+          "readValues": [
+            1
+          ]
+        },
+        {
+          "id": "dvi",
+          "label": "DVI",
+          "writeValue": 3,
+          "readValues": [
+            3
+          ]
+        },
+        {
+          "id": "hdmi",
+          "label": "HDMI",
+          "writeValue": 17,
+          "readValues": [
+            17
+          ]
+        },
+        {
+          "id": "dp",
+          "label": "DisplayPort",
+          "writeValue": 15,
+          "readValues": [
+            15
+          ]
+        }
+      ]
+    },
+    {
+      "id": "AUS2722",
+      "manufacturerId": "AUS",
+      "productId": 10018,
+      "modelNames": [
+        "ASUS TUF VG27AQ"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "hdmi1",
+          "label": "HDMI-1",
+          "writeValue": 17,
+          "readValues": [
+            17
+          ]
+        },
+        {
+          "id": "hdmi2",
+          "label": "HDMI-2",
+          "writeValue": 18,
+          "readValues": [
+            18
+          ]
+        },
+        {
+          "id": "dp",
+          "label": "DisplayPort",
+          "writeValue": 15,
+          "readValues": [
+            15
+          ]
+        }
+      ]
+    },
+    {
+      "id": "AUS28B1",
+      "manufacturerId": "AUS",
+      "productId": 10417,
+      "modelNames": [
+        "ASUS VP28U"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "hdmi1",
+          "label": "HDMI-1",
+          "writeValue": 17,
+          "readValues": [
+            17
+          ]
+        },
+        {
+          "id": "hdmi2",
+          "label": "HDMI-2",
+          "writeValue": 18,
+          "readValues": [
+            18
+          ]
+        },
+        {
+          "id": "dp1",
+          "label": "DisplayPort-1",
+          "writeValue": 15,
+          "readValues": [
+            15
+          ]
+        }
+      ]
+    },
+    {
+      "id": "BNQ78CE",
+      "manufacturerId": "BNQ",
+      "productId": 30926,
+      "modelNames": [
+        "BenQ GL2460"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "vga",
+          "label": "VGA",
+          "writeValue": 1,
+          "readValues": [
+            1
+          ]
+        },
+        {
+          "id": "dvi",
+          "label": "DVI",
+          "writeValue": 3,
+          "readValues": [
+            3
+          ]
+        },
+        {
+          "id": "hdmi",
+          "label": "HDMI",
+          "writeValue": 17,
+          "readValues": [
+            17
+          ]
+        }
+      ]
+    },
+    {
+      "id": "BNQ78DB",
+      "manufacturerId": "BNQ",
+      "productId": 30939,
+      "modelNames": [
+        "BenQ GW2270H"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "vga",
+          "label": "VGA",
+          "writeValue": 1,
+          "readValues": [
+            1
+          ]
+        },
+        {
+          "id": "hdmi1",
+          "label": "HDMI-1",
+          "writeValue": 23,
+          "readValues": [
+            23
+          ]
+        },
+        {
+          "id": "hdmi2",
+          "label": "HDMI-2",
+          "writeValue": 24,
+          "readValues": [
+            24
+          ]
+        }
+      ]
+    },
+    {
+      "id": "BNQ78E7",
+      "manufacturerId": "BNQ",
+      "productId": 30951,
+      "modelNames": [
+        "BenQ GW2480"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "vga",
+          "label": "VGA",
+          "writeValue": 1,
+          "readValues": [
+            1
+          ]
+        },
+        {
+          "id": "dp",
+          "label": "DisplayPort",
+          "writeValue": 15,
+          "readValues": [
+            15
+          ]
+        },
+        {
+          "id": "hdmi",
+          "label": "HDMI",
+          "writeValue": 17,
+          "readValues": [
+            17
+          ]
+        }
+      ]
+    },
+    {
+      "id": "BNQ78E9",
+      "manufacturerId": "BNQ",
+      "productId": 30953,
+      "modelNames": [
+        "BenQ GW2283"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "vga",
+          "label": "VGA",
+          "writeValue": 1,
+          "readValues": [
+            1
+          ]
+        },
+        {
+          "id": "hdmi1",
+          "label": "HDMI-1",
+          "writeValue": 17,
+          "readValues": [
+            17
+          ]
+        },
+        {
+          "id": "hdmi2",
+          "label": "HDMI-2",
+          "writeValue": 18,
+          "readValues": [
+            18
+          ]
+        }
+      ]
+    },
+    {
+      "id": "BNQ7F0E",
+      "manufacturerId": "BNQ",
+      "productId": 32526,
+      "modelNames": [
+        "BenQ RL2450"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "vga",
+          "label": "VGA",
+          "writeValue": 1,
+          "readValues": [
+            1
+          ]
+        },
+        {
+          "id": "dvi",
+          "label": "DVI",
+          "writeValue": 3,
+          "readValues": [
+            3
+          ]
+        },
+        {
+          "id": "hdmi",
+          "label": "HDMI",
+          "writeValue": 4,
+          "readValues": [
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "id": "BNQ7F1C",
+      "manufacturerId": "BNQ",
+      "productId": 32540,
+      "modelNames": [
+        "BenQ RL2455HM"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "dvi",
+          "label": "DVI",
+          "writeValue": 3,
+          "readValues": [
+            3
+          ]
+        },
+        {
+          "id": "hdmi1",
+          "label": "HDMI-1",
+          "writeValue": 23,
+          "readValues": [
+            23
+          ]
+        },
+        {
+          "id": "hdmi2",
+          "label": "HDMI-2",
+          "writeValue": 24,
+          "readValues": [
+            24
+          ]
+        }
+      ]
+    },
+    {
+      "id": "BNQ7F31",
+      "manufacturerId": "BNQ",
+      "productId": 32561,
+      "modelNames": [
+        "BENQ XL2411Z"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "analog",
+          "label": "Analog",
+          "writeValue": 1,
+          "readValues": [
+            1
+          ]
+        },
+        {
+          "id": "digital",
+          "label": "Digital",
+          "writeValue": 3,
+          "readValues": [
+            3
+          ]
+        }
+      ]
+    },
+    {
+      "id": "BNQ7F33",
+      "manufacturerId": "BNQ",
+      "productId": 32563,
+      "modelNames": [
+        "BENQ XL2411P"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "dvi",
+          "label": "DVI",
+          "writeValue": 3,
+          "readValues": [
+            3
+          ]
+        },
+        {
+          "id": "dp",
+          "label": "DisplayPort",
+          "writeValue": 15,
+          "readValues": [
+            15
+          ]
+        },
+        {
+          "id": "hdmi",
+          "label": "HDMI",
+          "writeValue": 17,
+          "readValues": [
+            17
+          ]
+        }
+      ]
+    },
+    {
+      "id": "BNQ8301",
+      "manufacturerId": "BNQ",
+      "productId": 33537,
+      "modelNames": [
+        "BenQ BL2410"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "vga",
+          "label": "VGA",
+          "writeValue": 1,
+          "readValues": [
+            1
+          ]
+        },
+        {
+          "id": "dvi",
+          "label": "DVI",
+          "writeValue": 3,
+          "readValues": [
+            3
+          ]
+        },
+        {
+          "id": "dp",
+          "label": "DisplayPort",
+          "writeValue": 15,
+          "readValues": [
+            15
+          ]
+        }
+      ]
+    },
+    {
+      "id": "DEL4063",
+      "manufacturerId": "DEL",
+      "productId": 16483,
+      "modelNames": [
+        "Dell Ultrasharp u3011"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "vga",
+          "label": "VGA",
+          "writeValue": 1,
+          "readValues": [
+            1
+          ]
+        },
+        {
+          "id": "dvi1",
+          "label": "DVI-1",
+          "writeValue": 3,
+          "readValues": [
+            3
+          ]
+        },
+        {
+          "id": "dvi2",
+          "label": "DVI-2",
+          "writeValue": 4,
+          "readValues": [
+            4
+          ]
+        },
+        {
+          "id": "component",
+          "label": "Component",
+          "writeValue": 12,
+          "readValues": [
+            12
+          ]
+        },
+        {
+          "id": "dp",
+          "label": "DisplayPort",
+          "writeValue": 15,
+          "readValues": [
+            15
+          ]
+        },
+        {
+          "id": "hdmi1",
+          "label": "HDMI-1",
+          "writeValue": 17,
+          "readValues": [
+            17
+          ]
+        },
+        {
+          "id": "hdmi2",
+          "label": "HDMI-2",
+          "writeValue": 18,
+          "readValues": [
+            18
+          ]
+        }
+      ]
+    },
+    {
+      "id": "DEL4065",
+      "manufacturerId": "DEL",
+      "productId": 16485,
+      "modelNames": [
+        "Dell Ultrasharp u3011"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "vga",
+          "label": "VGA",
+          "writeValue": 1,
+          "readValues": [
+            1
+          ]
+        },
+        {
+          "id": "dvi1",
+          "label": "DVI-1",
+          "writeValue": 3,
+          "readValues": [
+            3
+          ]
+        },
+        {
+          "id": "dvi2",
+          "label": "DVI-2",
+          "writeValue": 4,
+          "readValues": [
+            4
+          ]
+        },
+        {
+          "id": "component",
+          "label": "Component",
+          "writeValue": 12,
+          "readValues": [
+            12
+          ]
+        },
+        {
+          "id": "dp",
+          "label": "DisplayPort",
+          "writeValue": 15,
+          "readValues": [
+            15
+          ]
+        },
+        {
+          "id": "hdmi1",
+          "label": "HDMI-1",
+          "writeValue": 17,
+          "readValues": [
+            17
+          ]
+        },
+        {
+          "id": "hdmi2",
+          "label": "HDMI-2",
+          "writeValue": 18,
+          "readValues": [
+            18
+          ]
+        }
+      ]
+    },
+    {
+      "id": "DEL4080",
+      "manufacturerId": "DEL",
+      "productId": 16512,
+      "modelNames": [
+        "Dell U2713HM"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "vga",
+          "label": "VGA",
+          "writeValue": 1,
+          "readValues": [
+            1
+          ]
+        },
+        {
+          "id": "dvi",
+          "label": "DVI",
+          "writeValue": 3,
+          "readValues": [
+            3
+          ]
+        },
+        {
+          "id": "hdmi",
+          "label": "HDMI",
+          "writeValue": 4,
+          "readValues": [
+            4
+          ]
+        },
+        {
+          "id": "dp",
+          "label": "DisplayPort",
+          "writeValue": 15,
+          "readValues": [
+            15
+          ]
+        }
+      ]
+    },
+    {
+      "id": "DEL40F3",
+      "manufacturerId": "DEL",
+      "productId": 16627,
+      "modelNames": [
+        "T-Bao T15A"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "dvi-1",
+          "label": "DVI 1",
+          "writeValue": 3,
+          "readValues": [
+            3
+          ]
+        },
+        {
+          "id": "hdmi-1",
+          "label": "HDMI 1",
+          "writeValue": 17,
+          "readValues": [
+            17
+          ]
+        },
+        {
+          "id": "displayport-1",
+          "label": "DisplayPort 1",
+          "writeValue": 15,
+          "readValues": [
+            15
+          ]
+        },
+        {
+          "id": "displayport-2",
+          "label": "DisplayPort 2",
+          "writeValue": 16,
+          "readValues": [
+            16
+          ]
+        }
+      ]
+    },
+    {
+      "id": "DEL4110",
+      "manufacturerId": "DEL",
+      "productId": 16656,
+      "modelNames": [
+        "DELL S2718D"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "hdmi",
+          "label": "HDMI",
+          "writeValue": 17,
+          "readValues": [
+            17
+          ]
+        },
+        {
+          "id": "usb-c",
+          "label": "USB-C",
+          "writeValue": 27,
+          "readValues": [
+            27
+          ]
+        }
+      ]
+    },
+    {
+      "id": "DEL413A",
+      "manufacturerId": "DEL",
+      "productId": 16698,
+      "modelNames": [
+        "Dell U2518D"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "dp",
+          "label": "DisplayPort",
+          "writeValue": 15,
+          "readValues": [
+            15
+          ]
+        },
+        {
+          "id": "mdp",
+          "label": "mDP",
+          "writeValue": 16,
+          "readValues": [
+            16
+          ]
+        },
+        {
+          "id": "hdmi",
+          "label": "HDMI",
+          "writeValue": 17,
+          "readValues": [
+            17
+          ]
+        }
+      ]
+    },
+    {
+      "id": "DEL415A",
+      "manufacturerId": "DEL",
+      "productId": 16730,
+      "modelNames": [
+        "Dell UltraSharp U2719D"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "dp",
+          "label": "DisplayPort",
+          "writeValue": 15,
+          "readValues": [
+            15
+          ]
+        },
+        {
+          "id": "mdp",
+          "label": "mDP",
+          "writeValue": 16,
+          "readValues": [
+            16
+          ]
+        },
+        {
+          "id": "hdmi",
+          "label": "HDMI",
+          "writeValue": 17,
+          "readValues": [
+            17
+          ]
+        }
+      ]
+    },
+    {
+      "id": "DEL4187",
+      "manufacturerId": "DEL",
+      "productId": 16775,
+      "modelNames": [
+        "Dell P2719HC"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "usb-c",
+          "label": "USB-C",
+          "writeValue": 3867,
+          "readValues": [
+            3867
+          ]
+        },
+        {
+          "id": "dp",
+          "label": "DisplayPort",
+          "writeValue": 3855,
+          "readValues": [
+            3855
+          ]
+        },
+        {
+          "id": "hdmi",
+          "label": "HDMI",
+          "writeValue": 3857,
+          "readValues": [
+            3857
+          ]
+        }
+      ]
+    },
+    {
+      "id": "DEL41B7",
+      "manufacturerId": "DEL",
+      "productId": 16823,
+      "modelNames": [
+        "Dell U2720Q"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "usb-c",
+          "label": "USB-C",
+          "writeValue": 27,
+          "readValues": [
+            27
+          ]
+        },
+        {
+          "id": "dp",
+          "label": "DisplayPort",
+          "writeValue": 15,
+          "readValues": [
+            15
+          ]
+        },
+        {
+          "id": "hdmi",
+          "label": "HDMI",
+          "writeValue": 17,
+          "readValues": [
+            17
+          ]
+        }
+      ]
+    },
+    {
+      "id": "DEL41BC",
+      "manufacturerId": "DEL",
+      "productId": 16828,
+      "modelNames": [
+        "Dell U2720QM"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "usb-c",
+          "label": "USB-C",
+          "writeValue": 27,
+          "readValues": [
+            27
+          ]
+        },
+        {
+          "id": "dp",
+          "label": "DisplayPort",
+          "writeValue": 15,
+          "readValues": [
+            15
+          ]
+        },
+        {
+          "id": "hdmi",
+          "label": "HDMI",
+          "writeValue": 17,
+          "readValues": [
+            17
+          ]
+        }
+      ]
+    },
+    {
+      "id": "DEL41D9",
+      "manufacturerId": "DEL",
+      "productId": 16857,
+      "modelNames": [
+        "DELL S2721DGFA"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "digital",
+          "label": "Digital",
+          "writeValue": 0,
+          "readValues": [
+            0
+          ]
+        },
+        {
+          "id": "dp",
+          "label": "DisplayPort",
+          "writeValue": 15,
+          "readValues": [
+            15
+          ]
+        },
+        {
+          "id": "hdmi1",
+          "label": "HDMI-1",
+          "writeValue": 17,
+          "readValues": [
+            17
+          ]
+        },
+        {
+          "id": "hdmi2",
+          "label": "HDMI-2",
+          "writeValue": 18,
+          "readValues": [
+            18
+          ]
+        }
+      ]
+    },
+    {
+      "id": "DEL41DA",
+      "manufacturerId": "DEL",
+      "productId": 16858,
+      "modelNames": [
+        "DELL S2721DGFA"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "hdmi1",
+          "label": "HDMI-1",
+          "writeValue": 17,
+          "readValues": [
+            17
+          ]
+        },
+        {
+          "id": "hdmi2",
+          "label": "HDMI-2",
+          "writeValue": 18,
+          "readValues": [
+            18
+          ]
+        },
+        {
+          "id": "dp",
+          "label": "DisplayPort",
+          "writeValue": 15,
+          "readValues": [
+            15
+          ]
+        }
+      ]
+    },
+    {
+      "id": "DEL41E0",
+      "manufacturerId": "DEL",
+      "productId": 16864,
+      "modelNames": [
+        "Dell U2721DE"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "usb-c",
+          "label": "USB-C",
+          "writeValue": 27,
+          "readValues": [
+            27
+          ]
+        },
+        {
+          "id": "dp",
+          "label": "DisplayPort",
+          "writeValue": 15,
+          "readValues": [
+            15
+          ]
+        },
+        {
+          "id": "hdmi",
+          "label": "HDMI",
+          "writeValue": 17,
+          "readValues": [
+            17
+          ]
+        }
+      ]
+    },
+    {
+      "id": "DEL4206",
+      "manufacturerId": "DEL",
+      "productId": 16902,
+      "modelNames": [
+        "Dell U4021QW"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "usb-c",
+          "label": "USB-C",
+          "writeValue": 25,
+          "readValues": [
+            25
+          ]
+        },
+        {
+          "id": "dp",
+          "label": "DisplayPort",
+          "writeValue": 15,
+          "readValues": [
+            15
+          ]
+        },
+        {
+          "id": "hdmi1",
+          "label": "HDMI-1",
+          "writeValue": 17,
+          "readValues": [
+            17
+          ]
+        },
+        {
+          "id": "hdmi2",
+          "label": "HDMI-2",
+          "writeValue": 18,
+          "readValues": [
+            18
+          ]
+        }
+      ]
+    },
+    {
+      "id": "DEL4245",
+      "manufacturerId": "DEL",
+      "productId": 16965,
+      "modelNames": [
+        "Dell P3222QE (USB-C)"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "usb-c",
+          "label": "USB-C",
+          "writeValue": 3867,
+          "readValues": [
+            3867
+          ]
+        },
+        {
+          "id": "dp",
+          "label": "DisplayPort",
+          "writeValue": 3855,
+          "readValues": [
+            3855
+          ]
+        },
+        {
+          "id": "hdmi",
+          "label": "HDMI",
+          "writeValue": 3857,
+          "readValues": [
+            3857
+          ]
+        }
+      ]
+    },
+    {
+      "id": "DEL4246",
+      "manufacturerId": "DEL",
+      "productId": 16966,
+      "modelNames": [
+        "Dell P3222QE (DP)"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "usb-c-1",
+          "label": "USB-C 1",
+          "writeValue": 27,
+          "readValues": [
+            27
+          ]
+        },
+        {
+          "id": "displayport-1",
+          "label": "DisplayPort 1",
+          "writeValue": 15,
+          "readValues": [
+            15
+          ]
+        },
+        {
+          "id": "hdmi-1",
+          "label": "HDMI 1",
+          "writeValue": 17,
+          "readValues": [
+            17
+          ]
+        }
+      ]
+    },
+    {
+      "id": "DEL4247",
+      "manufacturerId": "DEL",
+      "productId": 16967,
+      "modelNames": [
+        "Dell P3222QE (HDMI)"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "usb-c-1",
+          "label": "USB-C 1",
+          "writeValue": 27,
+          "readValues": [
+            27
+          ]
+        },
+        {
+          "id": "displayport-1",
+          "label": "DisplayPort 1",
+          "writeValue": 15,
+          "readValues": [
+            15
+          ]
+        },
+        {
+          "id": "hdmi-1",
+          "label": "HDMI 1",
+          "writeValue": 17,
+          "readValues": [
+            17
+          ]
+        }
+      ]
+    },
+    {
+      "id": "DEL4295",
+      "manufacturerId": "DEL",
+      "productId": 17045,
+      "modelNames": [
+        "Dell P3223DE (USB-C)"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "usb-c",
+          "label": "USB-C",
+          "writeValue": 27,
+          "readValues": [
+            27
+          ]
+        },
+        {
+          "id": "dp",
+          "label": "DisplayPort",
+          "writeValue": 15,
+          "readValues": [
+            15
+          ]
+        },
+        {
+          "id": "hdmi",
+          "label": "HDMI",
+          "writeValue": 17,
+          "readValues": [
+            17
+          ]
+        }
+      ]
+    },
+    {
+      "id": "DEL437F",
+      "manufacturerId": "DEL",
+      "productId": 17279,
+      "modelNames": [
+        "Dell Pro Plus P3225QE"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "usb-c",
+          "label": "USB-C",
+          "writeValue": 27,
+          "readValues": [
+            27
+          ]
+        },
+        {
+          "id": "dp",
+          "label": "DisplayPort",
+          "writeValue": 15,
+          "readValues": [
+            15
+          ]
+        },
+        {
+          "id": "hdmi",
+          "label": "HDMI",
+          "writeValue": 17,
+          "readValues": [
+            17
+          ]
+        }
+      ]
+    },
+    {
+      "id": "DELA021",
+      "manufacturerId": "DEL",
+      "productId": 40993,
+      "modelNames": [
+        "Dell 2007FP (DVI)"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "vga",
+          "label": "VGA",
+          "writeValue": 1,
+          "readValues": [
+            1
+          ]
+        },
+        {
+          "id": "dvi",
+          "label": "DVI",
+          "writeValue": 3,
+          "readValues": [
+            3
+          ]
+        },
+        {
+          "id": "composite",
+          "label": "Composite",
+          "writeValue": 5,
+          "readValues": [
+            5
+          ]
+        },
+        {
+          "id": "s-video",
+          "label": "S-Video",
+          "writeValue": 7,
+          "readValues": [
+            7
+          ]
+        }
+      ]
+    },
+    {
+      "id": "DELA02A",
+      "manufacturerId": "DEL",
+      "productId": 41002,
+      "modelNames": [
+        "Dell 2408WFP (DVI)"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "vga",
+          "label": "VGA",
+          "writeValue": 1,
+          "readValues": [
+            1
+          ]
+        },
+        {
+          "id": "dvi1",
+          "label": "DVI-1",
+          "writeValue": 3,
+          "readValues": [
+            3
+          ]
+        },
+        {
+          "id": "dvi2",
+          "label": "DVI-2",
+          "writeValue": 4,
+          "readValues": [
+            4
+          ]
+        },
+        {
+          "id": "composite",
+          "label": "Composite",
+          "writeValue": 5,
+          "readValues": [
+            5
+          ]
+        },
+        {
+          "id": "s-video",
+          "label": "S-Video",
+          "writeValue": 7,
+          "readValues": [
+            7
+          ]
+        },
+        {
+          "id": "component",
+          "label": "Component",
+          "writeValue": 12,
+          "readValues": [
+            12
+          ]
+        }
+      ]
+    },
+    {
+      "id": "DELA03D",
+      "manufacturerId": "DEL",
+      "productId": 41021,
+      "modelNames": [
+        "Dell 1909W (DVI)"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "vga-1",
+          "label": "VGA 1",
+          "writeValue": 1,
+          "readValues": [
+            1
+          ]
+        },
+        {
+          "id": "dvi-1",
+          "label": "DVI 1",
+          "writeValue": 3,
+          "readValues": [
+            3
+          ]
+        }
+      ]
+    },
+    {
+      "id": "DELA07A",
+      "manufacturerId": "DEL",
+      "productId": 41082,
+      "modelNames": [
+        "Dell U2412M (DVI)"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "vga",
+          "label": "VGA",
+          "writeValue": 1,
+          "readValues": [
+            1
+          ]
+        },
+        {
+          "id": "dvi",
+          "label": "DVI",
+          "writeValue": 3,
+          "readValues": [
+            3
+          ]
+        },
+        {
+          "id": "dp",
+          "label": "DisplayPort",
+          "writeValue": 15,
+          "readValues": [
+            15
+          ]
+        }
+      ]
+    },
+    {
+      "id": "DELA0A4",
+      "manufacturerId": "DEL",
+      "productId": 41124,
+      "modelNames": [
+        "Dell U2414H (HDMI 1)"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "dp",
+          "label": "DisplayPort",
+          "writeValue": 15,
+          "readValues": [
+            15
+          ]
+        },
+        {
+          "id": "mdp",
+          "label": "mDP",
+          "writeValue": 16,
+          "readValues": [
+            16
+          ]
+        },
+        {
+          "id": "hdmi1",
+          "label": "HDMI-1",
+          "writeValue": 17,
+          "readValues": [
+            17
+          ]
+        },
+        {
+          "id": "hdmi2",
+          "label": "HDMI-2",
+          "writeValue": 18,
+          "readValues": [
+            18
+          ]
+        }
+      ]
+    },
+    {
+      "id": "DELA0A6",
+      "manufacturerId": "DEL",
+      "productId": 41126,
+      "modelNames": [
+        "Dell U3415W (DP)"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "dp",
+          "label": "DisplayPort",
+          "writeValue": 15,
+          "readValues": [
+            15
+          ]
+        },
+        {
+          "id": "mdp",
+          "label": "mDP",
+          "writeValue": 16,
+          "readValues": [
+            16
+          ]
+        },
+        {
+          "id": "hdmi",
+          "label": "HDMI",
+          "writeValue": 17,
+          "readValues": [
+            17
+          ]
+        },
+        {
+          "id": "hdmi-mhl",
+          "label": "HDMI (MHL)",
+          "writeValue": 18,
+          "readValues": [
+            18
+          ]
+        }
+      ]
+    },
+    {
+      "id": "DELA0B2",
+      "manufacturerId": "DEL",
+      "productId": 41138,
+      "modelNames": [
+        "Dell U2414H (HDMI 2)"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "displayport-1",
+          "label": "DisplayPort 1",
+          "writeValue": 15,
+          "readValues": [
+            15
+          ]
+        },
+        {
+          "id": "displayport-2",
+          "label": "DisplayPort 2",
+          "writeValue": 16,
+          "readValues": [
+            16
+          ]
+        },
+        {
+          "id": "hdmi-1",
+          "label": "HDMI 1",
+          "writeValue": 17,
+          "readValues": [
+            17
+          ]
+        },
+        {
+          "id": "hdmi-2",
+          "label": "HDMI 2",
+          "writeValue": 18,
+          "readValues": [
+            18
+          ]
+        }
+      ]
+    },
+    {
+      "id": "DELA0B8",
+      "manufacturerId": "DEL",
+      "productId": 41144,
+      "modelNames": [
+        "Dell U2415 (DisplayPort1)"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "dp1",
+          "label": "DP-1",
+          "writeValue": 15,
+          "readValues": [
+            15
+          ]
+        },
+        {
+          "id": "dp2",
+          "label": "DP-2",
+          "writeValue": 16,
+          "readValues": [
+            16
+          ]
+        },
+        {
+          "id": "hdmi1",
+          "label": "HDMI-1",
+          "writeValue": 17,
+          "readValues": [
+            17
+          ]
+        },
+        {
+          "id": "hdmi2",
+          "label": "HDMI-2",
+          "writeValue": 18,
+          "readValues": [
+            18
+          ]
+        }
+      ]
+    },
+    {
+      "id": "DELA0BE",
+      "manufacturerId": "DEL",
+      "productId": 41150,
+      "modelNames": [
+        "Dell P2415Q"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "mdp",
+          "label": "mDP",
+          "writeValue": 16,
+          "readValues": [
+            16
+          ]
+        },
+        {
+          "id": "dp",
+          "label": "DisplayPort",
+          "writeValue": 15,
+          "readValues": [
+            15
+          ]
+        },
+        {
+          "id": "hdmi-mhl",
+          "label": "HDMI (MHL)",
+          "writeValue": 17,
+          "readValues": [
+            17
+          ]
+        }
+      ]
+    },
+    {
+      "id": "DELA0C3",
+      "manufacturerId": "DEL",
+      "productId": 41155,
+      "modelNames": [
+        "Dell P2416D"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "analog",
+          "label": "Analog",
+          "writeValue": 1,
+          "readValues": [
+            1
+          ]
+        },
+        {
+          "id": "dp",
+          "label": "DisplayPort",
+          "writeValue": 15,
+          "readValues": [
+            15
+          ]
+        },
+        {
+          "id": "hdmi1",
+          "label": "HDMI-1",
+          "writeValue": 17,
+          "readValues": [
+            17
+          ]
+        }
+      ]
+    },
+    {
+      "id": "DELA0DB",
+      "manufacturerId": "DEL",
+      "productId": 41179,
+      "modelNames": [
+        "Dell P2417H (DisplayPort)"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "vga",
+          "label": "VGA",
+          "writeValue": 1,
+          "readValues": [
+            1
+          ]
+        },
+        {
+          "id": "dp",
+          "label": "DisplayPort",
+          "writeValue": 15,
+          "readValues": [
+            15
+          ]
+        },
+        {
+          "id": "hdmi",
+          "label": "HDMI",
+          "writeValue": 17,
+          "readValues": [
+            17
+          ]
+        }
+      ]
+    },
+    {
+      "id": "DELA0EF",
+      "manufacturerId": "DEL",
+      "productId": 41199,
+      "modelNames": [
+        "Dell U3818DW (HDMI1 1.4)"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "usb-c-1",
+          "label": "USB-C 1",
+          "writeValue": 27,
+          "readValues": [
+            27
+          ]
+        },
+        {
+          "id": "displayport-1",
+          "label": "DisplayPort 1",
+          "writeValue": 15,
+          "readValues": [
+            15
+          ]
+        },
+        {
+          "id": "hdmi-1",
+          "label": "HDMI 1",
+          "writeValue": 17,
+          "readValues": [
+            17
+          ]
+        },
+        {
+          "id": "hdmi-2",
+          "label": "HDMI 2",
+          "writeValue": 18,
+          "readValues": [
+            18
+          ]
+        }
+      ]
+    },
+    {
+      "id": "DELA0F0",
+      "manufacturerId": "DEL",
+      "productId": 41200,
+      "modelNames": [
+        "Dell U3818DW (HDMI1 2.0)"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "usb-c-1",
+          "label": "USB-C 1",
+          "writeValue": 27,
+          "readValues": [
+            27
+          ]
+        },
+        {
+          "id": "displayport-1",
+          "label": "DisplayPort 1",
+          "writeValue": 15,
+          "readValues": [
+            15
+          ]
+        },
+        {
+          "id": "hdmi-1",
+          "label": "HDMI 1",
+          "writeValue": 17,
+          "readValues": [
+            17
+          ]
+        },
+        {
+          "id": "hdmi-2",
+          "label": "HDMI 2",
+          "writeValue": 18,
+          "readValues": [
+            18
+          ]
+        }
+      ]
+    },
+    {
+      "id": "DELA0F1",
+      "manufacturerId": "DEL",
+      "productId": 41201,
+      "modelNames": [
+        "Dell U3818DW (HDMI2 1.4)"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "usb-c-1",
+          "label": "USB-C 1",
+          "writeValue": 27,
+          "readValues": [
+            27
+          ]
+        },
+        {
+          "id": "displayport-1",
+          "label": "DisplayPort 1",
+          "writeValue": 15,
+          "readValues": [
+            15
+          ]
+        },
+        {
+          "id": "hdmi-1",
+          "label": "HDMI 1",
+          "writeValue": 17,
+          "readValues": [
+            17
+          ]
+        },
+        {
+          "id": "hdmi-2",
+          "label": "HDMI 2",
+          "writeValue": 18,
+          "readValues": [
+            18
+          ]
+        }
+      ]
+    },
+    {
+      "id": "DELA0F2",
+      "manufacturerId": "DEL",
+      "productId": 41202,
+      "modelNames": [
+        "Dell U3818DW (HDMI2 2.0)"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "usb-c-1",
+          "label": "USB-C 1",
+          "writeValue": 27,
+          "readValues": [
+            27
+          ]
+        },
+        {
+          "id": "displayport-1",
+          "label": "DisplayPort 1",
+          "writeValue": 15,
+          "readValues": [
+            15
+          ]
+        },
+        {
+          "id": "hdmi-1",
+          "label": "HDMI 1",
+          "writeValue": 17,
+          "readValues": [
+            17
+          ]
+        },
+        {
+          "id": "hdmi-2",
+          "label": "HDMI 2",
+          "writeValue": 18,
+          "readValues": [
+            18
+          ]
+        }
+      ]
+    },
+    {
+      "id": "DELA0F3",
+      "manufacturerId": "DEL",
+      "productId": 41203,
+      "modelNames": [
+        "Dell U3818DW (DisplayPort)"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "hdmi1",
+          "label": "HDMI-1",
+          "writeValue": 17,
+          "readValues": [
+            17
+          ]
+        },
+        {
+          "id": "hdmi2",
+          "label": "HDMI-2",
+          "writeValue": 18,
+          "readValues": [
+            18
+          ]
+        },
+        {
+          "id": "dp",
+          "label": "DisplayPort",
+          "writeValue": 15,
+          "readValues": [
+            15
+          ]
+        },
+        {
+          "id": "usb-c",
+          "label": "USB-C",
+          "writeValue": 27,
+          "readValues": [
+            27
+          ]
+        }
+      ]
+    },
+    {
+      "id": "DELA0F4",
+      "manufacturerId": "DEL",
+      "productId": 41204,
+      "modelNames": [
+        "Dell U3818DW (USB Type-C)"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "usb-c-1",
+          "label": "USB-C 1",
+          "writeValue": 27,
+          "readValues": [
+            27
+          ]
+        },
+        {
+          "id": "displayport-1",
+          "label": "DisplayPort 1",
+          "writeValue": 15,
+          "readValues": [
+            15
+          ]
+        },
+        {
+          "id": "hdmi-1",
+          "label": "HDMI 1",
+          "writeValue": 17,
+          "readValues": [
+            17
+          ]
+        },
+        {
+          "id": "hdmi-2",
+          "label": "HDMI 2",
+          "writeValue": 18,
+          "readValues": [
+            18
+          ]
+        }
+      ]
+    },
+    {
+      "id": "DELA114",
+      "manufacturerId": "DEL",
+      "productId": 41236,
+      "modelNames": [
+        "Dell P2219H"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "vga-1",
+          "label": "VGA 1",
+          "writeValue": 1,
+          "readValues": [
+            1
+          ]
+        },
+        {
+          "id": "displayport-1",
+          "label": "DisplayPort 1",
+          "writeValue": 15,
+          "readValues": [
+            15
+          ]
+        },
+        {
+          "id": "hdmi-1",
+          "label": "HDMI 1",
+          "writeValue": 17,
+          "readValues": [
+            17
+          ]
+        }
+      ]
+    },
+    {
+      "id": "DELA123",
+      "manufacturerId": "DEL",
+      "productId": 41251,
+      "modelNames": [
+        "Dell U3219Q"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "hdmi1",
+          "label": "HDMI-1",
+          "writeValue": 17,
+          "readValues": [
+            17
+          ]
+        },
+        {
+          "id": "dp",
+          "label": "DisplayPort",
+          "writeValue": 15,
+          "readValues": [
+            15
+          ]
+        },
+        {
+          "id": "usb-c",
+          "label": "USB-C",
+          "writeValue": 27,
+          "readValues": [
+            27
+          ]
+        }
+      ]
+    },
+    {
+      "id": "DELA124",
+      "manufacturerId": "DEL",
+      "productId": 41252,
+      "modelNames": [
+        "Dell U3219Q"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "hdmi1",
+          "label": "HDMI-1",
+          "writeValue": 17,
+          "readValues": [
+            17
+          ]
+        },
+        {
+          "id": "dp",
+          "label": "DisplayPort",
+          "writeValue": 15,
+          "readValues": [
+            15
+          ]
+        },
+        {
+          "id": "usb-c",
+          "label": "USB-C",
+          "writeValue": 27,
+          "readValues": [
+            27
+          ]
+        }
+      ]
+    },
+    {
+      "id": "DELA125",
+      "manufacturerId": "DEL",
+      "productId": 41253,
+      "modelNames": [
+        "Dell U3219Q"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "usb-c",
+          "label": "USB-C",
+          "writeValue": 27,
+          "readValues": [
+            27
+          ]
+        },
+        {
+          "id": "dp",
+          "label": "DisplayPort",
+          "writeValue": 15,
+          "readValues": [
+            15
+          ]
+        },
+        {
+          "id": "hdmi",
+          "label": "HDMI",
+          "writeValue": 17,
+          "readValues": [
+            17
+          ]
+        }
+      ]
+    },
+    {
+      "id": "DELA133",
+      "manufacturerId": "DEL",
+      "productId": 41267,
+      "modelNames": [
+        "Dell U3219Q"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "vga-1",
+          "label": "VGA 1",
+          "writeValue": 1,
+          "readValues": [
+            1
+          ]
+        },
+        {
+          "id": "displayport-1",
+          "label": "DisplayPort 1",
+          "writeValue": 15,
+          "readValues": [
+            15
+          ]
+        },
+        {
+          "id": "hdmi-1",
+          "label": "HDMI 1",
+          "writeValue": 17,
+          "readValues": [
+            17
+          ]
+        }
+      ]
+    },
+    {
+      "id": "DELA14E",
+      "manufacturerId": "DEL",
+      "productId": 41294,
+      "modelNames": [
+        "Dell U2520D"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "usb-c",
+          "label": "USB-C",
+          "writeValue": 27,
+          "readValues": [
+            27
+          ]
+        },
+        {
+          "id": "dp",
+          "label": "DisplayPort",
+          "writeValue": 15,
+          "readValues": [
+            15
+          ]
+        },
+        {
+          "id": "hdmi",
+          "label": "HDMI",
+          "writeValue": 17,
+          "readValues": [
+            17
+          ]
+        }
+      ]
+    },
+    {
+      "id": "DELA181",
+      "manufacturerId": "DEL",
+      "productId": 41345,
+      "modelNames": [
+        "Dell U3421WE (Fullscreen)"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "usb-c",
+          "label": "USB-C",
+          "writeValue": 3867,
+          "readValues": [
+            3867
+          ]
+        },
+        {
+          "id": "dp",
+          "label": "DisplayPort",
+          "writeValue": 3855,
+          "readValues": [
+            3855
+          ]
+        },
+        {
+          "id": "hdmi1",
+          "label": "HDMI-1",
+          "writeValue": 3857,
+          "readValues": [
+            3857
+          ]
+        },
+        {
+          "id": "hdmi2",
+          "label": "HDMI-2",
+          "writeValue": 3858,
+          "readValues": [
+            3858
+          ]
+        }
+      ]
+    },
+    {
+      "id": "DELA19A",
+      "manufacturerId": "DEL",
+      "productId": 41370,
+      "modelNames": [
+        "Dell S2721D (HDMI-1)"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "dp",
+          "label": "DisplayPort",
+          "writeValue": 4367,
+          "readValues": [
+            4367
+          ]
+        },
+        {
+          "id": "hdmi1",
+          "label": "HDMI-1",
+          "writeValue": 4369,
+          "readValues": [
+            4369
+          ]
+        },
+        {
+          "id": "hdmi2",
+          "label": "HDMI-2",
+          "writeValue": 4370,
+          "readValues": [
+            4370
+          ]
+        }
+      ]
+    },
+    {
+      "id": "DELA235",
+      "manufacturerId": "DEL",
+      "productId": 41525,
+      "modelNames": [
+        "Dell U2424HE"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "usb-c",
+          "label": "USB-C",
+          "writeValue": 3867,
+          "readValues": [
+            3867
+          ]
+        },
+        {
+          "id": "dp",
+          "label": "DisplayPort",
+          "writeValue": 3855,
+          "readValues": [
+            3855
+          ]
+        },
+        {
+          "id": "hdmi",
+          "label": "HDMI",
+          "writeValue": 3857,
+          "readValues": [
+            3857
+          ]
+        }
+      ]
+    },
+    {
+      "id": "DELA278",
+      "manufacturerId": "DEL",
+      "productId": 41592,
+      "modelNames": [
+        "Dell Pro 34 Plus USB-C Hub Monitor - P3425WE"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "usb-c",
+          "label": "USB-C",
+          "writeValue": 3867,
+          "readValues": [
+            3867
+          ]
+        },
+        {
+          "id": "dp",
+          "label": "DisplayPort",
+          "writeValue": 3855,
+          "readValues": [
+            3855
+          ]
+        },
+        {
+          "id": "hdmi1",
+          "label": "HDMI-1",
+          "writeValue": 3857,
+          "readValues": [
+            3857
+          ]
+        },
+        {
+          "id": "hdmi2",
+          "label": "HDMI-2",
+          "writeValue": 3858,
+          "readValues": [
+            3858
+          ]
+        }
+      ]
+    },
+    {
+      "id": "DELD069",
+      "manufacturerId": "DEL",
+      "productId": 53353,
+      "modelNames": [
+        "Dell U2715H (HDMI 2)"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "dp",
+          "label": "DisplayPort",
+          "writeValue": 15,
+          "readValues": [
+            15
+          ]
+        },
+        {
+          "id": "mdp",
+          "label": "mDP",
+          "writeValue": 16,
+          "readValues": [
+            16
+          ]
+        },
+        {
+          "id": "hdmi1",
+          "label": "HDMI-1",
+          "writeValue": 17,
+          "readValues": [
+            17
+          ]
+        },
+        {
+          "id": "hdmi2",
+          "label": "HDMI-2",
+          "writeValue": 18,
+          "readValues": [
+            18
+          ]
+        }
+      ]
+    },
+    {
+      "id": "DELD070",
+      "manufacturerId": "DEL",
+      "productId": 53360,
+      "modelNames": [
+        "Dell U2515H"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "dp",
+          "label": "DisplayPort",
+          "writeValue": 15,
+          "readValues": [
+            15
+          ]
+        },
+        {
+          "id": "mdp",
+          "label": "mDP",
+          "writeValue": 16,
+          "readValues": [
+            16
+          ]
+        },
+        {
+          "id": "hdmi1",
+          "label": "HDMI-1",
+          "writeValue": 17,
+          "readValues": [
+            17
+          ]
+        },
+        {
+          "id": "hdmi2",
+          "label": "HDMI-2",
+          "writeValue": 18,
+          "readValues": [
+            18
+          ]
+        }
+      ]
+    },
+    {
+      "id": "DELD080",
+      "manufacturerId": "DEL",
+      "productId": 53376,
+      "modelNames": [
+        "Dell S2316M (DVI)"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "vga",
+          "label": "VGA",
+          "writeValue": 1,
+          "readValues": [
+            1
+          ]
+        },
+        {
+          "id": "dvi",
+          "label": "DVI",
+          "writeValue": 3,
+          "readValues": [
+            3
+          ]
+        }
+      ]
+    },
+    {
+      "id": "DELD0FB",
+      "manufacturerId": "DEL",
+      "productId": 53499,
+      "modelNames": [
+        "Dell P2720DC"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "dp",
+          "label": "DisplayPort",
+          "writeValue": 3855,
+          "readValues": [
+            3855
+          ]
+        },
+        {
+          "id": "usb-c",
+          "label": "USB-C",
+          "writeValue": 3867,
+          "readValues": [
+            3867
+          ]
+        },
+        {
+          "id": "hdmi",
+          "label": "HDMI",
+          "writeValue": 3857,
+          "readValues": [
+            3857
+          ]
+        }
+      ]
+    },
+    {
+      "id": "DELD107",
+      "manufacturerId": "DEL",
+      "productId": 53511,
+      "modelNames": [
+        "DELL S3221QS"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "vga",
+          "label": "VGA",
+          "writeValue": 1,
+          "readValues": [
+            1
+          ]
+        },
+        {
+          "id": "dvi1",
+          "label": "DVI-1",
+          "writeValue": 3,
+          "readValues": [
+            3
+          ]
+        },
+        {
+          "id": "dvi2",
+          "label": "DVI-2",
+          "writeValue": 4,
+          "readValues": [
+            4
+          ]
+        },
+        {
+          "id": "component",
+          "label": "Component",
+          "writeValue": 12,
+          "readValues": [
+            12
+          ]
+        },
+        {
+          "id": "dp",
+          "label": "DisplayPort",
+          "writeValue": 15,
+          "readValues": [
+            15
+          ]
+        },
+        {
+          "id": "hdmi1",
+          "label": "HDMI-1",
+          "writeValue": 17,
+          "readValues": [
+            17
+          ]
+        },
+        {
+          "id": "hdmi2",
+          "label": "HDMI-2",
+          "writeValue": 18,
+          "readValues": [
+            18
+          ]
+        },
+        {
+          "id": "usb-c",
+          "label": "USB-C",
+          "writeValue": 19,
+          "readValues": [
+            19
+          ]
+        }
+      ]
+    },
+    {
+      "id": "DELD12D",
+      "manufacturerId": "DEL",
+      "productId": 53549,
+      "modelNames": [
+        "DELL S3422DWG"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "dp",
+          "label": "DisplayPort",
+          "writeValue": 3855,
+          "readValues": [
+            3855
+          ]
+        },
+        {
+          "id": "hdmi1",
+          "label": "HDMI-1",
+          "writeValue": 3857,
+          "readValues": [
+            3857
+          ]
+        },
+        {
+          "id": "hdmi2",
+          "label": "HDMI-2",
+          "writeValue": 3858,
+          "readValues": [
+            3858
+          ]
+        }
+      ]
+    },
+    {
+      "id": "DELF016",
+      "manufacturerId": "DEL",
+      "productId": 61462,
+      "modelNames": [
+        "Dell U2410f"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "vga",
+          "label": "VGA",
+          "writeValue": 1,
+          "readValues": [
+            1
+          ]
+        },
+        {
+          "id": "dvi1",
+          "label": "DVI-1",
+          "writeValue": 3,
+          "readValues": [
+            3
+          ]
+        },
+        {
+          "id": "dvi2",
+          "label": "DVI-2",
+          "writeValue": 4,
+          "readValues": [
+            4
+          ]
+        },
+        {
+          "id": "composite",
+          "label": "Composite",
+          "writeValue": 5,
+          "readValues": [
+            5
+          ]
+        },
+        {
+          "id": "component",
+          "label": "Component",
+          "writeValue": 12,
+          "readValues": [
+            12
+          ]
+        },
+        {
+          "id": "dp",
+          "label": "DisplayPort",
+          "writeValue": 15,
+          "readValues": [
+            15
+          ]
+        },
+        {
+          "id": "hdmi",
+          "label": "HDMI",
+          "writeValue": 17,
+          "readValues": [
+            17
+          ]
+        }
+      ]
+    },
+    {
+      "id": "DELF017",
+      "manufacturerId": "DEL",
+      "productId": 61463,
+      "modelNames": [
+        "Dell Ultrasharp u2410 (Rev A02)"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "vga",
+          "label": "VGA",
+          "writeValue": 1,
+          "readValues": [
+            1
+          ]
+        },
+        {
+          "id": "dvi1",
+          "label": "DVI-1",
+          "writeValue": 3,
+          "readValues": [
+            3
+          ]
+        },
+        {
+          "id": "dvi2",
+          "label": "DVI-2",
+          "writeValue": 4,
+          "readValues": [
+            4
+          ]
+        },
+        {
+          "id": "dp",
+          "label": "DisplayPort",
+          "writeValue": 15,
+          "readValues": [
+            15
+          ]
+        },
+        {
+          "id": "hdmi",
+          "label": "HDMI",
+          "writeValue": 17,
+          "readValues": [
+            17
+          ]
+        },
+        {
+          "id": "component",
+          "label": "Component",
+          "writeValue": 12,
+          "readValues": [
+            12
+          ]
+        },
+        {
+          "id": "composite",
+          "label": "Composite",
+          "writeValue": 5,
+          "readValues": [
+            5
+          ]
+        }
+      ]
+    },
+    {
+      "id": "GSM59F1",
+      "manufacturerId": "GSM",
+      "productId": 23025,
+      "modelNames": [
+        "LG 25UM58 / 25UM65"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "hdmi1",
+          "label": "hd",
+          "writeValue": 17,
+          "readValues": [
+            17
+          ]
+        },
+        {
+          "id": "hdmi2",
+          "label": "HDMI-2",
+          "writeValue": 18,
+          "readValues": [
+            18
+          ]
+        }
+      ]
+    },
+    {
+      "id": "GSM5ACD",
+      "manufacturerId": "GSM",
+      "productId": 23245,
+      "modelNames": [
+        "LG LCD Monitor-19M38HB"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "vga-1",
+          "label": "VGA 1",
+          "writeValue": 1,
+          "readValues": [
+            1
+          ]
+        },
+        {
+          "id": "dvi-1",
+          "label": "DVI 1",
+          "writeValue": 3,
+          "readValues": [
+            3
+          ]
+        },
+        {
+          "id": "dvi-2",
+          "label": "DVI 2",
+          "writeValue": 4,
+          "readValues": [
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "id": "GSM5B09",
+      "manufacturerId": "GSM",
+      "productId": 23305,
+      "modelNames": [
+        "LG 27UD68P / 27UD88 / 27UD58 / 24UD58"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "hdmi1",
+          "label": "HDMI-1",
+          "writeValue": 17,
+          "readValues": [
+            17
+          ]
+        },
+        {
+          "id": "hdmi2",
+          "label": "HDMI-2",
+          "writeValue": 18,
+          "readValues": [
+            18
+          ]
+        }
+      ]
+    },
+    {
+      "id": "GSM5B55",
+      "manufacturerId": "GSM",
+      "productId": 23381,
+      "modelNames": [
+        "LG FULL HD"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "vga",
+          "label": "VGA",
+          "writeValue": 3,
+          "readValues": [
+            3
+          ]
+        },
+        {
+          "id": "hdmi1",
+          "label": "HDMI-1",
+          "writeValue": 4,
+          "readValues": [
+            4
+          ]
+        },
+        {
+          "id": "hdmi2",
+          "label": "HDMI-2",
+          "writeValue": 5,
+          "readValues": [
+            5
+          ]
+        }
+      ]
+    },
+    {
+      "id": "GSM5B7F",
+      "manufacturerId": "GSM",
+      "productId": 23423,
+      "modelNames": [
+        "LG UltraGear 27GL850"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "dp1",
+          "label": "DP-1",
+          "writeValue": 15,
+          "readValues": [
+            15
+          ]
+        },
+        {
+          "id": "hdmi1",
+          "label": "HDMI-1",
+          "writeValue": 17,
+          "readValues": [
+            17
+          ]
+        },
+        {
+          "id": "hdmi2",
+          "label": "HDMI-2",
+          "writeValue": 18,
+          "readValues": [
+            18
+          ]
+        }
+      ]
+    },
+    {
+      "id": "HPN3928",
+      "manufacturerId": "HPN",
+      "productId": 14632,
+      "modelNames": [
+        "HP 27h 737K9AA (DisplayPort)"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "vga",
+          "label": "VGA",
+          "writeValue": 1,
+          "readValues": [
+            1
+          ]
+        },
+        {
+          "id": "hdmi",
+          "label": "HDMI",
+          "writeValue": 17,
+          "readValues": [
+            17
+          ]
+        },
+        {
+          "id": "dp",
+          "label": "DisplayPort",
+          "writeValue": 15,
+          "readValues": [
+            15
+          ]
+        }
+      ]
+    },
+    {
+      "id": "HSD5173",
+      "manufacturerId": "HSD",
+      "productId": 20851,
+      "modelNames": [
+        "Hanns.G HT231"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "analog",
+          "label": "Analog",
+          "writeValue": 1,
+          "readValues": [
+            1
+          ]
+        },
+        {
+          "id": "digital",
+          "label": "Digital",
+          "writeValue": 3,
+          "readValues": [
+            3
+          ]
+        }
+      ]
+    },
+    {
+      "id": "HWP0A72",
+      "manufacturerId": "HWP",
+      "productId": 2674,
+      "modelNames": [
+        "HP LP2065"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "vga-1",
+          "label": "VGA 1",
+          "writeValue": 1,
+          "readValues": [
+            1
+          ]
+        },
+        {
+          "id": "vga-2",
+          "label": "VGA 2",
+          "writeValue": 2,
+          "readValues": [
+            2
+          ]
+        },
+        {
+          "id": "dvi-1",
+          "label": "DVI 1",
+          "writeValue": 3,
+          "readValues": [
+            3
+          ]
+        },
+        {
+          "id": "dvi-2",
+          "label": "DVI 2",
+          "writeValue": 4,
+          "readValues": [
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "id": "HWP26A0",
+      "manufacturerId": "HWP",
+      "productId": 9888,
+      "modelNames": [
+        "HP w19b (VGA)"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "vga-1",
+          "label": "VGA 1",
+          "writeValue": 1,
+          "readValues": [
+            1
+          ]
+        },
+        {
+          "id": "dvi-1",
+          "label": "DVI 1",
+          "writeValue": 3,
+          "readValues": [
+            3
+          ]
+        }
+      ]
+    },
+    {
+      "id": "HWP2943",
+      "manufacturerId": "HWP",
+      "productId": 10563,
+      "modelNames": [
+        "HWP2943"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "vga-1",
+          "label": "VGA 1",
+          "writeValue": 1,
+          "readValues": [
+            1
+          ]
+        },
+        {
+          "id": "dvi-1",
+          "label": "DVI 1",
+          "writeValue": 3,
+          "readValues": [
+            3
+          ]
+        },
+        {
+          "id": "displayport-1",
+          "label": "DisplayPort 1",
+          "writeValue": 15,
+          "readValues": [
+            15
+          ]
+        }
+      ]
+    },
+    {
+      "id": "IVM562D",
+      "manufacturerId": "IVM",
+      "productId": 22061,
+      "modelNames": [
+        "Iiyama PL2390 (ProLite XUB2390HS)"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "vga",
+          "label": "VGA",
+          "writeValue": 1,
+          "readValues": [
+            1
+          ]
+        },
+        {
+          "id": "dvi",
+          "label": "DVI",
+          "writeValue": 3,
+          "readValues": [
+            3
+          ]
+        },
+        {
+          "id": "hdmi",
+          "label": "HDMI",
+          "writeValue": 15,
+          "readValues": [
+            15
+          ]
+        }
+      ]
+    },
+    {
+      "id": "IVM6113",
+      "manufacturerId": "IVM",
+      "productId": 24851,
+      "modelNames": [
+        "Iiyama PLE2483H"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "dvi1",
+          "label": "DVI-1",
+          "writeValue": 3,
+          "readValues": [
+            3
+          ]
+        },
+        {
+          "id": "hdmi1",
+          "label": "HDMI-1",
+          "writeValue": 17,
+          "readValues": [
+            17
+          ]
+        },
+        {
+          "id": "vga1",
+          "label": "VGA-1",
+          "writeValue": 1,
+          "readValues": [
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "id": "IVM6114",
+      "manufacturerId": "IVM",
+      "productId": 24852,
+      "modelNames": [
+        "Iiyama X2483HSU"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "dvi1",
+          "label": "DVI-1",
+          "writeValue": 3,
+          "readValues": [
+            3
+          ]
+        },
+        {
+          "id": "hdmi1",
+          "label": "HDMI-1",
+          "writeValue": 17,
+          "readValues": [
+            17
+          ]
+        },
+        {
+          "id": "vga1",
+          "label": "VGA-1",
+          "writeValue": 1,
+          "readValues": [
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "id": "IVM660F",
+      "manufacturerId": "IVM",
+      "productId": 26127,
+      "modelNames": [
+        "Iiyama ProLite T2735M"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "analog",
+          "label": "Analog",
+          "writeValue": 1,
+          "readValues": [
+            1
+          ]
+        },
+        {
+          "id": "digital",
+          "label": "Digital",
+          "writeValue": 3,
+          "readValues": [
+            3
+          ]
+        }
+      ]
+    },
+    {
+      "id": "IVM663A",
+      "manufacturerId": "IVM",
+      "productId": 26170,
+      "modelNames": [
+        "Iiyama PL2730H"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "vga",
+          "label": "VGA",
+          "writeValue": 0,
+          "readValues": [
+            0
+          ]
+        },
+        {
+          "id": "hdmi",
+          "label": "HDMI",
+          "writeValue": 17,
+          "readValues": [
+            17
+          ]
+        },
+        {
+          "id": "dp",
+          "label": "DisplayPort",
+          "writeValue": 15,
+          "readValues": [
+            15
+          ]
+        }
+      ]
+    },
+    {
+      "id": "IVM6646",
+      "manufacturerId": "IVM",
+      "productId": 26182,
+      "modelNames": [
+        "iiyama PL2791Q"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "dvi",
+          "label": "DVI",
+          "writeValue": 3,
+          "readValues": [
+            3
+          ]
+        },
+        {
+          "id": "dp",
+          "label": "DisplayPort",
+          "writeValue": 15,
+          "readValues": [
+            15
+          ]
+        },
+        {
+          "id": "hdmi",
+          "label": "HDMI",
+          "writeValue": 17,
+          "readValues": [
+            17
+          ]
+        }
+      ]
+    },
+    {
+      "id": "IVM7614",
+      "manufacturerId": "IVM",
+      "productId": 30228,
+      "modelNames": [
+        "Iiyama GB3461WQSU (HDMI)"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "hdmi1",
+          "label": "HDMI-1",
+          "writeValue": 17,
+          "readValues": [
+            17
+          ]
+        },
+        {
+          "id": "hdmi2",
+          "label": "HDMI-2",
+          "writeValue": 18,
+          "readValues": [
+            18
+          ]
+        },
+        {
+          "id": "dp1",
+          "label": "DP-1",
+          "writeValue": 15,
+          "readValues": [
+            15
+          ]
+        },
+        {
+          "id": "dp2",
+          "label": "DP-2",
+          "writeValue": 16,
+          "readValues": [
+            16
+          ]
+        }
+      ]
+    },
+    {
+      "id": "IVM761A",
+      "manufacturerId": "IVM",
+      "productId": 30234,
+      "modelNames": [
+        "Iiyama GB3466WQSU (DP)"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "hdmi1",
+          "label": "HDMI-1",
+          "writeValue": 17,
+          "readValues": [
+            17
+          ]
+        },
+        {
+          "id": "hdmi2",
+          "label": "HDMI-2",
+          "writeValue": 18,
+          "readValues": [
+            18
+          ]
+        },
+        {
+          "id": "dp1",
+          "label": "DP-1",
+          "writeValue": 15,
+          "readValues": [
+            15
+          ]
+        },
+        {
+          "id": "dp2",
+          "label": "DP-2",
+          "writeValue": 16,
+          "readValues": [
+            16
+          ]
+        }
+      ]
+    },
+    {
+      "id": "IVM7631",
+      "manufacturerId": "IVM",
+      "productId": 30257,
+      "modelNames": [
+        "Iiyama PL3494WQ"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "dp",
+          "label": "DisplayPort",
+          "writeValue": 15,
+          "readValues": [
+            15
+          ]
+        },
+        {
+          "id": "usb-c",
+          "label": "USB-C",
+          "writeValue": 16,
+          "readValues": [
+            16
+          ]
+        },
+        {
+          "id": "hdmi",
+          "label": "HDMI",
+          "writeValue": 17,
+          "readValues": [
+            17
+          ]
+        }
+      ]
+    },
+    {
+      "id": "LEN62D0",
+      "manufacturerId": "LEN",
+      "productId": 25296,
+      "modelNames": [
+        "Lenovo ThinkVision E27q-20"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "dp1",
+          "label": "DP-1",
+          "writeValue": 15,
+          "readValues": [
+            15
+          ]
+        },
+        {
+          "id": "hdmi1",
+          "label": "HDMI-1",
+          "writeValue": 11,
+          "readValues": [
+            11
+          ]
+        }
+      ]
+    },
+    {
+      "id": "LHC3500",
+      "manufacturerId": "LHC",
+      "productId": 13568,
+      "modelNames": [
+        "LC-Power M34 Curved Gaming Monitor"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "dp",
+          "label": "DisplayPort",
+          "writeValue": 7,
+          "readValues": [
+            7
+          ]
+        },
+        {
+          "id": "hdmi1",
+          "label": "HDMI-1",
+          "writeValue": 5,
+          "readValues": [
+            5
+          ]
+        },
+        {
+          "id": "hdmi2",
+          "label": "HDMI-2",
+          "writeValue": 18,
+          "readValues": [
+            18
+          ]
+        },
+        {
+          "id": "hdmi3",
+          "label": "HDMI-3",
+          "writeValue": 19,
+          "readValues": [
+            19
+          ]
+        }
+      ]
+    },
+    {
+      "id": "PHL08DC",
+      "manufacturerId": "PHL",
+      "productId": 2268,
+      "modelNames": [
+        "Philips 221P6Q"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "vga",
+          "label": "VGA",
+          "writeValue": 1,
+          "readValues": [
+            1
+          ]
+        },
+        {
+          "id": "dvi",
+          "label": "DVI",
+          "writeValue": 3,
+          "readValues": [
+            3
+          ]
+        },
+        {
+          "id": "dp",
+          "label": "DisplayPort",
+          "writeValue": 15,
+          "readValues": [
+            15
+          ]
+        }
+      ]
+    },
+    {
+      "id": "PHL08E7",
+      "manufacturerId": "PHL",
+      "productId": 2279,
+      "modelNames": [
+        "Philips BDM3270QP"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "vga",
+          "label": "VGA",
+          "writeValue": 1,
+          "readValues": [
+            1
+          ]
+        },
+        {
+          "id": "dvi",
+          "label": "DVI",
+          "writeValue": 3,
+          "readValues": [
+            3
+          ]
+        },
+        {
+          "id": "dp",
+          "label": "DisplayPort",
+          "writeValue": 15,
+          "readValues": [
+            15
+          ]
+        },
+        {
+          "id": "hdmi",
+          "label": "HDMI",
+          "writeValue": 17,
+          "readValues": [
+            17
+          ]
+        }
+      ]
+    },
+    {
+      "id": "SAM-7052",
+      "manufacturerId": "SAM",
+      "productId": 28754,
+      "modelNames": [
+        "LC49G95T"
+      ],
+      "revision": 1,
+      "source": "monitor-switch@8d80e7f9ff3854555958aaab46bf1a543539845c",
+      "inputs": [
+        {
+          "id": "hdmi",
+          "label": "HDMI",
+          "writeValue": 17,
+          "readValues": [
+            1
+          ]
+        },
+        {
+          "id": "displayport-1",
+          "label": "DisplayPort 1",
+          "writeValue": 15,
+          "readValues": [
+            3
+          ]
+        },
+        {
+          "id": "displayport-2",
+          "label": "DisplayPort 2",
+          "writeValue": 16,
+          "readValues": [
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "id": "SAM0D20",
+      "manufacturerId": "SAM",
+      "productId": 3360,
+      "modelNames": [
+        "Samsung S24F354FHU"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "analog",
+          "label": "Analog",
+          "writeValue": 1,
+          "readValues": [
+            1
+          ]
+        },
+        {
+          "id": "digital",
+          "label": "Digital",
+          "writeValue": 3,
+          "readValues": [
+            3
+          ]
+        }
+      ]
+    },
+    {
+      "id": "SAM0E16",
+      "manufacturerId": "SAM",
+      "productId": 3606,
+      "modelNames": [
+        "Samsung C27HG70"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "hdmi1",
+          "label": "HDMI 1",
+          "writeValue": 5,
+          "readValues": [
+            5
+          ]
+        },
+        {
+          "id": "hdmi2",
+          "label": "HDMI 2",
+          "writeValue": 6,
+          "readValues": [
+            6
+          ]
+        },
+        {
+          "id": "dp",
+          "label": "Display Port",
+          "writeValue": 9,
+          "readValues": [
+            9
+          ]
+        }
+      ]
+    },
+    {
+      "id": "SAM0F9C",
+      "manufacturerId": "SAM",
+      "productId": 3996,
+      "modelNames": [
+        "C49RG9x"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "dp2",
+          "label": "DP-2",
+          "writeValue": 3,
+          "readValues": [
+            3
+          ]
+        },
+        {
+          "id": "hdmi",
+          "label": "HDMI",
+          "writeValue": 6,
+          "readValues": [
+            6
+          ]
+        },
+        {
+          "id": "dp1",
+          "label": "DP-1",
+          "writeValue": 9,
+          "readValues": [
+            9
+          ]
+        }
+      ]
+    },
+    {
+      "id": "SAM1053",
+      "manufacturerId": "SAM",
+      "productId": 4179,
+      "modelNames": [
+        "Samsung LS27R350FHLXZL"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "vga",
+          "label": "VGA",
+          "writeValue": 1,
+          "readValues": [
+            1
+          ]
+        },
+        {
+          "id": "dvi",
+          "label": "DVI",
+          "writeValue": 3,
+          "readValues": [
+            3
+          ]
+        }
+      ]
+    },
+    {
+      "id": "SAM7119",
+      "manufacturerId": "SAM",
+      "productId": 28953,
+      "modelNames": [
+        "Samsung Odyssey G5"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "dp",
+          "label": "DisplayPort",
+          "writeValue": 9,
+          "readValues": [
+            9
+          ]
+        },
+        {
+          "id": "hdmi",
+          "label": "HDMI",
+          "writeValue": 6,
+          "readValues": [
+            6
+          ]
+        }
+      ]
+    },
+    {
+      "id": "SNY075A",
+      "manufacturerId": "SNY",
+      "productId": 1882,
+      "modelNames": [
+        "Sony INZONE M9 (SDM-U27M90)"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "dp1",
+          "label": "DP-1",
+          "writeValue": 15,
+          "readValues": [
+            15
+          ]
+        },
+        {
+          "id": "dp2",
+          "label": "DP-2",
+          "writeValue": 16,
+          "readValues": [
+            16
+          ]
+        },
+        {
+          "id": "hdmi1",
+          "label": "HDMI-1",
+          "writeValue": 17,
+          "readValues": [
+            17
+          ]
+        },
+        {
+          "id": "hdmi2",
+          "label": "HDMI-2",
+          "writeValue": 18,
+          "readValues": [
+            18
+          ]
+        }
+      ]
+    },
+    {
+      "id": "VSC0933",
+      "manufacturerId": "VSC",
+      "productId": 2355,
+      "modelNames": [
+        "ViewSonic VG2253"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "vga",
+          "label": "VGA",
+          "writeValue": 1,
+          "readValues": [
+            1
+          ]
+        },
+        {
+          "id": "dp",
+          "label": "DisplayPort",
+          "writeValue": 15,
+          "readValues": [
+            15
+          ]
+        },
+        {
+          "id": "mdp",
+          "label": "mDP",
+          "writeValue": 16,
+          "readValues": [
+            16
+          ]
+        },
+        {
+          "id": "hdmi",
+          "label": "HDMI",
+          "writeValue": 17,
+          "readValues": [
+            17
+          ]
+        }
+      ]
+    },
+    {
+      "id": "VSCBD44",
+      "manufacturerId": "VSC",
+      "productId": 48452,
+      "modelNames": [
+        "ViewSonic VSCBD44"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "vga",
+          "label": "VGA",
+          "writeValue": 1,
+          "readValues": [
+            1
+          ]
+        },
+        {
+          "id": "hdmi",
+          "label": "HDMI",
+          "writeValue": 17,
+          "readValues": [
+            17
+          ]
+        }
+      ]
+    },
+    {
+      "id": "VSCE41B",
+      "manufacturerId": "VSC",
+      "productId": 58395,
+      "modelNames": [
+        "ViewSonic VP930"
+      ],
+      "revision": 1,
+      "source": "ddccontrol-db@da647356dcff711743c372dd2b3703c7fe4259f6",
+      "inputs": [
+        {
+          "id": "vga-1",
+          "label": "VGA 1",
+          "writeValue": 1,
+          "readValues": [
+            1
+          ]
+        },
+        {
+          "id": "vga-2",
+          "label": "VGA 2",
+          "writeValue": 2,
+          "readValues": [
+            2
+          ]
+        },
+        {
+          "id": "dvi-1",
+          "label": "DVI 1",
+          "writeValue": 3,
+          "readValues": [
+            3
+          ]
+        }
+      ]
+    }
+  ]
+}

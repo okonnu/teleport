@@ -27,6 +27,9 @@ struct DisplayMonitor
 {
   QString id;
   QString name;
+  QString manufacturerId;
+  int productId = -1;
+  QString modelName;
 
   bool operator==(const DisplayMonitor &) const = default;
 };
@@ -55,12 +58,40 @@ struct DisplayInputResult
   }
 };
 
+struct DisplayInputSource
+{
+  uint16_t value = 0;
+  QString name;
+  QString id;
+  QList<uint16_t> readValues;
+
+  QString displayName() const
+  {
+    return QStringLiteral("%1 [DDC %2]").arg(name).arg(value);
+  }
+
+  bool operator==(const DisplayInputSource &) const = default;
+};
+
+struct DisplayInputSourcesResult
+{
+  DisplayInputStatus status = DisplayInputStatus::Success;
+  QString message;
+  QList<DisplayInputSource> sources;
+
+  bool succeeded() const
+  {
+    return status == DisplayInputStatus::Success;
+  }
+};
+
 class IDisplayInputController
 {
 public:
   virtual ~IDisplayInputController() = default;
 
   virtual DisplayDiscoveryResult discoverMonitors() = 0;
+  virtual DisplayInputSourcesResult discoverInputSources(const QString &monitorId) = 0;
   virtual DisplayInputResult readInput(const QString &monitorId) = 0;
   virtual DisplayInputResult writeInput(const QString &monitorId, uint16_t inputValue) = 0;
 };

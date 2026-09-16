@@ -15,6 +15,11 @@
 class FakeDisplayInputController : public IDisplayInputController
 {
 public:
+  DisplayInputSourcesResult discoverInputSources(const QString &) override
+  {
+    return {DisplayInputStatus::Success, {}, {}};
+  }
+
   DisplayDiscoveryResult discoverMonitors() override
   {
     return {DisplayInputStatus::Success, {}, {}};
@@ -77,7 +82,7 @@ MonitorSwitchingConfig DisplayInputCoordinatorTests::validConfig() const
       {QStringLiteral("server"), QStringLiteral("Server input"), 1, {}, {}, {}},
       {QStringLiteral("client"), QStringLiteral("Client input"), 16, {}, {}, {}},
   };
-  config.verifiedConfigHash = config.configurationHash();
+  config.activeConfigHash = config.configurationHash();
   config.enabled = true;
   return config;
 }

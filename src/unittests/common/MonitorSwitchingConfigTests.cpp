@@ -19,6 +19,7 @@ private Q_SLOTS:
   void editingInvalidatesVerification();
   void validateRoutes();
   void reconcileComputerChanges();
+  void migratesVersionOneDisabled();
   void rejectsInvalidJsonStructure();
 };
 
@@ -43,7 +44,7 @@ void MonitorSwitchingConfigTests::saveLoadAndVerify()
   qputenv("TELEPORT_MONITOR_CONFIG_PATH", directory.filePath(QStringLiteral("monitor-switching.json")).toUtf8());
 
   auto config = validConfig();
-  config.verifiedConfigHash = config.configurationHash();
+  config.activeConfigHash = config.configurationHash();
   config.enabled = true;
   QString error;
   QVERIFY2(config.save(&error), qPrintable(error));
@@ -51,7 +52,7 @@ void MonitorSwitchingConfigTests::saveLoadAndVerify()
   const auto loaded = MonitorSwitchingConfig::load(&error);
   QVERIFY2(error.isEmpty(), qPrintable(error));
   QVERIFY(loaded.enabled);
-  QVERIFY(loaded.isVerified());
+  QVERIFY(loaded.isActiveConfigurationValid());
   QCOMPARE(loaded.monitorId, config.monitorId);
   QCOMPARE(loaded.routes, config.routes);
   qunsetenv("TELEPORT_MONITOR_CONFIG_PATH");
@@ -60,15 +61,15 @@ void MonitorSwitchingConfigTests::saveLoadAndVerify()
 void MonitorSwitchingConfigTests::editingInvalidatesVerification()
 {
   auto config = validConfig();
-  config.verifiedConfigHash = config.configurationHash();
+  config.activeConfigHash = config.configurationHash();
   config.enabled = true;
-  QVERIFY(config.isVerified());
+  QVERIFY(config.isActiveConfigurationValid());
 
   config.routes[1].inputValue = 43;
-  QVERIFY(!config.isVerified());
+  QVERIFY(!config.isActiveConfigurationValid());
   config.invalidate();
   QVERIFY(!config.enabled);
-  QVERIFY(config.verifiedConfigHash.isEmpty());
+  QVERIFY(config.activeConfigHash.isEmpty());
 }
 
 void MonitorSwitchingConfigTests::validateRoutes()
@@ -87,6 +88,10 @@ void MonitorSwitchingConfigTests::validateRoutes()
   QVERIFY(config.validateSetupSelection(QStringLiteral("server"), {QStringLiteral("server"), QStringLiteral("client")})
               .isEmpty());
   QVERIFY(!config.validate(QStringLiteral("server"), {QStringLiteral("server"), QStringLiteral("client")}).isEmpty());
+
+  config = validConfig();
+  config.routes[1].inputValue = config.routes[0].inputValue;
+  QVERIFY(!config.validate(QStringLiteral("server"), {QStringLiteral("server"), QStringLiteral("client")}).isEmpty());
 }
 
 void MonitorSwitchingConfigTests::reconcileComputerChanges()
@@ -102,6 +107,31 @@ void MonitorSwitchingConfigTests::reconcileComputerChanges()
   QVERIFY(!config
                .validate(QStringLiteral("renamed-server"), {QStringLiteral("renamed-server"), QStringLiteral("client")})
                .isEmpty());
+}
+
+void MonitorSwitchingConfigTests::migratesVersionOneDisabled()
+{
+  QTemporaryDir directory;
+  QVERIFY(directory.isValid());
+  const auto path = directory.filePath(QStringLiteral("monitor-switching.json"));
+  qputenv("TELEPORT_MONITOR_CONFIG_PATH", path.toUtf8());
+  QFile file(path);
+  QVERIFY(file.open(QIODevice::WriteOnly));
+  QVERIFY(
+      file.write(
+          R"({"schemaVersion":1,"enabled":true,"verifiedConfigHash":"old","monitor":{"id":"display","name":"Monitor"},"routes":[{"computerName":"server","inputLabel":"HDMI","inputValue":17},{"computerName":"client","inputLabel":"DisplayPort","inputValue":15}]})"
+      ) > 0
+  );
+  file.close();
+
+  QString error;
+  const auto loaded = MonitorSwitchingConfig::load(&error);
+  QVERIFY2(error.isEmpty(), qPrintable(error));
+  QCOMPARE(loaded.schemaVersion, MonitorSwitchingConfig::SchemaVersion);
+  QVERIFY(!loaded.enabled);
+  QVERIFY(loaded.activeConfigHash.isEmpty());
+  QCOMPARE(loaded.routes.size(), 2);
+  qunsetenv("TELEPORT_MONITOR_CONFIG_PATH");
 }
 
 void MonitorSwitchingConfigTests::rejectsInvalidJsonStructure()

@@ -59,6 +59,15 @@ SPDX-FileCopyrightText = "Chris Rizzitello <sithlord48@gmail.com>"
 SPDX-License-Identifier = "LGPL-2.1-only"
 
 [[annotations]]
+path = "src/apps/res/monitor-profiles.json"
+SPDX-FileCopyrightText = [
+  "ddccontrol-db contributors",
+  "DimpiM",
+  "Teleport Developers",
+]
+SPDX-License-Identifier = "GPL-2.0-only AND MIT"
+
+[[annotations]]
 path = [
    "src/lib/gui/MainWindow.ui"
  , "src/lib/gui/dialogs/*.ui"

@@ -26,6 +26,11 @@ public:
     return {DisplayInputStatus::UnsupportedPlatform, QStringLiteral("DDC is not supported on this platform yet."), {}};
   }
 
+  DisplayInputSourcesResult discoverInputSources(const QString &) override
+  {
+    return {DisplayInputStatus::UnsupportedPlatform, QStringLiteral("DDC is not supported on this platform yet."), {}};
+  }
+
   DisplayInputResult writeInput(const QString &, uint16_t) override
   {
     return {DisplayInputStatus::UnsupportedPlatform, QStringLiteral("DDC is not supported on this platform yet."), {}};

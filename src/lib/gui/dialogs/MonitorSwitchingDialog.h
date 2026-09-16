@@ -6,6 +6,7 @@
 
 #pragma once
 
+#include "common/MonitorProfileDatabase.h"
 #include "common/MonitorSwitchingConfig.h"
 #include "platform/IDisplayInputController.h"
 
@@ -28,12 +29,12 @@ class MonitorSwitchingDialog : public QDialog
 public:
   using WaitFunction = std::function<bool(const QString &, int)>;
   using ConfirmServerFunction = std::function<bool()>;
-  using IdentifyInputFunction = std::function<std::optional<QString>(const QStringList &)>;
+  using ConfirmInputFunction = std::function<bool(const MonitorInputRoute &)>;
 
   MonitorSwitchingDialog(
       QWidget *parent, const ServerConfig &serverConfig, const QStringList &connectedClients,
       std::unique_ptr<IDisplayInputController> controller = {}, WaitFunction waitFunction = {},
-      ConfirmServerFunction confirmServer = {}, IdentifyInputFunction identifyInput = {}
+      ConfirmServerFunction confirmServer = {}, ConfirmInputFunction confirmInput = {}
   );
   ~MonitorSwitchingDialog() override;
   void setConnectedClients(const QStringList &connectedClients);
@@ -45,6 +46,9 @@ private:
   friend class MonitorSwitchingDialogTests;
 
   void refreshMonitors();
+  void refreshInputSources();
+  void importProfileDatabase();
+  void monitorSelectionChanged();
   void populateComputers();
   void configurationEdited();
   void runTestsAndEnable();
@@ -55,17 +59,21 @@ private:
   bool waitWithProgress(const QString &message, int milliseconds);
   bool
   restoreServerInput(const QString &monitorId, const MonitorInputRoute &serverRoute, MonitorInputRoute &testedRoute);
-  bool discoverInputRoutes(MonitorSwitchingConfig &config, const QList<uint16_t> &candidateValues);
-  std::optional<QString> identifyInputComputer(const QStringList &computerNames);
-  static QList<uint16_t> standardInputValues();
+  bool testRoute(MonitorSwitchingConfig &config, MonitorInputRoute &route, const MonitorInputRoute &serverRoute);
+  bool testAssignments(MonitorSwitchingConfig &config);
   MonitorSwitchingConfig configFromUi() const;
   QStringList configuredComputerNames() const;
 
   const ServerConfig &m_serverConfig;
   QStringList m_connectedClients;
   QString m_discoveryError;
-  QString m_inputDetectionError;
+  QString m_inputSourceMessage;
+  QString m_testError;
+  QString m_profileDatabaseError;
   std::unique_ptr<IDisplayInputController> m_controller;
+  QList<DisplayInputSource> m_inputSources;
+  MonitorProfileDatabase m_profileDatabase;
+  std::optional<MonitorProfile> m_matchedProfile;
   MonitorSwitchingConfig m_config;
   QComboBox *m_monitorCombo = nullptr;
   QTableWidget *m_routeTable = nullptr;
@@ -75,5 +83,5 @@ private:
   bool m_loading = false;
   WaitFunction m_waitFunction;
   ConfirmServerFunction m_confirmServer;
-  IdentifyInputFunction m_identifyInput;
+  ConfirmInputFunction m_confirmInput;
 };

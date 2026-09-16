@@ -15,6 +15,9 @@ class OSXDisplayInputControllerTests : public QObject
 private Q_SLOTS:
   void writePackets();
   void readPacket();
+  void capabilitiesPacket();
+  void capabilitiesReply();
+  void inputValues();
   void parseReply();
   void retryBehavior();
 };
@@ -28,6 +31,48 @@ void OSXDisplayInputControllerTests::writePackets()
 void OSXDisplayInputControllerTests::readPacket()
 {
   QCOMPARE(OSXDisplayInputController::makeReadPacket().toHex(), QByteArray("8201608d"));
+}
+
+void OSXDisplayInputControllerTests::capabilitiesPacket()
+{
+  QCOMPARE(OSXDisplayInputController::makeCapabilitiesPacket(0).toHex(), QByteArray("8403f300004b"));
+  QCOMPARE(OSXDisplayInputController::makeCapabilitiesPacket(16).toHex(), QByteArray("8403f300105b"));
+}
+
+void OSXDisplayInputControllerTests::capabilitiesReply()
+{
+  const QByteArray fragmentData("vcp(60(0F 10 11 12))");
+  QByteArray reply;
+  reply.append(static_cast<char>(0x6e));
+  reply.append(static_cast<char>(0x80 | (3 + fragmentData.size())));
+  reply.append(static_cast<char>(0xe3));
+  reply.append(static_cast<char>(0x00));
+  reply.append(static_cast<char>(0x10));
+  reply.append(fragmentData);
+  reply.append('\0');
+  uint8_t checksum = 0x50;
+  for (int index = 0; index < reply.size() - 1; ++index)
+    checksum ^= static_cast<uint8_t>(reply.at(index));
+  reply[reply.size() - 1] = static_cast<char>(checksum);
+
+  const auto fragment = OSXDisplayInputController::parseCapabilitiesReply(reply);
+  QVERIFY(fragment);
+  QCOMPARE(fragment->offset, 16);
+  QCOMPARE(fragment->data, fragmentData);
+
+  reply[reply.size() - 1] ^= 1;
+  QVERIFY(!OSXDisplayInputController::parseCapabilitiesReply(reply));
+}
+
+void OSXDisplayInputControllerTests::inputValues()
+{
+  const auto values = OSXDisplayInputController::parseInputValues(
+      QByteArray("(prot(monitor)type(lcd)vcp(0203(10 00)5260(11 12 0F 10)D6)mccs_ver(2.2))")
+  );
+  QCOMPARE(values, QList<uint16_t>({0x11, 0x12, 0x0f, 0x10}));
+  QCOMPARE(OSXDisplayInputController::inputSourceName(0x10), QStringLiteral("DisplayPort 2"));
+  const DisplayInputSource source{0x10, QStringLiteral("DisplayPort 2")};
+  QCOMPARE(source.displayName(), QStringLiteral("DisplayPort 2 [DDC 16]"));
 }
 
 void OSXDisplayInputControllerTests::parseReply()

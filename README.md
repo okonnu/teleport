@@ -16,9 +16,17 @@ Monitor switching will use DDC only. Teleport will not depend on monitor vendor 
 
 The Deskflow server view has a separate `Monitor Switching` page. It does not add monitor-specific fields to the normal Deskflow server configuration.
 
-The page discovers external monitors, reads computer names from the current Deskflow layout, identifies the server, and lets the user select participating computers. Users provide only friendly input labels. Raw DDC values are never requested or shown.
+The page discovers external monitors, reads computer names from the current Deskflow layout, identifies the server, and lets the user select participating computers. Teleport matches the monitor's EDID manufacturer, product ID, and model name against a bundled, versioned profile database. Entries use friendly names with the write value in brackets, such as `DisplayPort 2 [DDC 16]`.
 
-`Detect inputs and enable` reads the current server input as the recovery point, probes standard monitor inputs, and asks which selected computer appeared. Each probe stays visible for five seconds and restores the server input in a cleanup step. DDC readback verifies that the monitor accepted the probe. A contradictory readback is rejected, and a failed restore stops the sequence and leaves the feature disabled.
+When a profile matches, the user assigns an input to each computer and can enable switching immediately without sending test commands. Unknown monitors fall back to reported DDC capabilities or standard MCCS input values and retain the guided test and recovery workflow.
+
+The setup page also provides `Import profile database...`. It validates a schema version 1 JSON file, saves it atomically, and merges its profiles over the bundled database. The uploaded database is stored at:
+
+```text
+~/Library/Application Support/Teleport/monitor-profiles.json
+```
+
+The complete format and import workflow are documented in [`docs/monitor-profile-database.md`](docs/monitor-profile-database.md).
 
 The separate, versioned configuration is written atomically to:
 
@@ -26,7 +34,7 @@ The separate, versioned configuration is written atomically to:
 ~/Library/Application Support/Teleport/monitor-switching.json
 ```
 
-Editing a monitor or route clears verification and disables runtime switching until all tests pass again. Renamed and removed Deskflow computers also invalidate the saved routes.
+Editing a monitor or route disables runtime switching until the configuration is enabled again. A changed profile revision, renamed computer, or removed computer also invalidates the saved configuration.
 
 ## Design direction
 
@@ -47,7 +55,9 @@ The rest of Teleport uses a common display input controller interface and does n
 
 No Deskflow network protocol changes or special KVM hotkey actions are required.
 
-The friendly input names map internally to DDC VCP input source values discovered by the setup tests. Those values vary between monitor models, so Teleport stores the detected mapping without exposing raw values to the user.
+Friendly input names and write values come from the matched monitor profile. Profiles can store separate write and read values for monitors such as the Samsung LC49G95T. Unknown monitors use the monitor's capability data when available and a standard fallback list otherwise.
+
+The initial database contains 112 usable input-source profiles imported from `ddccontrol-db` plus a measured Samsung LC49G95T override from `monitor-switch`. The generated JSON records its source commits and licenses. `tools/import-monitor-profiles.py` rebuilds the bundled database from a pinned `ddccontrol-db` checkout.
 
 DDC support also depends on the monitor, cable, dock, and adapter. Teleport should report these limitations clearly and leave Deskflow's normal screen switching available when changing the video input fails.
 
@@ -62,3 +72,5 @@ The earlier standalone proof of concept is archived in [teleport-legacy](https:/
 Deskflow is a free and open source keyboard and mouse sharing application. General Deskflow documentation is available in [`docs/Readme.md`](docs/Readme.md), and the upstream project is at [deskflow/deskflow](https://github.com/deskflow/deskflow).
 
 This fork retains Deskflow's existing licenses, including GPL-2.0-only with its OpenSSL exception for the core application. The Apple Silicon DDC implementation retains the MIT attribution for [AppleSiliconDDC](https://github.com/waydabber/AppleSiliconDDC).
+
+The bundled monitor profiles include GPL-2.0-only data from [ddccontrol-db](https://github.com/ddccontrol/ddccontrol-db) and an MIT-licensed profile from [monitor-switch](https://github.com/DimpiM/monitor-switch).
