@@ -20,6 +20,13 @@ if(UNIX AND NOT APPLE)
   check_symbol_exists(xdp_session_request_clipboard "libportal/portal-helpers.h;libportal/clipboard.h" HAVE_LP_CLIPBOARD)
   check_symbol_exists(xdp_global_shortcut_new "libportal/globalshortcuts.h" HAVE_LP_SHORTCUTS)
   cmake_pop_check_state()
+
+  if(REQUIRE_PORTAL_CLIPBOARD AND NOT HAVE_LP_CLIPBOARD)
+    message(FATAL_ERROR
+      "Wayland clipboard support is required for this build, but the libportal "
+      "clipboard API was not found. Use libportal 0.10.0 or newer."
+    )
+  endif()
 endif()
 
 if(WIN32)

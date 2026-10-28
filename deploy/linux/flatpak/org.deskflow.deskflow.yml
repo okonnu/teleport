@@ -70,6 +70,7 @@ modules:
     buildsystem: cmake-ninja
     config-opts:
       - "-DCMAKE_BUILD_TYPE=Release"
+      - "-DREQUIRE_PORTAL_CLIPBOARD=ON"
     sources:
       - type: dir
         path: ../../../

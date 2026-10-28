@@ -4,7 +4,7 @@ To build Deskflow you will a minimum of:
     - [cmake] 3.24+
     - [Qt] 6.7.0+
     - [openssl] 3.0+
-    - [libportal] 0.9.1+ (linux, bsd)
+    - [libportal] 0.9.1+ (linux, bsd; 0.10.0+ for portal clipboard support)
     - [libei] 1.3+ (linux, bsd)
 
 > ^ Will be fetched if not found on the host system.
