@@ -35,6 +35,16 @@ elseif(UNIX)
     )
   endif()
 
+  if(HAVE_LP_CLIPBOARD)
+    create_test(
+      NAME PortalClipboardTests
+      DEPENDS platform
+      LIBS base arch Qt6::Gui
+      SOURCE PortalClipboardTests.cpp
+      WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/src/lib/platform"
+    )
+  endif()
+
   if (BUILD_X11_SUPPORT)
     create_test(
       NAME XWindowsClipboardTests
